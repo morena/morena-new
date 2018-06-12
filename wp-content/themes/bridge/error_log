@@ -1,0 +1,2 @@
+[06-May-2018 22:52:31 UTC] PHP Fatal error:  Call to undefined function get_header() in /home/mfujica/public_html/morena-new/wp-content/themes/bridge/404.php on line 2
+[07-May-2018 13:56:41 UTC] PHP Fatal error:  Call to undefined function get_header() in /home/mfujica/public_html/morena-new/wp-content/themes/bridge/404.php on line 2
