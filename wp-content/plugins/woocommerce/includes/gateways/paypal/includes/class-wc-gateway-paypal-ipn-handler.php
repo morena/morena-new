@@ -45,9 +45,8 @@ class WC_Gateway_Paypal_IPN_Handler extends WC_Gateway_Paypal_Response {
 		if ( ! empty( $_POST ) && $this->validate_ipn() ) { // WPCS: CSRF ok.
 			$posted = wp_unslash( $_POST ); // WPCS: CSRF ok, input var ok.
 
-			// @codingStandardsIgnoreStart
+			// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 			do_action( 'valid-paypal-standard-ipn-request', $posted );
-			// @codingStandardsIgnoreEnd
 			exit;
 		}
 
@@ -202,12 +201,11 @@ class WC_Gateway_Paypal_IPN_Handler extends WC_Gateway_Paypal_Response {
 				$this->payment_status_paid_cancelled_order( $order, $posted );
 			}
 
-			$this->payment_complete( $order, ( ! empty( $posted['txn_id'] ) ? wc_clean( $posted['txn_id'] ) : '' ), __( 'IPN payment completed', 'woocommerce' ) );
-
 			if ( ! empty( $posted['mc_fee'] ) ) {
-				// Log paypal transaction fee.
-				update_post_meta( $order->get_id(), 'PayPal Transaction Fee', wc_clean( $posted['mc_fee'] ) );
+				$order->add_meta_data( 'PayPal Transaction Fee', wc_clean( $posted['mc_fee'] ) );
 			}
+
+			$this->payment_complete( $order, ( ! empty( $posted['txn_id'] ) ? wc_clean( $posted['txn_id'] ) : '' ), __( 'IPN payment completed', 'woocommerce' ) );
 		} else {
 			if ( 'authorization' === $posted['pending_reason'] ) {
 				$this->payment_on_hold( $order, __( 'Payment authorized. Change payment status to processing or complete to capture funds.', 'woocommerce' ) );
@@ -292,7 +290,7 @@ class WC_Gateway_Paypal_IPN_Handler extends WC_Gateway_Paypal_Response {
 	 */
 	protected function payment_status_refunded( $order, $posted ) {
 		// Only handle full refunds, not partial.
-		if ( $order->get_total() === wc_format_decimal( $posted['mc_gross'] * -1 ) ) {
+		if ( $order->get_total() === wc_format_decimal( $posted['mc_gross'] * -1, wc_get_price_decimals() ) ) {
 
 			/* translators: %s: payment status. */
 			$order->update_status( 'refunded', sprintf( __( 'Payment %s via IPN.', 'woocommerce' ), strtolower( $posted['payment_status'] ) ) );

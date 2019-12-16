@@ -19,7 +19,7 @@ class WC_Admin_Webhooks {
 	public function __construct() {
 		add_action( 'admin_init', array( $this, 'actions' ) );
 		add_action( 'woocommerce_settings_page_init', array( $this, 'screen_option' ) );
-		add_filter( 'woocommerce_save_settings_api_webhooks', array( $this, 'allow_save_settings' ) );
+		add_filter( 'woocommerce_save_settings_advanced_webhooks', array( $this, 'allow_save_settings' ) );
 	}
 
 	/**
@@ -30,7 +30,7 @@ class WC_Admin_Webhooks {
 	 * @return bool
 	 */
 	public function allow_save_settings( $allow ) {
-		if ( ! isset( $_GET['edit-webhook'] ) ) {// WPCS: input var okay, CSRF ok.
+		if ( ! isset( $_GET['edit-webhook'] ) ) { // WPCS: input var okay, CSRF ok.
 			return false;
 		}
 
@@ -119,7 +119,8 @@ class WC_Admin_Webhooks {
 		}
 
 		// API version.
-		$webhook->set_api_version( ! empty( $_POST['webhook_api_version'] ) ? sanitize_text_field( wp_unslash( $_POST['webhook_api_version'] ) ) : 'wp_api_v2' ); // WPCS: input var okay, CSRF ok.
+		$rest_api_versions = wc_get_webhook_rest_api_versions();
+		$webhook->set_api_version( ! empty( $_POST['webhook_api_version'] ) ? sanitize_text_field( wp_unslash( $_POST['webhook_api_version'] ) ) : end( $rest_api_versions ) ); // WPCS: input var okay, CSRF ok.
 
 		$webhook->save();
 
@@ -150,7 +151,7 @@ class WC_Admin_Webhooks {
 	 *
 	 * @param array $webhooks List of webhooks IDs.
 	 */
-	private function bulk_delete( $webhooks ) {
+	public static function bulk_delete( $webhooks ) {
 		foreach ( $webhooks as $webhook_id ) {
 			$webhook = new WC_Webhook( (int) $webhook_id );
 			$webhook->delete( true );
@@ -180,27 +181,6 @@ class WC_Admin_Webhooks {
 	}
 
 	/**
-	 * Bulk actions.
-	 */
-	private function bulk_actions() {
-		check_admin_referer( 'woocommerce-settings' );
-
-		if ( ! current_user_can( 'manage_woocommerce' ) ) {
-			wp_die( esc_html__( 'You do not have permission to edit Webhooks', 'woocommerce' ) );
-		}
-
-		if ( isset( $_REQUEST['action'] ) ) { // WPCS: input var okay, CSRF ok.
-			$webhooks = isset( $_REQUEST['webhook'] ) ? array_map( 'absint', (array) $_REQUEST['webhook'] ) : array(); // WPCS: input var okay, CSRF ok.
-
-			$action = sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ); // WPCS: input var okay, CSRF ok.
-
-			if ( 'delete' === $action ) {
-				$this->bulk_delete( $webhooks );
-			}
-		}
-	}
-
-	/**
 	 * Webhooks admin actions.
 	 */
 	public function actions() {
@@ -208,11 +188,6 @@ class WC_Admin_Webhooks {
 			// Save.
 			if ( isset( $_POST['save'] ) && isset( $_POST['webhook_id'] ) ) { // WPCS: input var okay, CSRF ok.
 				$this->save();
-			}
-
-			// Bulk actions.
-			if ( isset( $_REQUEST['action'] ) && isset( $_REQUEST['webhook'] ) ) { // WPCS: input var okay, CSRF ok.
-				$this->bulk_actions();
 			}
 
 			// Delete webhook.
@@ -292,17 +267,19 @@ class WC_Admin_Webhooks {
 	private static function table_list_output() {
 		global $webhooks_table_list;
 
-		echo '<h2>' . esc_html__( 'Webhooks', 'woocommerce' ) . ' <a href="' . esc_url( admin_url( 'admin.php?page=wc-settings&tab=advanced&section=webhooks&edit-webhook=0' ) ) . '" class="add-new-h2">' . esc_html__( 'Add webhook', 'woocommerce' ) . '</a></h2>';
+		echo '<h2 class="wc-table-list-header">' . esc_html__( 'Webhooks', 'woocommerce' ) . ' <a href="' . esc_url( admin_url( 'admin.php?page=wc-settings&tab=advanced&section=webhooks&edit-webhook=0' ) ) . '" class="add-new-h2">' . esc_html__( 'Add webhook', 'woocommerce' ) . '</a></h2>';
 
 		// Get the webhooks count.
-		$data_store = WC_Data_Store::load( 'webhook' );
-		$count      = count( $data_store->get_webhooks_ids() );
+		$data_store   = WC_Data_Store::load( 'webhook' );
+		$num_webhooks = $data_store->get_count_webhooks_by_status();
+		$count        = array_sum( $num_webhooks );
 
 		if ( 0 < $count ) {
+			$webhooks_table_list->process_bulk_action();
 			$webhooks_table_list->prepare_items();
 
 			echo '<input type="hidden" name="page" value="wc-settings" />';
-			echo '<input type="hidden" name="tab" value="api" />';
+			echo '<input type="hidden" name="tab" value="advanced" />';
 			echo '<input type="hidden" name="section" value="webhooks" />';
 
 			$webhooks_table_list->views();
