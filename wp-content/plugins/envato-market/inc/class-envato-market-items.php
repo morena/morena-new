@@ -127,8 +127,8 @@ if ( ! class_exists( 'Envato_Market_Items' ) ) :
 			add_filter( 'pre_set_transient_update_plugins', array( $this, 'update_plugins' ), 5, 1 );
 
 			// Inject theme updates into the response array.
-			add_filter( 'pre_set_site_transient_update_themes', array( $this, 'update_themes' ), 5, 1 );
-			add_filter( 'pre_set_transient_update_themes', array( $this, 'update_themes' ), 5, 1 );
+			add_filter( 'pre_set_site_transient_update_themes', array( $this, 'update_themes' ), 1, 99999 );
+			add_filter( 'pre_set_transient_update_themes', array( $this, 'update_themes' ), 1, 99999 );
 
 			// Inject plugin information into the API calls.
 			add_filter( 'plugins_api', array( $this, 'plugins_api' ), 10, 3 );
@@ -349,7 +349,7 @@ if ( ! class_exists( 'Envato_Market_Items' ) ) :
 						$response->last_updated   = $plugin['updated_at'];
 						$response->sections       = array( 'description' => $plugin['description'] );
 						$response->banners['low'] = $plugin['landscape_url'];
-						$response->rating         = ! empty( $plugin['rating'] ) && ! empty( $plugin['rating']['rating'] ) ? $plugin['rating']['rating'] / 5 * 100 : 0;
+						$response->rating         = ! empty( $plugin['rating'] ) && ! empty( $plugin['rating']['rating'] ) && $plugin['rating']['rating'] > 0 ? $plugin['rating']['rating'] / 5 * 100 : 0;
 						$response->num_ratings    = ! empty( $plugin['rating'] ) && ! empty( $plugin['rating']['count'] ) ? $plugin['rating']['count'] : 0;
 						$response->download_link  = envato_market()->api()->deferred_download( $plugin['id'] );
 						break;
@@ -455,7 +455,9 @@ if ( ! class_exists( 'Envato_Market_Items' ) ) :
 		public function rebuild_plugins( $plugin ) {
 			$remove = ( 'deactivated_plugin' === current_filter() ) ? true : false;
 			self::set_plugins(
-				false, true, array(
+				false,
+				true,
+				array(
 					'plugin' => $plugin,
 					'remove' => $remove,
 				)

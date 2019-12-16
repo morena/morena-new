@@ -3,11 +3,11 @@
  * Plugin Name: Envato Market
  * Plugin URI: https://envato.com/market-plugin/
  * Description: WordPress Theme & Plugin management for the Envato Market.
- * Version: 2.0.0
+ * Version: 2.0.3
  * Author: Envato
  * Author URI: https://envato.com
- * Requires at least: 4.9
- * Tested up to: 4.9.4
+ * Requires at least: 5.1
+ * Tested up to: 5.2
  * Text Domain: envato-market
  * Domain Path: /languages/
  *
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 /* Set plugin version constant. */
-define( 'ENVATO_MARKET_VERSION', '2.0.0' );
+define( 'ENVATO_MARKET_VERSION', '2.0.3' );
 
 /* Debug output control. */
 define( 'ENVATO_MARKET_DEBUG_OUTPUT', 0 );
@@ -44,9 +44,14 @@ if ( ! version_compare( PHP_VERSION, '5.4', '>=' ) ) {
 	add_action( 'admin_notices', 'envato_market_fail_installation_method' );
 } else {
 
+	if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
+		// Makes sure the plugin functions are defined before trying to use them.
+		require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+	}
+	define( 'ENVATO_MARKET_NETWORK_ACTIVATED', is_plugin_active_for_network( ENVATO_MARKET_SLUG . '/envato-market.php' ) );
+
 	/* Envato_Market Class */
 	require_once ENVATO_MARKET_PATH . 'inc/class-envato-market.php';
-
 
 	if ( ! function_exists( 'envato_market' ) ) :
 		/**
@@ -114,5 +119,4 @@ if ( ! function_exists( 'envato_market_fail_installation_method' ) ) {
 		echo wp_kses_post( $html_message );
 	}
 }
-
 

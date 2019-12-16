@@ -45,7 +45,8 @@ if ( ! class_exists( 'Envato_Market_Theme_Installer_Skin' ) ) :
 					'action'     => 'activate',
 					'template'   => urlencode( $template ),
 					'stylesheet' => urlencode( $stylesheet ),
-				), admin_url( 'themes.php' )
+				),
+				admin_url( 'themes.php' )
 			);
 			$activate_link = wp_nonce_url( $activate_link, 'switch-theme_' . $stylesheet );
 
@@ -56,10 +57,6 @@ if ( ! class_exists( 'Envato_Market_Theme_Installer_Skin' ) ) :
 			}
 
 			if ( is_multisite() ) {
-				if ( current_user_can( 'manage_sites' ) ) {
-					$install_actions['site_enable'] = '<a href="' . esc_url( network_admin_url( wp_nonce_url( 'site-themes.php?id=' . get_current_blog_id() . '&amp;action=enable&amp;theme=' . urlencode( $stylesheet ), 'enable-theme_' . $stylesheet ) ) ) . '" target="_parent">' . __( 'Site Enable', 'envato-market' ) . '</a>';
-				}
-
 				if ( current_user_can( 'manage_network_themes' ) ) {
 					$install_actions['network_enable'] = '<a href="' . esc_url( network_admin_url( wp_nonce_url( 'themes.php?action=enable&amp;theme=' . urlencode( $stylesheet ) . '&amp;paged=1&amp;s', 'enable-theme_' . $stylesheet ) ) ) . '" target="_parent">' . __( 'Network Enable', 'envato-market' ) . '</a>';
 				}
@@ -107,10 +104,6 @@ if ( ! class_exists( 'Envato_Market_Plugin_Installer_Skin' ) ) :
 
 			if ( is_multisite() ) {
 				unset( $install_actions['activate_plugin'] );
-
-				if ( current_user_can( 'manage_sites' ) ) {
-					$install_actions['site_activate'] = '<a href="' . esc_url( admin_url( wp_nonce_url( 'plugins.php?action=activate&amp;plugin=' . urlencode( $plugin_file ), 'activate-plugin_' . $plugin_file ) ) ) . '" target="_parent">' . __( 'Site Activate', 'envato-market' ) . '</a>';
-				}
 
 				if ( current_user_can( 'manage_network_plugins' ) ) {
 					$install_actions['network_activate'] = '<a href="' . esc_url( network_admin_url( wp_nonce_url( 'plugins.php?action=activate&amp;plugin=' . urlencode( $plugin_file ), 'activate-plugin_' . $plugin_file ) ) ) . '" target="_parent">' . __( 'Network Activate', 'envato-market' ) . '</a>';

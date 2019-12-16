@@ -111,7 +111,7 @@ if ( ! class_exists( 'Envato_Market_API' ) && class_exists( 'Envato_Market' ) ) 
 		 *
 		 * @param  string $url API request URL, including the request method, parameters, & file type.
 		 * @param  array  $args The arguments passed to `wp_remote_get`.
-		 * @return array  The HTTP response.
+		 * @return array|WP_Error  The HTTP response.
 		 */
 		public function request( $url, $args = array() ) {
 			$defaults = array(
@@ -119,7 +119,7 @@ if ( ! class_exists( 'Envato_Market_API' ) && class_exists( 'Envato_Market' ) ) 
 					'Authorization' => 'Bearer ' . $this->token,
 					'User-Agent'    => 'WordPress - Envato Market ' . envato_market()->get_version(),
 				),
-				'timeout' => 20,
+				'timeout' => 14,
 			);
 			$args     = wp_parse_args( $args, $defaults );
 
@@ -128,6 +128,10 @@ if ( ! class_exists( 'Envato_Market_API' ) && class_exists( 'Envato_Market' ) ) 
 				return new WP_Error( 'api_token_error', __( 'An API token is required.', 'envato-market' ) );
 			}
 
+			$debugging_information = [
+				'request_url' => $url,
+			];
+
 			// Make an API request.
 			$response = wp_remote_get( esc_url_raw( $url ), $args );
 
@@ -135,14 +139,29 @@ if ( ! class_exists( 'Envato_Market_API' ) && class_exists( 'Envato_Market' ) ) 
 			$response_code    = wp_remote_retrieve_response_code( $response );
 			$response_message = wp_remote_retrieve_response_message( $response );
 
+			$debugging_information['response_code']   = $response_code;
+			$debugging_information['response_cf_ray'] = wp_remote_retrieve_header( $response, 'cf-ray' );
+			$debugging_information['response_server'] = wp_remote_retrieve_header( $response, 'server' );
+
+			if ( ! empty( $response->errors ) && isset( $response->errors['http_request_failed'] ) ) {
+				// API connectivity issue, inject notice into transient with more details.
+				$option = envato_market()->get_options();
+				if ( empty( $option['notices'] ) ) {
+					$option['notices'] = [];
+				}
+				$option['notices']['http_error'] = current( $response->errors['http_request_failed'] );
+				envato_market()->set_options( $option );
+				return new WP_Error( 'http_error', esc_html( current( $response->errors['http_request_failed'] ) ), $debugging_information );
+			}
+
 			if ( 200 !== $response_code && ! empty( $response_message ) ) {
-				return new WP_Error( $response_code, $response_message );
+				return new WP_Error( $response_code, $response_message, $debugging_information );
 			} elseif ( 200 !== $response_code ) {
-				return new WP_Error( $response_code, __( 'An unknown API error occurred.', 'envato-market' ) );
+				return new WP_Error( $response_code, __( 'An unknown API error occurred.', 'envato-market' ), $debugging_information );
 			} else {
 				$return = json_decode( wp_remote_retrieve_body( $response ), true );
 				if ( null === $return ) {
-					return new WP_Error( 'api_error', __( 'An unknown API error occurred.', 'envato-market' ) );
+					return new WP_Error( 'api_error', __( 'An unknown API error occurred.', 'envato-market' ), $debugging_information );
 				}
 				return $return;
 			}
@@ -197,6 +216,14 @@ if ( ! class_exists( 'Envato_Market_API' ) && class_exists( 'Envato_Market' ) ) 
 			if ( ! empty( $response['wordpress_plugin'] ) ) {
 				return $response['wordpress_plugin'];
 			}
+
+			// Missing a WordPress theme and plugin, report an error.
+			$option = envato_market()->get_options();
+			if ( ! isset( $option['notices'] ) ) {
+				$option['notices'] = [];
+			}
+			$option['notices']['missing-package-zip'] = true;
+			envato_market()->set_options( $option );
 
 			return false;
 		}

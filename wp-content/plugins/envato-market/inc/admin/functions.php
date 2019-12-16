@@ -61,7 +61,8 @@ function envato_market_themes_column( $group = 'install' ) {
 					array(
 						'action' => 'upgrade-theme',
 						'theme'  => esc_attr( $slug ),
-					), self_admin_url( 'update.php' )
+					),
+					self_admin_url( 'update.php' )
 				);
 
 				$update_actions['update'] = sprintf(
@@ -102,11 +103,6 @@ function envato_market_themes_column( $group = 'install' ) {
 			// Multisite needs special attention.
 			if ( is_multisite() && ! $get_theme->is_allowed( 'both' ) && current_user_can( 'manage_sites' ) ) {
 				$can_activate = false;
-
-				if ( current_user_can( 'manage_sites' ) ) {
-					$actions['site_enable'] = '<a href="' . esc_url( network_admin_url( wp_nonce_url( 'site-themes.php?id=' . get_current_blog_id() . '&amp;action=enable&amp;theme=' . urlencode( $slug ), 'enable-theme_' . $slug ) ) ) . '" class="button"><span aria-hidden="true">' . __( 'Site Enable', 'envato-market' ) . '</span><span class="screen-reader-text">' . sprintf( __( 'Site Enable &#8220;%s&#8221;', 'envato-market' ), $name ) . '</span></a>';
-				}
-
 				if ( current_user_can( 'manage_network_themes' ) ) {
 					$actions['network_enable'] = '<a href="' . esc_url( network_admin_url( wp_nonce_url( 'themes.php?action=enable&amp;theme=' . urlencode( $slug ) . '&amp;paged=1&amp;s', 'enable-theme_' . $slug ) ) ) . '" class="button"><span aria-hidden="true">' . __( 'Network Enable', 'envato-market' ) . '</span><span class="screen-reader-text">' . sprintf( __( 'Network Enable &#8220;%s&#8221;', 'envato-market' ), $name ) . '</span></a>';
 				}
@@ -118,7 +114,8 @@ function envato_market_themes_column( $group = 'install' ) {
 					array(
 						'action'     => 'activate',
 						'stylesheet' => urlencode( $slug ),
-					), admin_url( 'themes.php' )
+					),
+					admin_url( 'themes.php' )
 				);
 				$activate_link = wp_nonce_url( $activate_link, 'switch-theme_' . $slug );
 
@@ -140,7 +137,8 @@ function envato_market_themes_column( $group = 'install' ) {
 					'page'   => envato_market()->get_slug(),
 					'action' => 'install-theme',
 					'id'     => $theme['id'],
-				), self_admin_url( 'admin.php' )
+				),
+				self_admin_url( 'admin.php' )
 			);
 
 			$actions['install'] = '
@@ -189,17 +187,25 @@ function envato_market_themes_column( $group = 'install' ) {
 				<div class="envato-card-bottom">
 					<div class="column-rating">
 						<?php
-						if ( ! empty( $theme['rating'] ) && ! empty( $theme['rating']['count'] ) ) {
-							wp_star_rating(
-								array(
-									'rating' => ( $theme['rating']['rating'] / 5 * 100 ),
-									'type'   => 'percent',
-									'number' => $theme['rating']['count'],
-								)
-							);
-							?>
-							<span class="num-ratings"><?php echo esc_html( '(' . number_format_i18n( $theme['rating']['count'] ) . ')' ); ?></span>
-						<?php } ?>
+						if ( ! empty( $theme['rating'] ) ) {
+							if ( is_array( $theme['rating'] ) && ! empty( $theme['rating']['count'] ) ) {
+								wp_star_rating(
+									array(
+										'rating' => $theme['rating']['count'] > 0 ? ( $theme['rating']['rating'] / 5 * 100 ) : 0,
+										'type'   => 'percent',
+										'number' => $theme['rating']['count'],
+									)
+								);
+							} else {
+								wp_star_rating(
+									array(
+										'rating' => $theme['rating'] > 0 ? ( $theme['rating'] / 5 * 100 ) : 0,
+										'type'   => 'percent',
+									)
+								);
+							}
+						}
+						?>
 					</div>
 					<div class="column-actions">
 						<?php echo implode( "\n", $actions ); ?>
@@ -207,7 +213,7 @@ function envato_market_themes_column( $group = 'install' ) {
 				</div>
 			</div>
 		</div>
-	<?php
+		<?php
 	endforeach;
 }
 
@@ -258,7 +264,8 @@ function envato_market_plugins_column( $group = 'install' ) {
 					array(
 						'action' => 'upgrade-plugin',
 						'plugin' => $slug,
-					), self_admin_url( 'update.php' )
+					),
+					self_admin_url( 'update.php' )
 				);
 
 				// Details link.
@@ -271,7 +278,8 @@ function envato_market_plugins_column( $group = 'install' ) {
 						'TB_iframe' => 'true',
 						'width'     => 640,
 						'height'    => 662,
-					), self_admin_url( 'plugin-install.php' )
+					),
+					self_admin_url( 'plugin-install.php' )
 				);
 
 				$update_actions['update'] = sprintf(
@@ -306,7 +314,8 @@ function envato_market_plugins_column( $group = 'install' ) {
 				array(
 					'action' => 'deactivate',
 					'plugin' => $slug,
-				), self_admin_url( 'plugins.php' )
+				),
+				self_admin_url( 'plugins.php' )
 			);
 
 			$actions['deactivate'] = '
@@ -321,7 +330,8 @@ function envato_market_plugins_column( $group = 'install' ) {
 					array(
 						'action'    => 'delete-selected',
 						'checked[]' => $slug,
-					), self_admin_url( 'plugins.php' )
+					),
+					self_admin_url( 'plugins.php' )
 				);
 
 				$actions['delete'] = '
@@ -337,7 +347,8 @@ function envato_market_plugins_column( $group = 'install' ) {
 					array(
 						'action' => 'activate',
 						'plugin' => $slug,
-					), self_admin_url( 'plugins.php' )
+					),
+					self_admin_url( 'plugins.php' )
 				);
 
 				$actions['activate'] = '
@@ -350,14 +361,6 @@ function envato_market_plugins_column( $group = 'install' ) {
 			// @codeCoverageIgnoreStart
 			// Multisite needs special attention.
 			if ( is_multisite() ) {
-				if ( current_user_can( 'manage_sites' ) ) {
-					$actions['site_activate'] = '
-					<a href="' . esc_url( admin_url( wp_nonce_url( 'plugins.php?action=activate&amp;plugin=' . urlencode( $slug ), 'activate-plugin_' . $slug ) ) ) . '" class="button">
-						<span aria-hidden="true">' . __( 'Site Activate', 'envato-market' ) . '</span>
-						<span class="screen-reader-text">' . sprintf( __( 'Site Activate %s', 'envato-market' ), $name ) . '</span>
-					</a>';
-				}
-
 				if ( current_user_can( 'manage_network_plugins' ) ) {
 					$actions['network_activate'] = '
 					<a href="' . esc_url( network_admin_url( wp_nonce_url( 'plugins.php?action=activate&amp;plugin=' . urlencode( $slug ), 'activate-plugin_' . $slug ) ) ) . '" class="button">
@@ -374,7 +377,8 @@ function envato_market_plugins_column( $group = 'install' ) {
 					'page'   => envato_market()->get_slug(),
 					'action' => 'install-plugin',
 					'id'     => $plugin['id'],
-				), self_admin_url( 'admin.php' )
+				),
+				self_admin_url( 'admin.php' )
 			);
 
 			$actions['install'] = '
@@ -423,17 +427,25 @@ function envato_market_plugins_column( $group = 'install' ) {
 				<div class="envato-card-bottom">
 					<div class="column-rating">
 						<?php
-						if ( ! empty( $plugin['rating'] ) && ! empty( $plugin['rating']['count'] ) ) {
-							wp_star_rating(
-								array(
-									'rating' => ( $plugin['rating']['rating'] / 5 * 100 ),
-									'type'   => 'percent',
-									'number' => $plugin['rating']['count'],
-								)
-							);
-							?>
-							<span class="num-ratings"><?php echo esc_html( '(' . number_format_i18n( $plugin['rating']['count'] ) . ')' ); ?></span>
-						<?php } ?>
+						if ( ! empty( $plugin['rating'] ) ) {
+							if ( is_array( $plugin['rating'] ) && ! empty( $plugin['rating']['count'] ) ) {
+								wp_star_rating(
+									array(
+										'rating' => $plugin['rating']['rating'] > 0 ? ( $plugin['rating']['rating'] / 5 * 100 ) : 0,
+										'type'   => 'percent',
+										'number' => $plugin['rating']['count'],
+									)
+								);
+							} else {
+								wp_star_rating(
+									array(
+										'rating' => $plugin['rating'] > 0 ? ( $plugin['rating'] / 5 * 100 ) : 0,
+										'type'   => 'percent',
+									)
+								);
+							}
+						}
+						?>
 					</div>
 					<div class="column-actions">
 						<?php echo implode( "\n", $actions ); ?>
@@ -441,6 +453,6 @@ function envato_market_plugins_column( $group = 'install' ) {
 				</div>
 			</div>
 		</div>
-	<?php
+		<?php
 	endforeach;
 }
