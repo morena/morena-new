@@ -10,16 +10,16 @@ Template: bridge
 @import url("../bridge/style.css");
 
 .woocommerce #submit:hover, .woocommerce .button:hover, .woocommerce ul.products li.product .added_to_cart:hover, .woocommerce ul.products li.product a.qbutton:hover, .woocommerce-page .button:hover, .woocommerce-page ul.products li.product a.qbutton:hover{
-  background-color: #ffcb11;
-  border-color: #ffcb11;
+  background-color: #8b885e;
+  border-color: #8b885e;
 }
 
 .woocommerce #content .quantity .minus:hover, .woocommerce #content .quantity .plus:hover, .woocommerce .quantity .minus:hover, .woocommerce .quantity .plus:hover, .woocommerce-page #content .quantity .minus:hover, .woocommerce-page #content .quantity .plus:hover, .woocommerce-page .quantity .minus:hover, .woocommerce-page .quantity .plus:hover{
-  background-color: #ffcb11;
+  background-color: #8b885e;
 }
 
 ::selection {
-    background: #ffcb11;
+    background: #8b885e;
 }
 
 .content, 
@@ -29,7 +29,7 @@ Template: bridge
 }
 
 .blog_holder article .post_info a, .blog_holder article .post_text h2 .date {
-  color: #ffcb11;
+  color: #8b885e;
 }
 
 .single-post .blog_single ul {
