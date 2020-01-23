@@ -36,3 +36,9 @@ function remove_woocommerce_product_tabs( $tabs ) {
  		$src = remove_query_arg( 'ver', $src );
  	return $src;
  }
+
+ /*
+ * Woocommerce Remove excerpt from single product
+ */
+remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_excerpt', 20 );
+add_action( 'woocommerce_single_product_summary', 'the_content', 20 );

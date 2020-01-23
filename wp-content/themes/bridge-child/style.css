@@ -9,46 +9,65 @@ Template: bridge
 */
 @import url("../bridge/style.css");
 
-.woocommerce #submit:hover, .woocommerce .button:hover, .woocommerce ul.products li.product .added_to_cart:hover, .woocommerce ul.products li.product a.qbutton:hover, .woocommerce-page .button:hover, .woocommerce-page ul.products li.product a.qbutton:hover{
-  background-color: #8b885e;
-  border-color: #8b885e;
+.woocommerce #submit:hover, .woocommerce .button:hover, .woocommerce ul.products li.product .added_to_cart:hover, .woocommerce ul.products li.product a.qbutton:hover, .woocommerce-page .button:hover, .woocommerce-page ul.products li.product a.qbutton:hover {
+    background-color: #8b885e;
+    border-color: #8b885e;
 }
 
-.woocommerce #content .quantity .minus:hover, .woocommerce #content .quantity .plus:hover, .woocommerce .quantity .minus:hover, .woocommerce .quantity .plus:hover, .woocommerce-page #content .quantity .minus:hover, .woocommerce-page #content .quantity .plus:hover, .woocommerce-page .quantity .minus:hover, .woocommerce-page .quantity .plus:hover{
-  background-color: #8b885e;
+.woocommerce #content .quantity .minus:hover, .woocommerce #content .quantity .plus:hover, .woocommerce .quantity .minus:hover, .woocommerce .quantity .plus:hover, .woocommerce-page #content .quantity .minus:hover, .woocommerce-page #content .quantity .plus:hover, .woocommerce-page .quantity .minus:hover, .woocommerce-page .quantity .plus:hover {
+    background-color: #8b885e;
 }
 
 ::selection {
     background: #8b885e;
 }
 
-.content, 
-.content .container, 
+.content,
+.content .container,
 .full_width {
-  background: white;
+    background: white;
 }
 
 .blog_holder article .post_info a, .blog_holder article .post_text h2 .date {
-  color: #8b885e;
+    color: #8b885e;
 }
 
 .single-post .blog_single ul {
     margin-left: 50px;
 }
 
-.single-post .blog_single ul li{
-  margin-bottom: 20px;
+.single-post .blog_single ul li {
+    margin-bottom: 20px;
 }
 
 #respond textarea {
-  background-color: #bebebe;
-  color: black;
+    background-color: #bebebe;
+    color: black;
 }
 
 .single-post .blog_single code,
 .single-post .blog_single pre {
-  background: #bebebe;
-  color: black;
-  padding: 5px;
-  margin: 4px;
+    background: #bebebe;
+    color: black;
+    padding: 5px;
+    margin: 4px;
+}
+
+.alignme {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.alignme .vc_column-inner {
+    vertical-align: middle;
+}
+
+.woocommerce .product h1.product_title {
+    line-height: 40px;
+    font-size: 30px;
+}
+
+.q_accordion_holder.accordion.boxed .ui-accordion-header {
+  color: white;
 }
