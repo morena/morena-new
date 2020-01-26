@@ -69,5 +69,9 @@ Template: bridge
 }
 
 .q_accordion_holder.accordion.boxed .ui-accordion-header {
-  color: white;
+    color: white;
+}
+
+.side_menu_button > a.side_menu_button_link {
+    display: none;
 }
