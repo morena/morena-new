@@ -21,9 +21,11 @@
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
 define('DB_NAME', 'morena-new');
+// define('DB_NAME', 'kodes968_morena');
 
 /** MySQL database username */
 define('DB_USER', 'morena-new');
+// define('DB_USER', 'kodes968_morenan');
 
 /** MySQL database password */
 define('DB_PASSWORD', 'V[BG[xuLJs(o');
@@ -87,3 +89,4 @@ if ( !defined('ABSPATH') )
 
 /** Sets up WordPress vars and included files. */
 require_once(ABSPATH . 'wp-settings.php');
+define('FORCE_SSL_ADMIN', true);
