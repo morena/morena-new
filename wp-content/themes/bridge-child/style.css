@@ -75,3 +75,46 @@ Template: bridge
 .side_menu_button > a.side_menu_button_link {
     display: none;
 }
+
+.title h1, .title.title_size_small h1 {
+    font-size: 40px;
+    padding-top: 30px;
+}
+
+.woocommerce input[type='text']:not(.qode_search_field),
+.woocommerce input[type='password'],
+.woocommerce input[type='email'],
+.woocommerce-page input[type='text']:not(.qode_search_field),
+.woocommerce-page input[type='password'],
+.woocommerce-page input[type='email'],
+.woocommerce-page input[type='tel'],
+.woocommerce textarea,
+.woocommerce-page textarea,
+.woocommerce .select2-container
+.select2-choice,
+.woocommerce-page .select2-container .select2-choice,
+.woocommerce .select2-dropdown-open.select2-drop-above .select2-choice,
+.woocommerce .select2-dropdown-open.select2-drop-above .select2-choices,
+.woocommerce-page .select2-dropdown-open.select2-drop-above .select2-choice,
+.woocommerce-page .select2-dropdown-open.select2-drop-above .select2-choices,
+.woocommerce .chosen-container.chosen-container-single .chosen-single,
+.woocommerce-page .chosen-container.chosen-container-single .chosen-single,
+.woocommerce-checkout .form-row .chosen-container-single .chosen-single,
+.woocommerce table.cart div.coupon .input-text,
+.woocommerce-page table.cart div.coupon .input-text,
+input.wpcf7-form-control.wpcf7-date,
+input.wpcf7-form-control.wpcf7-number,
+input.wpcf7-form-control.wpcf7-quiz,
+input.wpcf7-form-control.wpcf7-text,
+select.wpcf7-form-control.wpcf7-select,
+textarea.wpcf7-form-control.wpcf7-textarea {
+    background: white;
+    border: 1px solid grey;
+    color: grey;
+}
+
+.woocommerce form.checkout .col2-set p.form-row label {
+    display: inline-block !important;
+    font-weight: bold;
+    font-size: 20px;
+}
