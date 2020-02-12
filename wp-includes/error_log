@@ -1,0 +1,15 @@
+[19-Sep-2018 13:54:06 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function _deprecated_file() in /home/mfujica/public_html/morena-new/wp-includes/locale.php:10
+Stack trace:
+#0 {main}
+  thrown in /home/mfujica/public_html/morena-new/wp-includes/locale.php on line 10
+[19-Nov-2018 19:16:04 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function is_robots() in /home/mfujica/public_html/morena-new/wp-includes/template-loader.php:28
+Stack trace:
+#0 {main}
+  thrown in /home/mfujica/public_html/morena-new/wp-includes/template-loader.php on line 28
+[01-Dec-2018 00:25:03 UTC] PHP Fatal error:  Class 'Walker' not found in /home/mfujica/public_html/morena-new/wp-includes/class-walker-nav-menu.php on line 17
+[14-Dec-2018 07:32:51 UTC] PHP Fatal error:  Class 'Walker' not found in /home/mfujica/public_html/morena-new/wp-includes/class-walker-nav-menu.php on line 17
+[31-Jan-2019 19:32:53 UTC] PHP Fatal error:  Class 'Walker' not found in /home/mfujica/public_html/morena-new/wp-includes/class-walker-nav-menu.php on line 17
+[27-Feb-2019 00:39:13 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function _deprecated_file() in /home/mfujica/public_html/morena-new/wp-includes/locale.php:10
+Stack trace:
+#0 {main}
+  thrown in /home/mfujica/public_html/morena-new/wp-includes/locale.php on line 10

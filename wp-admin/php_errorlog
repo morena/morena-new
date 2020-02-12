@@ -1,0 +1,9 @@
+[18-Dec-2019 18:47:55 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/kodes968/public_html/morenafiore.com/wp-content/themes/bridge/includes/import/qode-import.php on line 2304
+[23-Jan-2020 18:32:29 UTC] PHP Fatal error:  Uncaught Error: Cannot use object of type WP_Error as array in /home/kodes968/public_html/morenafiore.com/wp-content/plugins/mailchimp-for-woocommerce/admin/class-mailchimp-woocommerce-admin.php:548
+Stack trace:
+#0 /home/kodes968/public_html/morenafiore.com/wp-includes/class-wp-hook.php(286): MailChimp_WooCommerce_Admin->mailchimp_woocommerce_ajax_oauth_start('')
+#1 /home/kodes968/public_html/morenafiore.com/wp-includes/class-wp-hook.php(310): WP_Hook->apply_filters('', Array)
+#2 /home/kodes968/public_html/morenafiore.com/wp-includes/plugin.php(453): WP_Hook->do_action(Array)
+#3 /home/kodes968/public_html/morenafiore.com/wp-admin/admin-ajax.php(99): do_action('wp_ajax_mailchi...')
+#4 {main}
+  thrown in /home/kodes968/public_html/morenafiore.com/wp-content/plugins/mailchimp-for-woocommerce/admin/class-mailchimp-woocommerce-admin.php on line 548
