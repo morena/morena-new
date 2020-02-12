@@ -3,7 +3,7 @@ namespace SiteGround_Optimizer\Front_End_Optimization;
 
 use SiteGround_Optimizer\Options\Options;
 use SiteGround_Optimizer\Emojis_Removal\Emojis_Removal;
-use SiteGround_Optimizer\Lazy_Load_Images\Lazy_Load_Images;
+use SiteGround_Optimizer\Lazy_Load\Lazy_Load;
 use SiteGround_Optimizer\Images_Optimizer\Images_Optimizer;
 use SiteGround_Optimizer\Minifier\Minifier;
 use SiteGround_Optimizer\Combinator\Combinator;
@@ -93,15 +93,9 @@ class Front_End_Optimization {
 			new Emojis_Removal();
 		}
 
-		// Enabled lazy load images.
+		// Load the lazy load functionality.
 		if ( Options::is_enabled( 'siteground_optimizer_lazyload_images' ) ) {
-
-			if (
-				! self::is_mobile() ||
-				( self::is_mobile() && Options::is_enabled( 'siteground_optimizer_lazyload_mobile' ) )
-			) {
-				new Lazy_Load_Images();
-			}
+			new Lazy_Load();
 		}
 
 		if ( Options::is_enabled( 'siteground_optimizer_combine_css' ) ) {

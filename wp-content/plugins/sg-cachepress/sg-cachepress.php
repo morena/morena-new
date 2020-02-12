@@ -10,7 +10,7 @@
  * Plugin Name:       SG Optimizer
  * Plugin URI:        https://siteground.com
  * Description:       This plugin will link your WordPress application with all the performance optimizations provided by SiteGround
- * Version:           5.3.9
+ * Version:           5.4.3
  * Author:            SiteGround
  * Author URI:        https://www.siteground.com
  * Text Domain:       sg-cachepress
@@ -31,7 +31,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 // Define version constant.
 if ( ! defined( __NAMESPACE__ . '\VERSION' ) ) {
-	define( __NAMESPACE__ . '\VERSION', '5.3.9' );
+	define( __NAMESPACE__ . '\VERSION', '5.4.3' );
 }
 
 // Define slug constant.
@@ -63,6 +63,7 @@ require_once( \SiteGround_Optimizer\DIR . '/vendor/autoload.php' );
 
 register_activation_hook( __FILE__, array( new Activator(), 'activate' ) );
 register_deactivation_hook( __FILE__, array( new Deactivator(), 'deactivate' ) );
+
 
 // Initialize helper.
 global $siteground_optimizer_helper;

@@ -11,6 +11,7 @@ use SiteGround_Optimizer\Multisite\Multisite;
 use SiteGround_Optimizer\Images_Optimizer\Images_Optimizer;
 use SiteGround_Optimizer\Front_End_Optimization\Front_End_Optimization;
 use SiteGround_Optimizer\Helper\Helper;
+use SiteGround_Optimizer\Analysis\Analysis;
 
 /**
  * Rest Helper class that process all rest requests and provide json output for react app.
@@ -71,8 +72,10 @@ class Rest_Helper {
 
 		wp_send_json_success(
 			array(
-				'image_optimization_status'  => 0,
-				'image_optimization_stopped' => 0,
+				'image_optimization_status'   => 0,
+				'image_optimization_stopped'  => 0,
+				'has_images_for_optimization' => get_option( 'siteground_optimizer_total_unoptimized_images', 0 ),
+				'total_unoptimized_images'    => get_option( 'siteground_optimizer_total_unoptimized_images', 0 ),
 			)
 		);
 	}
@@ -164,6 +167,7 @@ class Rest_Helper {
 
 		$options['has_images']                  = $this->options->check_for_images();
 		$options['has_images_for_optimization'] = $this->options->check_for_unoptimized_images();
+		$options['has_images_for_conversion']   = $this->options->check_for_non_converted_images();
 		$options['assets']                      = Front_End_Optimization::get_instance()->get_assets();
 
 		// Send the options to react app.
@@ -289,6 +293,15 @@ class Rest_Helper {
 	 */
 	public function enable_ssl( $request ) {
 		$key    = $this->validate_and_get_option_value( $request, 'option_key' );
+		// Bail if the domain doens't nove ssl certificate.
+		if ( ! $this->ssl->has_certificate() ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'Please, install an SSL certificate first!', 'sg-cachepress' ),
+				)
+			);
+		}
+
 		$result = $this->ssl->enable();
 
 		wp_send_json(
@@ -438,11 +451,19 @@ class Rest_Helper {
 	 * @since  5.0.0
 	 */
 	public function check_image_optimizing_status() {
+		$unoptimized_images = $this->options->check_for_unoptimized_images();
+
+		if ( 0 === $unoptimized_images ) {
+			Images_Optimizer::complete();
+		}
+
 		$status = (int) get_option( 'siteground_optimizer_image_optimization_completed', 0 );
+
 		wp_send_json_success(
 			array(
 				'image_optimization_status'   => $status,
-				'has_images_for_optimization' => $this->options->check_for_unoptimized_images(),
+				'has_images_for_optimization' => $unoptimized_images,
+				'total_unoptimized_images'    => (int) get_option( 'siteground_optimizer_total_unoptimized_images' ),
 			)
 		);
 	}
@@ -577,81 +598,30 @@ class Rest_Helper {
 		);
 	}
 
-	public function run_analysis() {
-		$stats = array();
 
-		// Get the analysis.
-		$analysis = $this->get_analysis();
+	/**
+	 * Disable specific optimizations for a blog.
+	 *
+	 * @since  5.4.0
+	 *
+	 * @param  object $request Request data.
+	 */
+	public function run_analysis( $request ) {
 
-		$items = array();
+		// Get the required params.
+		$device = $this->validate_and_get_option_value( $request, 'device' );
+		$url    = $this->validate_and_get_option_value( $request, 'url', false );
 
-		foreach ( $analysis['lighthouseResult']['categories'] as $group ) {
-			foreach ( $group['auditRefs'] as $ref ) {
-
-				if ( empty( $ref['group'] ) ) {
-					continue;
-				}
-
-				$audit = $analysis['lighthouseResult']['audits'][ $ref['id'] ];
-
-				if ( in_array( $ref['group'], array( 'load-opportunities', 'diagnostics' ) ) ) {
-					switch ( $audit['scoreDisplayMode'] ) {
-						case 'manual':
-						case 'notApplicable':
-							$items['passed']['data'][] = $audit;
-							break;
-						case 'numeric':
-						case 'binary':
-						default:
-							if ( $audit['score'] >= 0.9 ) {
-								$items['passed']['data'][] = $audit;
-							} else {
-								$items[ $ref['group'] ]['info'] = $analysis['lighthouseResult']['categoryGroups'][ $ref['group'] ];
-								$items[ $ref['group'] ]['data'][] = $audit;
-							}
-							break;
-					}
-				} else {
-					$items[ $ref['group'] ]['info'] = $analysis['lighthouseResult']['categoryGroups'][ $ref['group'] ];
-					$items[ $ref['group'] ]['data'][] = $audit;
-				}
-			}
-		}
-
-
-		unset( $items['budgets'] );
-		unset( $items['diagnostics'] );
-		unset( $items['metrics'] );
-
-		$items['passed']['info'] = array(
-			'title'       => 'Passed audits',
-			'description' => '',
-		);
-
-		wp_send_json_success( $items );
-	}
-
-	public function get_analysis( $counter = 1 ) {
-
-		// Try to get the analysis 3 times and then bail.
-		if ( 3 === $counter ) {
+		// Bail if any of the parameters is empty.
+		if ( empty( $device ) ) {
 			wp_send_json_error();
 		}
 
-		// Make the request.
-		$response = wp_remote_get( 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=https://stanimir.dev');
+		$analysis = new Analysis();
+		$result = $analysis->run_analysis_rest( $url, $device );
 
-		// Make another request if the previous fail.
-		if ( is_wp_error( $response ) ) {
-			$counter++;
-			return $this->get_analysis( $counter );
-		}
-
-		// Decode the response.
-		$response = json_decode( $response['body'], true );
-
-		// Return the analysis.
-		return $response;
+		// Send the response.
+		wp_send_json_success( $result );
 	}
 
 }

@@ -136,7 +136,9 @@ In version 5.0 we've added full WP-CLI support for all plugin options and functi
 * wp sg optimize lazyload enable|disable - enables or disables Lazy loading of images
 * wp sg optimize gzip enable|disable - enables or disables Gzip compression for your site
 * wp sg optimize browsercache enable|disable - enables or disables Browser caching rules
-* wp sg status dynamic-cache|autoflush-cache|mobile-cache|html|js|js-async|css|combine-css|querystring|emojis|images|lazyload_images|lazyload_gravatars|lazyload_thumbnails|lazyload_responsive|lazyload_textwidgets|gzip|browser-caching|memcache|ssl|ssl-fix|autoflush|dynamic-cache - returns optimization current status (enabled|disabled)
+* wp sg optimize dynamic-cache enable|disable - enables or disables Dynamic caching rules
+* wp sg optimize google-fonts enable|disable - enables or disables Google Fonts Combination
+* wp sg status dynamic-cache|autoflush-cache|mobile-cache|html|js|js-async|css|combine-css|querystring|emojis|images|lazyload_images|lazyload_gravatars|lazyload_thumbnails|lazyload_responsive|lazyload_textwidgets|gzip|browser-caching|memcache|ssl|ssl-fix|google-fonts - returns optimization current status (enabled|disabled)
 
 = Requirements =
 
@@ -169,6 +171,29 @@ Our plugin uses a cookie in order to function properly. It does not store person
 
 == Changelog ==
 
+= Version 5.4.3 =
+* Added Lazy loading functionality for iframes
+* Added Lazy loading functionality for videos
+
+= Version 5.4.2 =
+* Fixed bug with WebP image regeneration on image delete
+
+= Version 5.4.1 =
+* Added PHP 7.4 support for PHP Compatibility Checker
+* Improved WebP Conversion
+* Fixed bug with WebP image regeneration on image edit
+* Improved plugin localization
+
+= Version 5.4.0 =
+* Added WebP Support on All Accounts on Site Tools
+* Added Google PageSpeed Test 
+* Improved Image Optimization Process
+* Improved SSL Certificate check
+
+= Version 5.3.10 =
+* Better PHP Version Management for Site Tools
+* NGINX Direct Delivery for Site Tools
+
 = Version 5.3.9 =
 * Improved check for SG Servers
 
@@ -185,10 +210,6 @@ Our plugin uses a cookie in order to function properly. It does not store person
 * Added Notice for Defer Render-Blocking Scripts Optimization
 * Added wp-cli commands for Google Fonts Optimization
 * Changed New Images Optimizer hook to wp_generate_attachment_metadata
-
-= Version 5.3.6 =
-* Improved Google Fonts loading with better caching
-* Improved Defer of render-blocking JS
 
 = Version 5.3.6 =
 * Improved Google Fonts loading with better caching

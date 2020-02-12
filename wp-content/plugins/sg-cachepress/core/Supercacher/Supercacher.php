@@ -158,7 +158,7 @@ class Supercacher {
 	 * @return bool True on success, false on failure.
 	 */
 	public function purge_index_cache() {
-		return $this->purge_cache_request( get_home_url( '/' ), true );
+		return $this->purge_cache_request( get_home_url( '/' ), false );
 	}
 
 	/**

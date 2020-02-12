@@ -163,7 +163,6 @@ class Combinator {
 				pathinfo( $wp_styles->registered[ $handle ]->src, PATHINFO_EXTENSION ) === 'php' || // If it's dynamically generated css.
 				is_int( strpos( $handle, 'elementor-post-' ) ) || // Exclude all elementor styles.
 				! empty( $wp_styles->registered[ $handle ]->extra['conditional'] ) // Do not combine conditional styles.
-
 			) {
 				continue;
 			}

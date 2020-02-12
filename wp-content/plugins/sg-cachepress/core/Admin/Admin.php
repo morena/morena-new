@@ -157,7 +157,7 @@ class Admin {
 			'localeSlug'         => join( '-', explode( '_', \get_user_locale() ) ),
 			'wp_nonce'           => wp_create_nonce( 'wp_rest' ),
 			'config'             => array(
-				'iconsPath' => SiteGround_Optimizer\URL . '/assets/images/svg',
+				'assetsPath' => SiteGround_Optimizer\URL . '/assets/images',
 			),
 			'network_settings'   => array(
 				'is_network_admin' => intval( is_network_admin() ),

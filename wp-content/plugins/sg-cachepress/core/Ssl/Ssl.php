@@ -48,7 +48,7 @@ class Ssl {
 	 *
 	 * @return bool True is the domain has certificate, false otherwise.
 	 */
-	private function has_certificate() {
+	public function has_certificate() {
 		// Get siteurl.
 		$home_url = get_option( 'siteurl' );
 

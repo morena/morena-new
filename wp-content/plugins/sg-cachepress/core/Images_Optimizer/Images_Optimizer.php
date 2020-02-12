@@ -35,12 +35,16 @@ class Images_Optimizer {
 		add_action( 'wp_ajax_siteground_optimizer_start_image_optimization', array( $this, 'start_optimization' ) );
 		add_action( 'siteground_optimizer_start_image_optimization_cron', array( $this, 'start_optimization' ) );
 
+		new Images_Optimizer_Webp();
+
 		// Optimize newly uploaded images.
 		if (
 			Options::is_enabled( 'siteground_optimizer_optimize_images' ) &&
 			0 === Helper::is_cron_disabled()
 		) {
 			add_action( 'wp_generate_attachment_metadata', array( $this, 'optimize_new_image' ), 10, 2 );
+		} else {
+			add_action( 'wp_generate_attachment_metadata', array( $this, 'maybe_update_total_unoptimized_images' ) );
 		}
 	}
 
@@ -54,6 +58,7 @@ class Images_Optimizer {
 		update_option( 'siteground_optimizer_image_optimization_completed', 0, false );
 		update_option( 'siteground_optimizer_image_optimization_status', 0, false );
 		update_option( 'siteground_optimizer_image_optimization_stopped', 0, false );
+		update_option( 'siteground_optimizer_total_unoptimized_images', Options::check_for_unoptimized_images(), false );
 
 		// Fork the process in background.
 		$args = array(
@@ -184,7 +189,7 @@ class Images_Optimizer {
 	 *
 	 * @since  5.0.0
 	 */
-	private function complete() {
+	public static function complete() {
 		// Clear the scheduled cron after the optimization is completed.
 		wp_clear_scheduled_hook( 'siteground_optimizer_start_image_optimization_cron' );
 
@@ -195,6 +200,7 @@ class Images_Optimizer {
 
 		// Delete the lock.
 		delete_option( 'siteground_optimizer_image_optimization_lock' );
+		delete_option( 'siteground_optimizer_total_unoptimized_images' );
 
 		// Finally purge the cache.
 		Supercacher::purge_cache();
@@ -297,12 +303,10 @@ class Images_Optimizer {
 			$status
 		);
 
-		// exec(
-		// 	sprintf(
-		// 		'cwebp -q 50 -lossless %1$s -o %1$s.webp 2>&1',
-		// 		$filepath
-		// 	)
-		// );
+		// Create webp copy of the webp is enabled.
+		if ( Options::is_enabled( 'siteground_optimizer_webp_support' ) ) {
+			Images_Optimizer_Webp::generate_webp_file( $filepath );
+		}
 
 		return $status;
 	}
@@ -359,6 +363,27 @@ class Images_Optimizer {
 	public function optimize_new_image( $data, $attachment_id ) {
 		// Optimize the image.
 		$this->optimize_image( $attachment_id, $data );
+
+		// Return the attachment data.
+		return $data;
+	}
+
+	/**
+	 * Update the total unoptimized images count.
+	 *
+	 * @since  5.4.0
+	 *
+	 * @param  array $data          Array of updated attachment meta data.
+	 */
+	public function maybe_update_total_unoptimized_images( $data ) {
+		if ( 1 === get_option( 'siteground_optimizer_image_optimization_status', 0 ) ) {
+			return $data;
+		}
+
+		update_option(
+			'siteground_optimizer_total_unoptimized_images',
+			get_option( 'siteground_optimizer_total_unoptimized_images', 0 ) + 1
+		);
 
 		// Return the attachment data.
 		return $data;

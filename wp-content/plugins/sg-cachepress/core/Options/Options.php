@@ -284,14 +284,14 @@ class Options {
 	 *
 	 * @since  5.0.0
 	 *
-	 * @return bool 1 if there are unoptimized images, 0 otherwise.
+	 * @return int The count of unoptimized images.
 	 */
-	public function check_for_unoptimized_images() {
+	public static function check_for_unoptimized_images() {
 		$images = get_posts(
 			array(
 				'post_type'      => 'attachment',
 				'post_mime_type' => 'image',
-				'posts_per_page' => 1,
+				'posts_per_page' => -1,
 				'fields'         => 'ids',
 				'meta_query'     => array(
 					// Skip optimized images.
@@ -308,11 +308,39 @@ class Options {
 			)
 		);
 
-		if ( ! empty( $images ) ) {
-			return 1;
-		}
+		return count( $images );
+	}
 
-		return 0;
+	/**
+	 * Checks if there are non converted images.
+	 *
+	 * @since  5.4.0
+	 *
+	 * @return int The count of non converted images.
+	 */
+	public static function check_for_non_converted_images() {
+		$images = get_posts(
+			array(
+				'post_type'      => 'attachment',
+				'post_mime_type' => 'image',
+				'posts_per_page' => -1,
+				'fields'         => 'ids',
+				'meta_query'     => array(
+					// Skip optimized images.
+					array(
+						'key'     => 'siteground_optimizer_is_converted_to_webp',
+						'compare' => 'NOT EXISTS',
+					),
+					// Also skip failed optimizations.
+					array(
+						'key'     => 'siteground_optimizer_webp_conversion_failed',
+						'compare' => 'NOT EXISTS',
+					),
+				),
+			)
+		);
+
+		return count( $images );
 	}
 
 	/**
@@ -365,6 +393,7 @@ class Options {
 			'siteground_optimizer_disable_emojis'            => __( 'Emoji Removal Filter', 'sg-cachepress' ),
 			'siteground_optimizer_optimize_images'           => __( 'New Images Optimization', 'sg-cachepress' ),
 			'siteground_optimizer_lazyload_images'           => __( 'Lazy Loading Images', 'sg-cachepress' ),
+			'siteground_optimizer_webp_support'              => __( 'WebP Generation for New Images', 'sg-cachepress' ),
 			'siteground_optimizer_lazyload_gravatars'        => __( 'Lazy Loading Gravatars', 'sg-cachepress' ),
 			'siteground_optimizer_lazyload_thumbnails'       => __( 'Lazy Loading Thumbnails', 'sg-cachepress' ),
 			'siteground_optimizer_lazyload_responsive'       => __( 'Lazy Loading Responsive Images', 'sg-cachepress' ),
