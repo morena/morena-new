@@ -4,144 +4,152 @@ Template Name: Blog Masonry - Date in Image
 */ 
 ?>
 <?php get_header(); ?>
-<?php
-$qode_template_name = bridge_qode_return_template_name();
-$bridge_qode_id = bridge_qode_get_page_id();
-$qode_template_name = get_page_template_slug($bridge_qode_id);
-$bridge_qode_category = get_post_meta($bridge_qode_id, "qode_choose-blog-category", true);
-$bridge_qode_post_number = get_post_meta($bridge_qode_id, "qode_show-posts-per-page", true);
-$bridge_qode_page_object = get_post( $bridge_qode_id );
-$bridge_qode_content = $bridge_qode_page_object->post_content;
-$bridge_qode_content = apply_filters( 'the_content', $bridge_qode_content );
-if ( get_query_var('paged') ) { $bridge_qode_paged = get_query_var('paged'); }
-elseif ( get_query_var('page') ) { $bridge_qode_paged = get_query_var('page'); }
-else { $bridge_qode_paged = 1; }
+<?php 
+global $wp_query;
+global $qode_template_name;
+global $qode_page_id;
+$qode_page_id = $wp_query->get_queried_object_id(); 
+$id = $wp_query->get_queried_object_id();
+$qode_template_name = get_page_template_slug($id);
+$category = get_post_meta($id, "qode_choose-blog-category", true);
+$post_number = get_post_meta($id, "qode_show-posts-per-page", true);
+$page_object = get_post( $id );
+$content = $page_object->post_content;
+$content = apply_filters( 'the_content', $content );
+if ( get_query_var('paged') ) { $paged = get_query_var('paged'); }
+elseif ( get_query_var('page') ) { $paged = get_query_var('page'); }
+else { $paged = 1; }
 
-$bridge_qode_sidebar = get_post_meta($bridge_qode_id, "qode_show-sidebar", true);
+$sidebar = get_post_meta($id, "qode_show-sidebar", true);
 
-if(get_post_meta($bridge_qode_id, "qode_page_background_color", true) != ""){
-	$bridge_qode_background_color = get_post_meta($bridge_qode_id, "qode_page_background_color", true);
+if(get_post_meta($id, "qode_page_background_color", true) != ""){
+	$background_color = get_post_meta($id, "qode_page_background_color", true);
 }else{
-	$bridge_qode_background_color = "";
+	$background_color = "";
 }
 
-if($bridge_qode_options['number_of_chars_masonry'] != "") {
-	bridge_qode_set_blog_word_count($bridge_qode_options['number_of_chars_masonry']);
+if($qode_options_proya['number_of_chars_masonry'] != "") {
+	qode_set_blog_word_count($qode_options_proya['number_of_chars_masonry']);
 }
 
-$bridge_qode_blog_content_position = "content_above_blog_list";
-if(isset($bridge_qode_options['blog_content_position'])){
-	$bridge_qode_blog_content_position = $bridge_qode_options['blog_content_position'];
+$blog_content_position = "content_above_blog_list";
+if(isset($qode_options_proya['blog_content_position'])){
+	$blog_content_position = $qode_options_proya['blog_content_position'];
 }
 
-$bridge_qode_category_filter = "no";
-if(isset($bridge_qode_options['blog_masonry_filter'])){
-	$bridge_qode_category_filter = $bridge_qode_options['blog_masonry_filter'];
+$category_filter = "no";
+if(isset($qode_options_proya['blog_masonry_filter'])){
+	$category_filter = $qode_options_proya['blog_masonry_filter'];
 }
-$bridge_qode_container_inner_class = "";
-if($bridge_qode_category_filter == "yes"){
-	$bridge_qode_container_inner_class = " page_container_inner";
+$container_inner_class = "";
+if($category_filter == "yes"){
+	$container_inner_class = " page_container_inner";
 }
 
-$bridge_qode_content_style_spacing = "";
-if(get_post_meta($bridge_qode_id, "qode_margin_after_title", true) != ""){
-	if(get_post_meta($bridge_qode_id, "qode_margin_after_title_mobile", true) == 'yes'){
-		$bridge_qode_content_style_spacing = "padding-top:".esc_attr(get_post_meta($bridge_qode_id, "qode_margin_after_title", true))."px !important";
+$content_style_spacing = "";
+if(get_post_meta($id, "qode_margin_after_title", true) != ""){
+	if(get_post_meta($id, "qode_margin_after_title_mobile", true) == 'yes'){
+		$content_style_spacing = "padding-top:".esc_attr(get_post_meta($id, "qode_margin_after_title", true))."px !important";
 	}else{
-		$bridge_qode_content_style_spacing = "padding-top:".esc_attr(get_post_meta($bridge_qode_id, "qode_margin_after_title", true))."px";
+		$content_style_spacing = "padding-top:".esc_attr(get_post_meta($id, "qode_margin_after_title", true))."px";
 	}
 }
 ?>
 
-	<?php get_template_part( 'title' ); ?>
+	<?php if(get_post_meta($id, "qode_page_scroll_amount_for_sticky", true)) { ?>
+		<script>
+		var page_scroll_amount_for_sticky = <?php echo get_post_meta($id, "qode_page_scroll_amount_for_sticky", true); ?>;
+		</script>
+	<?php } ?>		
+		<?php get_template_part( 'title' ); ?>
 	
 	<?php
-		$bridge_qode_revslider = get_post_meta($bridge_qode_id, "qode_revolution-slider", true);
-		if (!empty($bridge_qode_revslider)){ ?>
+		$revslider = get_post_meta($id, "qode_revolution-slider", true);
+		if (!empty($revslider)){ ?>
 			<div class="q_slider"><div class="q_slider_inner">
-			<?php echo do_shortcode($bridge_qode_revslider); ?>
+			<?php echo do_shortcode($revslider); ?>
 			</div></div>
 		<?php
 		}
 		?>
-	<?php
-        $bridge_qode_blog_query = bridge_qode_get_blog_query_posts();
-        $bridge_qode_params['blog_query'] = $bridge_qode_blog_query;
-
+	<?php 
+		query_posts('post_type=post&paged='. $paged . '&cat=' . $category .'&posts_per_page=' . $post_number );
+		if(isset($qode_options_proya['blog_page_range']) && $qode_options_proya['blog_page_range'] != ""){
+			$blog_page_range = $qode_options_proya['blog_page_range'];
+		} else{
+			$blog_page_range = $wp_query->max_num_pages;
+		}
 	?>
-	<div class="container"<?php if($bridge_qode_background_color != "") { echo " style='background-color:". $bridge_qode_background_color ."'";} ?>>
-        <?php if(isset($bridge_qode_options['overlapping_content']) && $bridge_qode_options['overlapping_content'] == 'yes') {?>
+	<div class="container"<?php if($background_color != "") { echo " style='background-color:". $background_color ."'";} ?>>
+        <?php if(isset($qode_options_proya['overlapping_content']) && $qode_options_proya['overlapping_content'] == 'yes') {?>
             <div class="overlapping_content"><div class="overlapping_content_inner">
         <?php } ?>
-		<div class="container_inner default_template_holder clearfix<?php echo esc_attr( $bridge_qode_container_inner_class ); ?>" <?php bridge_qode_inline_style($bridge_qode_content_style_spacing); ?>>
-            <?php if( ! post_password_required() ) { ?>
-                <?php if(($bridge_qode_sidebar == "default")||($bridge_qode_sidebar == "")) : ?>
+		<div class="container_inner default_template_holder clearfix<?php echo $container_inner_class; ?>" <?php qode_inline_style($content_style_spacing); ?>>
+			<?php if(($sidebar == "default")||($sidebar == "")) : ?>
 
-                        <?php echo bridge_qode_get_module_part( $bridge_qode_content ); ?>
+					<?php echo $content; ?>
 
-                        <?php
-                            bridge_qode_get_template_part('templates/blog', 'structure', $bridge_qode_params);
-                        ?>
+					<?php 
+						get_template_part('templates/blog', 'structure');
+					?>
+					
+			<?php elseif($sidebar == "1" || $sidebar == "2"): ?>
+				<?php
+					if($blog_content_position != "content_above_blog_list"){
+						echo $content;
+					}
+				?>
+				<div class="<?php if($sidebar == "1"):?>two_columns_66_33<?php elseif($sidebar == "2") : ?>two_columns_75_25<?php endif; ?> clearfix grid2 background_color_sidebar">
+					<div class="column1">
+						<div class="column_inner">
 
-                <?php elseif($bridge_qode_sidebar == "1" || $bridge_qode_sidebar == "2"): ?>
-                    <?php
-                        if($bridge_qode_blog_content_position != "content_above_blog_list"){
-                            echo bridge_qode_get_module_part( $bridge_qode_content );
-                        }
-                    ?>
-                    <div class="<?php if($bridge_qode_sidebar == "1"):?>two_columns_66_33<?php elseif($bridge_qode_sidebar == "2") : ?>two_columns_75_25<?php endif; ?> clearfix grid2 background_color_sidebar">
-                        <div class="column1">
-                            <div class="column_inner">
+							<?php
+								if($blog_content_position == "content_above_blog_list"){
+									echo $content;
+								}
+							?>
 
-                                <?php
-                                    if($bridge_qode_blog_content_position == "content_above_blog_list"){
-                                        echo bridge_qode_get_module_part( $bridge_qode_content );
-                                    }
-                                ?>
+							<?php 
+								get_template_part('templates/blog', 'structure');
+							?>
+							
+						</div>
+					</div>
+					<div class="column2">
+						<?php get_sidebar(); ?>	
+					</div>
+				</div>
+			<?php elseif($sidebar == "3" || $sidebar == "4"): ?>
+				<?php
+					if($blog_content_position != "content_above_blog_list"){
+						echo $content;
+					}
+				?>
+				<div class="<?php if($sidebar == "3"):?>two_columns_33_66<?php elseif($sidebar == "4") : ?>two_columns_25_75<?php endif; ?> grid2 clearfix background_color_sidebar">
+					<div class="column1">
+						<?php get_sidebar(); ?>	
+					</div>
+					<div class="column2">
+						<div class="column_inner">
 
-                                <?php
-                                    bridge_qode_get_template_part('templates/blog', 'structure', $bridge_qode_params);
-                                ?>
+							<?php
+								if($blog_content_position == "content_above_blog_list"){
+									echo $content;
+								}
+							?>
 
-                            </div>
-                        </div>
-                        <div class="column2">
-                            <?php get_sidebar(); ?>
-                        </div>
-                    </div>
-                <?php elseif($bridge_qode_sidebar == "3" || $bridge_qode_sidebar == "4"): ?>
-                    <?php
-                        if($bridge_qode_blog_content_position != "content_above_blog_list"){
-                            echo bridge_qode_get_module_part( $bridge_qode_content );
-                        }
-                    ?>
-                    <div class="<?php if($bridge_qode_sidebar == "3"):?>two_columns_33_66<?php elseif($bridge_qode_sidebar == "4") : ?>two_columns_25_75<?php endif; ?> grid2 clearfix background_color_sidebar">
-                        <div class="column1">
-                            <?php get_sidebar(); ?>
-                        </div>
-                        <div class="column2">
-                            <div class="column_inner">
-
-                                <?php
-                                    if($bridge_qode_blog_content_position == "content_above_blog_list"){
-                                        echo bridge_qode_get_module_part( $bridge_qode_content );
-                                    }
-                                ?>
-
-                                <?php
-                                    bridge_qode_get_template_part('templates/blog', 'structure', $bridge_qode_params);
-                                ?>
-                            </div>
-                        </div>
-                    </div>
-                    <?php endif; ?>
-            <?php } else {
-                echo get_the_password_form();
-            }?>
+							<?php 
+								get_template_part('templates/blog', 'structure');
+							?>
+						</div>
+					</div>
+				</div>
+				<?php endif; ?>
 		</div>
-        <?php if(isset($bridge_qode_options['overlapping_content']) && $bridge_qode_options['overlapping_content'] == 'yes') {?>
+        <?php if(isset($qode_options_proya['overlapping_content']) && $qode_options_proya['overlapping_content'] == 'yes') {?>
             </div></div>
         <?php } ?>
 	</div>
-<?php do_action('bridge_qode_action_page_after_container') ?>
+<?php wp_reset_query(); ?>
+<?php do_action('qodef_page_after_container') ?>
 <?php get_footer(); ?>

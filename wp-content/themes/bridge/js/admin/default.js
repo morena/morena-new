@@ -33,7 +33,7 @@ jQuery(document).ready(function($) {
 				jQuery.ajax({
 					type: "post",
 					url: ajaxurl,
-					data: "action=bridge_qode_gallery_upload_get_images&ids=" + ids,
+					data: "action=qode_gallery_upload_get_images&ids=" + ids,
 					success: function(data) {
 
 						$thumbs_wrap.empty().html(data);
@@ -48,7 +48,7 @@ jQuery(document).ready(function($) {
 
 		init: function() {
 
-			$upload_button.on('click', function(event) {
+			$upload_button.click(function(event) {
 
 				$thumbs_wrap = $(this).next();
 				$input_gallery_items = $thumbs_wrap.next();
@@ -306,7 +306,7 @@ $j(document).ready(function() {
 	});
 	
 	$j(document).on('click', '.upload_button', function(event) {
-		$j(this).siblings('input').trigger("click");
+		$j(this).siblings('input').click();
 	});
 	
 	/* ------PORTFOLIO PART START------- */
@@ -390,9 +390,8 @@ $j(document).ready(function() {
 	
 	
 	colorPicker();
-
-  $j( ".datepicker.qodef-input:not(.qodef-formatted-date)" ).datepicker( { dateFormat: "MM dd, yy" });
-  $j( ".datepicker.qodef-input.qodef-formatted-date" ).datepicker( { dateFormat: "yy-mm-dd" });
+	
+  $j( ".datepicker.qodef-input" ).datepicker( { dateFormat: "MM dd, yy" });
 
 	
 	/* image upload in popup - start */

@@ -1,36 +1,36 @@
 <?php
-if(!function_exists('bridge_qode_map_footer_meta_fields')) {
+if(!function_exists('qode_map_footer_meta_fields')) {
 
-	function bridge_qode_map_footer_meta_fields() {
+	function qode_map_footer_meta_fields() {
 
-		$qodeFooter = bridge_qode_create_meta_box(
+		$qodeFooter = qode_add_meta_box(
 			array(
 				'scope' => array('page', 'portfolio_page', 'post'),
-				'title' => esc_html__('Qode Footer', 'bridge'),
+				'title' => esc_html__('Qode Footer', 'qode'),
 				'name' => 'page_footer'
 			)
 		);
 
-		bridge_qode_create_meta_box_field(
+		qode_add_meta_box_field(
             array(
                 'name'          => 'footer_top_per_page',
                 'type'          => 'selectblank',
-                'label'         => esc_html__('Show footer top', 'bridge'),
-                'description'   => esc_html__('Enabling this option will show footer top on this page', 'bridge'),
+                'label'         => esc_html__('Show footer top', 'qode'),
+                'description'   => esc_html__('Enabling this option will show footer top on this page', 'qode'),
                 'parent'        => $qodeFooter,
                 'options'       => array(
-                    'no'	=>  esc_html__('No', 'bridge'),
-                    'yes'	=>  esc_html__('Yes', 'bridge')
+                    'no' => 'No',
+                    'yes' => 'Yes'
                 )
             )
         );
 
-        bridge_qode_create_meta_box_field(
+        qode_add_meta_box_field(
             array(
                 'name'          => 'footer_bottom_per_page',
                 'type'          => 'selectblank',
-                'label'         => esc_html__('Show footer bottom', 'bridge'),
-                'description'   => esc_html__('Enabling this option will show footer bottom on this page', 'bridge'),
+                'label'         => esc_html__('Show footer bottom', 'qode'),
+                'description'   => esc_html__('Enabling this option will show footer bottom on this page', 'qode'),
                 'parent'        => $qodeFooter,
                 'options'       => array(
                     'no' => 'No',
@@ -41,5 +41,5 @@ if(!function_exists('bridge_qode_map_footer_meta_fields')) {
 
 	}
 
-	add_action('bridge_qode_action_meta_boxes_map', 'bridge_qode_map_footer_meta_fields');
+	add_action('qode_meta_boxes_map', 'qode_map_footer_meta_fields');
 }

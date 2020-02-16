@@ -1,16 +1,16 @@
 <?php
-if(!function_exists('bridge_qode_inter_page_navigation')) {
+if(!function_exists('qode_inter_page_navigation')) {
 
-	function bridge_qode_inter_page_navigation() {
+	function qode_inter_page_navigation() {
 
-		$navigation = bridge_qode_get_meta_field_intersect('inter_page_navigation');
+		$navigation = qode_get_meta_field_intersect('inter_page_navigation');
 
-		$page_id = bridge_qode_get_page_id();
+		$page_id = qode_get_page_id();
 		$params = array();
 		$parent_id = wp_get_post_parent_id($page_id);
 		if($parent_id != 0) {
 
-			$order_by = bridge_qode_options()->getOptionValue('inter_page_order_by');
+			$order_by = qode_options()->getOptionValue('inter_page_order_by');
 
 			$pagelist = get_pages('post_type=page&child_of='.$parent_id.'&sort_column='.$order_by);
 			$pages = array();
@@ -26,9 +26,9 @@ if(!function_exists('bridge_qode_inter_page_navigation')) {
 			}
 		}
 
-		$back_to_link = bridge_qode_get_meta_field_intersect('inter_page_back_link');
-		$params['in_grid'] = bridge_qode_options()->getOptionValue('inter_page_navigation_in_grid');
-		$gradient = bridge_qode_options()->getOptionValue('inter_page_icons_gradient');
+		$back_to_link = qode_get_meta_field_intersect('inter_page_back_link');
+		$params['in_grid'] = qode_options()->getOptionValue('inter_page_navigation_in_grid');
+		$gradient = qode_options()->getOptionValue('inter_page_icons_gradient');
 
 		if($back_to_link != 'no-link') {
 			$params['back_page_id'] = $back_to_link;
@@ -41,13 +41,13 @@ if(!function_exists('bridge_qode_inter_page_navigation')) {
 		}
 
 		if($navigation == 'yes'){
-			echo bridge_qode_get_module_template_part('templates/inter-page-navigation', 'page', '', $params);
+			echo qode_get_module_template_part('templates/inter-page-navigation', 'page', '', $params);
 		}
 
 
 
 	}
 
-	add_action('bridge_qode_action_page_after_container','bridge_qode_inter_page_navigation');
+	add_action('qodef_page_after_container','qode_inter_page_navigation');
 
 }

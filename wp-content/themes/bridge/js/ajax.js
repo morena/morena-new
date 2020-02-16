@@ -63,7 +63,7 @@ function perPageBindings () {
 	qodeInitBlogCarouselTitled();
     initCoverBoxes();
     countAnimatedTextIconPerRow();
-    bridgeQodeAjaxSubmitCommentForm();
+    ajaxSubmitCommentForm();
     createContentMenu();
     contentMenuScrollTo();
     contentMenuCheckLastSection();
@@ -123,11 +123,6 @@ function perPageBindings () {
         initSickyMenu();
     }
     qodeScrollingImage();
-    initElementsHolderResponsiveStyle();
-    if($j('div.wpcf7 > form .wpcf7-recaptcha').length){
-    	//reinitiate CF7's recaptcha callback function on ajax
-    	recaptchaCallback();
-    }
 }
 
 function ajaxSetActiveState(me){
@@ -921,23 +916,20 @@ $j(document).ready(function() {
 			}
 
 			if($j(this).is('.bx-next, .bx-prev, .comment-reply-link, #cancel-comment-reply-link, .comment-edit-link')){ return false; }
-			//if($j(this).parent().parent().parent().parent().parent().hasClass('qode-preview-slider')){ return false; }
 			if($j(this).parent().hasClass('load_more')){ return false; }
 			if($j(this).parent().parent().hasClass('blog_load_more_button')){ return false; }
 			if($j(this).parent().parent().hasClass('blog_vertical_loop_button')){ return false; }
 			if($j(this).parent().parent().hasClass('blog_vertical_loop_back_button')){ return false; }
 			if($j(this).parent().hasClass('comments_number')){ var hash = $j(this).attr('href').split("#")[1];  $j('html, body').scrollTop( $j("#"+hash).offset().top );  return false;  }
-			if( typeof $j(this).attr('href') !== 'undefined' ){
-				if(window.location.href.split('#')[0] == $j(this).attr('href').split('#')[0]){ return false; }
-            };
+			if(window.location.href.split('#')[0] == $j(this).attr('href').split('#')[0]){ return false; };
 			if($j(this).closest('.no_animation').length === 0){
 				if(document.location.href.indexOf("?s=") >= 0){
 					return true;
 				}
-				if( ( typeof $j(this).attr('href') !== 'undefined' ) && $j(this).attr('href').indexOf("wp-admin") >= 0){
+				if($j(this).attr('href').indexOf("wp-admin") >= 0){
 					return true;
 				}
-				if( ( typeof $j(this).attr('href') !== 'undefined' ) && $j(this).attr('href').indexOf("wp-content") >= 0){
+				if($j(this).attr('href').indexOf("wp-content") >= 0){
 					return true;
 				}
 				if(jQuery.inArray($j(this).attr('href'), no_ajax_pages) !== -1){
@@ -945,7 +937,7 @@ $j(document).ready(function() {
 					return false;
 				}
 
-				if((typeof $j(this).attr('href') !== 'undefined' ) && ($j(this).attr('href') !== "http://#") && ($j(this).attr('href') !== "#")){
+				if(($j(this).attr('href') !== "http://#") && ($j(this).attr('href') !== "#")){
 						disableHashChange = true;
 
 						var url = $j(this).attr('href');

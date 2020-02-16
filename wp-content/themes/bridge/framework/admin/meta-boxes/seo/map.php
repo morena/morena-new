@@ -1,25 +1,25 @@
 <?php
-if(!function_exists('bridge_qode_map_seo_meta_fields')) {
+if(!function_exists('qode_map_seo_meta_fields')) {
 
-	function bridge_qode_map_seo_meta_fields() {
-		$qodeSeo = bridge_qode_create_meta_box(
+	function qode_map_seo_meta_fields() {
+		$qodeSeo = qode_add_meta_box(
 			array(
 				'scope' => array('page', 'portfolio_page', 'post'),
-				'title' => esc_html__('Qode SEO', 'bridge'),
+				'title' => esc_html__('Qode SEO', 'qode'),
 				'name' => 'page_seo'
 			)
 		);
 
-		$seo_title = new BridgeQodeMetaField("text","qode_seo_title","",esc_html__( 'SEO Title', 'bridge'),esc_html__( 'Enter custom Title for this page', 'bridge'));
+		$seo_title = new QodeMetaField("text","qode_seo_title","","SEO Title","Enter custom Title for this page");
 		$qodeSeo->addChild("qode_seo_title",$seo_title);
 
-		$seo_keywords = new BridgeQodeMetaField("text","qode_seo_keywords","",esc_html__( 'Meta Keywords', 'bridge'),esc_html__( 'Enter the list of keywords separated by comma', 'bridge'));
+		$seo_keywords = new QodeMetaField("text","qode_seo_keywords","","Meta Keywords","Enter the list of keywords separated by comma");
 		$qodeSeo->addChild("qode_seo_keywords",$seo_keywords);
 
-		$seo_description = new BridgeQodeMetaField("textarea","qode_seo_description","",esc_html__( 'Meta Description','bridge'),esc_html__( 'Enter meta description for this page', 'bridge'));
+		$seo_description = new QodeMetaField("textarea","qode_seo_description","","Meta Description","Enter meta description for this page");
 		$qodeSeo->addChild("qode_seo_description",$seo_description);
 
 	}
 
-	add_action('bridge_qode_action_meta_boxes_map', 'bridge_qode_map_seo_meta_fields');
+	add_action('qode_meta_boxes_map', 'qode_map_seo_meta_fields');
 }

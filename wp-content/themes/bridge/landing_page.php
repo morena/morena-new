@@ -2,7 +2,9 @@
 /*
 Template Name: Landing Page
 */
-$id = bridge_qode_get_page_id();
+global $wp_query;
+global $qode_options_proya;
+$id = $wp_query->get_queried_object_id();
 $sidebar = get_post_meta($id, "qode_show-sidebar", true);  
 
 $enable_page_comments = false;
@@ -26,24 +28,35 @@ else { $paged = 1; }
     <head>
         <meta charset="<?php bloginfo( 'charset' ); ?>" />
         <?php
-        $bridge_qode_is_IE = bridge_qode_return_is_ie_variable();
+        if (isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false)) {
+            echo('<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">');
+        } ?>
 
-        if ( ! empty( $bridge_qode_is_IE ) && $bridge_qode_is_IE ) { ?>
-            <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
-        <?php } ?>
+        <title><?php wp_title(''); ?></title>
 
         <?php
         /**
-         * bridge_qode_header_meta hook
+         * qode_header_meta hook
          *
-         * @see bridge_core_header_meta() - hooked with 10
-         * @see bridge_qode_user_scalable_meta() - hooked with 10
+         * @see qode_header_meta() - hooked with 10
+         * @see qode_user_scalable_meta() - hooked with 10
          */
-        do_action('bridge_qode_action_header_meta');
+        do_action('qode_header_meta');
         ?>
 
         <link rel="profile" href="http://gmpg.org/xfn/11" />
         <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
+		<?php if(qode_options()->getOption('favicon_image') !== ''){ ?>
+            <link rel="shortcut icon" type="image/x-icon" href="<?php echo esc_url($qode_options_proya['favicon_image']); ?>">
+            <link rel="apple-touch-icon" href="<?php echo esc_url($qode_options_proya['favicon_image']); ?>"/>
+		<?php } ?>
+        <!--[if gte IE 9]>
+        <style type="text/css">
+            .gradient {
+                filter: none;
+            }
+        </style>
+        <![endif]-->
 
         <?php wp_head(); ?>
 
@@ -53,7 +66,27 @@ else { $paged = 1; }
 <div class="wrapper">
     <div class="wrapper_inner">
 
-		<?php do_action('bridge_qode_action_after_wrapper_inner'); ?>
+		<?php do_action('qode_after_wrapper_inner'); ?>
+
+        <!-- Google Analytics start -->
+        <?php if (isset($qode_options_proya['google_analytics_code'])){
+            if($qode_options_proya['google_analytics_code'] != "") {
+                ?>
+                <script>
+                    var _gaq = _gaq || [];
+                    _gaq.push(['_setAccount', '<?php echo $qode_options_proya['google_analytics_code']; ?>']);
+                    _gaq.push(['_trackPageview']);
+
+                    (function() {
+                        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+                    })();
+                </script>
+            <?php }
+        }
+        ?>
+        <!-- Google Analytics end -->
 
         <div class="content content_top_margin_none">
             <div class="content_inner">

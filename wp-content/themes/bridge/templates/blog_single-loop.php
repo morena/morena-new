@@ -1,49 +1,49 @@
 <?php 
-$bridge_qode_options = bridge_qode_return_global_options();
-$bridge_qode_blog_hide_comments = "";
-if (isset($bridge_qode_options['blog_hide_comments'])) {
-	$bridge_qode_blog_hide_comments = $bridge_qode_options['blog_hide_comments'];
+global $qode_options_proya;
+$blog_hide_comments = "";
+if (isset($qode_options_proya['blog_hide_comments'])) {
+	$blog_hide_comments = $qode_options_proya['blog_hide_comments'];
 }
-$bridge_qode_blog_share_like_layout = 'in_post_info';
-if (isset($bridge_qode_options['blog_share_like_layout'])) {
-    $bridge_qode_blog_share_like_layout = $bridge_qode_options['blog_share_like_layout'];
+$blog_share_like_layout = 'in_post_info';
+if (isset($qode_options_proya['blog_share_like_layout'])) {
+    $blog_share_like_layout = $qode_options_proya['blog_share_like_layout'];
 }
-$bridge_qode_enable_social_share = 'no';
-if(isset($bridge_qode_options['enable_social_share'])){
-    $bridge_qode_enable_social_share = $bridge_qode_options['enable_social_share'];
+$enable_social_share = 'no';
+if(isset($qode_options_proya['enable_social_share'])){
+    $enable_social_share = $qode_options_proya['enable_social_share'];
 }
-$bridge_qode_blog_author_info="no";
-if (isset($bridge_qode_options['blog_author_info'])) {
-	$bridge_qode_blog_author_info = $bridge_qode_options['blog_author_info'];
+$blog_author_info="no";
+if (isset($qode_options_proya['blog_author_info'])) {
+	$blog_author_info = $qode_options_proya['blog_author_info'];
 }
-$bridge_qode_like = "on";
-if (isset($bridge_qode_options['qode_like'])) {
-    $bridge_qode_like = $bridge_qode_options['qode_like'];
+$qode_like = "on";
+if (isset($qode_options_proya['qode_like'])) {
+    $qode_like = $qode_options_proya['qode_like'];
 }
 
-$bridge_qode_gallery_post_layout = bridge_qode_check_gallery_post_layout(get_the_ID());
+$gallery_post_layout = qode_check_gallery_post_layout(get_the_ID());
 
-$bridge_qode_params = array(
-    'blog_share_like_layout' => $bridge_qode_blog_share_like_layout,
-    'enable_social_share' => $bridge_qode_enable_social_share,
-    'qode_like' => $bridge_qode_like
+$params = array(
+    'blog_share_like_layout' => $blog_share_like_layout,
+    'enable_social_share' => $enable_social_share,
+    'qode_like' => $qode_like
 );
 
-$bridge_qode_post_format = get_post_format();
+$_post_format = get_post_format();
 ?>
 <?php
-	switch ($bridge_qode_post_format) {
+	switch ($_post_format) {
 		case "video":
 ?>
 		<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 			<div class="post_content_holder">
 				<div class="post_image">
-					<?php $bridge_qode_video_type = get_post_meta(get_the_ID(), "video_format_choose", true);?>
-					<?php if($bridge_qode_video_type == "youtube") { ?>
+					<?php $_video_type = get_post_meta(get_the_ID(), "video_format_choose", true);?>
+					<?php if($_video_type == "youtube") { ?>
 						<iframe name="fitvid-<?php the_ID(); ?>" src="//www.youtube.com/embed/<?php echo get_post_meta(get_the_ID(), "video_format_link", true);  ?>?wmode=transparent" wmode="Opaque" width="805" height="403" allowfullscreen></iframe>
-					<?php } elseif ($bridge_qode_video_type == "vimeo"){ ?>
+					<?php } elseif ($_video_type == "vimeo"){ ?>
 						<iframe name="fitvid-<?php the_ID(); ?>" src="//player.vimeo.com/video/<?php echo get_post_meta(get_the_ID(), "video_format_link", true);  ?>?title=0&amp;byline=0&amp;portrait=0" width="800" height="450" allowfullscreen></iframe>
-					<?php } elseif ($bridge_qode_video_type == "self"){ ?> 
+					<?php } elseif ($_video_type == "self"){ ?> 
 						<div class="video"> 
 						<div class="mobile-video-image" style="background-image: url(<?php echo get_post_meta(get_the_ID(), "video_format_image", true);  ?>);"></div> 
 						<div class="video-wrap"  > 
@@ -54,7 +54,7 @@ $bridge_qode_post_format = get_post_format();
 								<object width="320" height="240" type="application/x-shockwave-flash" data="<?php echo get_template_directory_uri(); ?>/js/flashmediaelement.swf"> 
 									<param name="movie" value="<?php echo get_template_directory_uri(); ?>/js/flashmediaelement.swf" /> 
 									<param name="flashvars" value="controls=true&file=<?php echo get_post_meta(get_the_ID(), "video_format_mp4", true);  ?>" /> 
-									<img itemprop="image" src="<?php echo get_post_meta(get_the_ID(), "video_format_image", true);  ?>" width="1920" height="800" title="<?php echo esc_html__('No video playback capabilities', 'bridge'); ?>" alt="<?php echo esc_html__('Video thumb', 'bridge'); ?>" />
+									<img itemprop="image" src="<?php echo get_post_meta(get_the_ID(), "video_format_image", true);  ?>" width="1920" height="800" title="No video playback capabilities" alt="Video thumb" /> 
 								</object> 
 							</video>   
 						</div></div> 
@@ -62,18 +62,18 @@ $bridge_qode_post_format = get_post_format();
 				</div>
 				<div class="post_text">
 					<div class="post_text_inner">
-						<h2 itemprop="name" class="entry_title"><span itemprop="dateCreated" class="date entry_date updated"><?php the_time('d M'); ?><meta itemprop="interactionCount" content="UserComments: <?php echo get_comments_number(bridge_qode_get_page_id()); ?>"/></span> <?php the_title(); ?></h2>
+						<h2 itemprop="name" class="entry_title"><span itemprop="dateCreated" class="date entry_date updated"><?php the_time('d M'); ?><meta itemprop="interactionCount" content="UserComments: <?php echo get_comments_number(qode_get_page_id()); ?>"/></span> <?php the_title(); ?></h2>
 						<div class="post_info">
-							<span class="time"><?php esc_html_e('Posted at','bridge'); ?> <?php the_time('H:i'); ?><?php esc_html_e('h','bridge'); ?></span>
-							<?php esc_html_e('in','bridge'); ?> <?php the_category(', '); ?>
+							<span class="time"><?php _e('Posted at','qode'); ?> <?php the_time('H:i'); ?><?php _e('h','qode'); ?></span>
+							<?php _e('in','qode'); ?> <?php the_category(', '); ?>
 							<span class="post_author">
-								<?php esc_html_e('by','bridge'); ?>
+								<?php _e('by','qode'); ?>
 								<a itemprop="author" class="post_author_link" href="<?php echo get_author_posts_url( get_the_author_meta( 'ID' ) ); ?>"><?php the_author_meta('display_name'); ?></a>
 							</span>
-							<?php if($bridge_qode_blog_hide_comments != "yes"){ ?>
-								<span class="dots"><i class="fa fa-square"></i></span><a itemprop="url" class="post_comments" href="<?php comments_link(); ?>" target="_self"><?php comments_number('0 ' . esc_html__('Comments','bridge'), '1 '.esc_html__('Comment','bridge'), '% '.esc_html__('Comments','bridge') ); ?></a>
+							<?php if($blog_hide_comments != "yes"){ ?>
+								<span class="dots"><i class="fa fa-square"></i></span><a itemprop="url" class="post_comments" href="<?php comments_link(); ?>" target="_self"><?php comments_number('0 ' . __('Comments','qode'), '1 '.__('Comment','qode'), '% '.__('Comments','qode') ); ?></a>
 							<?php } ?>
-                            <?php bridge_qode_get_template_part('templates/blog-parts/blog','share-like-post-info',$bridge_qode_params); ?>
+                            <?php qode_get_template_part('templates/blog-parts/blog','share-like-post-info',$params); ?>
 						</div>
 						<?php the_content(); ?>
 					</div>
@@ -86,29 +86,29 @@ $bridge_qode_post_format = get_post_format();
 		<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 			<div class="post_content_holder">
 				<div class="post_image">
-					<?php if(bridge_qode_options()->getOptionValue('show_image_on_audio_post') == 'yes' && get_post_meta(get_the_ID(), "qode_hide-featured-image", true) != "yes") {
+					<?php if(qode_options()->getOptionValue('show_image_on_audio_post') == 'yes' && get_post_meta(get_the_ID(), "qode_hide-featured-image", true) != "yes") {
 						if ( has_post_thumbnail() ) { ?>
 								<?php the_post_thumbnail('full'); ?>
 						<?php }
 					} ?>
 					<audio class="blog_audio" src="<?php echo get_post_meta(get_the_ID(), "audio_link", true) ?>" controls="controls">
-						<?php esc_html_e("Your browser don't support audio player","bridge"); ?>
+						<?php _e("Your browser don't support audio player","qode"); ?>
 					</audio>
 				</div>
 				<div class="post_text">
 					<div class="post_text_inner">
-						<h2 itemprop="name" class="entry_title"><span itemprop="dateCreated" class="date entry_date updated"><?php the_time('d M'); ?><meta itemprop="interactionCount" content="UserComments: <?php echo get_comments_number(bridge_qode_get_page_id()); ?>"/></span> <?php the_title(); ?></h2>
+						<h2 itemprop="name" class="entry_title"><span itemprop="dateCreated" class="date entry_date updated"><?php the_time('d M'); ?><meta itemprop="interactionCount" content="UserComments: <?php echo get_comments_number(qode_get_page_id()); ?>"/></span> <?php the_title(); ?></h2>
 						<div class="post_info">
-							<span class="time"><?php esc_html_e('Posted at','bridge'); ?> <?php the_time('H:i'); ?><?php esc_html_e('h','bridge'); ?></span>
-							<?php esc_html_e('in','bridge'); ?> <?php the_category(', '); ?>
+							<span class="time"><?php _e('Posted at','qode'); ?> <?php the_time('H:i'); ?><?php _e('h','qode'); ?></span>
+							<?php _e('in','qode'); ?> <?php the_category(', '); ?>
 							<span class="post_author">
-								<?php esc_html_e('by','bridge'); ?>
+								<?php _e('by','qode'); ?>
 								<a itemprop="author" class="post_author_link" href="<?php echo get_author_posts_url( get_the_author_meta( 'ID' ) ); ?>"><?php the_author_meta('display_name'); ?></a>
 							</span>
-							<?php if($bridge_qode_blog_hide_comments != "yes"){ ?>
-								<span class="dots"><i class="fa fa-square"></i></span><a itemprop="url" class="post_comments" href="<?php comments_link(); ?>" target="_self"><?php comments_number('0 ' . esc_html__('Comments','bridge'), '1 '.esc_html__('Comment','bridge'), '% '.esc_html__('Comments','bridge') ); ?></a>
+							<?php if($blog_hide_comments != "yes"){ ?>
+								<span class="dots"><i class="fa fa-square"></i></span><a itemprop="url" class="post_comments" href="<?php comments_link(); ?>" target="_self"><?php comments_number('0 ' . __('Comments','qode'), '1 '.__('Comment','qode'), '% '.__('Comments','qode') ); ?></a>
 							<?php } ?>
-                            <?php bridge_qode_get_template_part('templates/blog-parts/blog','share-like-post-info',$bridge_qode_params); ?>
+                            <?php qode_get_template_part('templates/blog-parts/blog','share-like-post-info',$params); ?>
 						</div>
 						<?php the_content(); ?>
 					</div>
@@ -124,21 +124,21 @@ $bridge_qode_post_format = get_post_format();
 				<div class="post_text">
 					<div class="post_text_inner">
 						<div class="post_info">
-							<span class="time"><?php esc_html_e('Posted at','bridge'); ?> <?php the_time('d M, H:i'); ?><?php esc_html_e('h','bridge'); ?></span>
-							<?php esc_html_e('in','bridge'); ?> <?php the_category(', '); ?>
+							<span class="time"><?php _e('Posted at','qode'); ?> <?php the_time('d M, H:i'); ?><?php _e('h','qode'); ?></span>
+							<?php _e('in','qode'); ?> <?php the_category(', '); ?>
 							<span class="post_author">
-								<?php esc_html_e('by','bridge'); ?>
+								<?php _e('by','qode'); ?>
 								<a itemprop="author" class="post_author_link" href="<?php echo get_author_posts_url( get_the_author_meta( 'ID' ) ); ?>"><?php the_author_meta('display_name'); ?></a>
 							</span>
-							<?php if($bridge_qode_blog_hide_comments != "yes"){ ?>
-								<span class="dots"><i class="fa fa-square"></i></span><a itemprop="url" class="post_comments" href="<?php comments_link(); ?>" target="_self"><?php comments_number('0 ' . esc_html__('Comments','bridge'), '1 '.esc_html__('Comment','bridge'), '% '.esc_html__('Comments','bridge') ); ?></a>
+							<?php if($blog_hide_comments != "yes"){ ?>
+								<span class="dots"><i class="fa fa-square"></i></span><a itemprop="url" class="post_comments" href="<?php comments_link(); ?>" target="_self"><?php comments_number('0 ' . __('Comments','qode'), '1 '.__('Comment','qode'), '% '.__('Comments','qode') ); ?></a>
 							<?php } ?>
-                            <?php bridge_qode_get_template_part('templates/blog-parts/blog','share-like-post-info',$bridge_qode_params); ?>
+                            <?php qode_get_template_part('templates/blog-parts/blog','share-like-post-info',$params); ?>
 						</div>
 						<i class="link_mark fa fa-link pull-left"></i>
-						 <?php $bridge_qode_title_link = get_post_meta(get_the_ID(), "title_link", true) != '' ? get_post_meta(get_the_ID(), "title_link", true) : 'javascript: void(0)'; ?>
+						 <?php $title_link = get_post_meta(get_the_ID(), "title_link", true) != '' ? get_post_meta(get_the_ID(), "title_link", true) : 'javascript: void(0)'; ?>
 						<div class="post_title entry_title">
-							<p><a itemprop="url" href="<?php echo esc_url( $bridge_qode_title_link ); ?>"><?php the_title(); ?></a></p>
+							<p><a itemprop="url" href="<?php echo $title_link; ?>"><?php the_title(); ?></a></p>
 						</div>
 					</div>
 				</div>
@@ -152,49 +152,49 @@ $bridge_qode_post_format = get_post_format();
 			<div class="post_content_holder">
 				<div class="post_image">
                     <?php
-                    $bridge_qode_post_content = get_the_content();
-                    preg_match('/\[gallery.*ids=.(.*).\]/', $bridge_qode_post_content, $bridge_qode_ids);
-                    $bridge_qode_array_id = explode(",", $bridge_qode_ids[1]);
+                    $post_content = get_the_content();
+                    preg_match('/\[gallery.*ids=.(.*).\]/', $post_content, $ids);
+                    $array_id = explode(",", $ids[1]);
 
-                    $bridge_qode_content =  str_replace($bridge_qode_ids[0], "", $bridge_qode_post_content);
-                    $bridge_qode_filtered_content = apply_filters( 'the_content', $bridge_qode_content);
+                    $content =  str_replace($ids[0], "", $post_content);
+                    $filtered_content = apply_filters( 'the_content', $content);
 
-                    switch ($bridge_qode_gallery_post_layout) {
+                    switch ($gallery_post_layout) {
                     case 'slider':
                     ?>
                     <div class="flexslider">
                         <ul class="slides">
                             <?php
-                            foreach ($bridge_qode_array_id as $bridge_qode_img_id) { ?>
+                            foreach ($array_id as $img_id) { ?>
                                 <li><a itemprop="url"
-                                       href="<?php the_permalink(); ?>"><?php echo wp_get_attachment_image($bridge_qode_img_id, 'full'); ?></a>
+                                       href="<?php the_permalink(); ?>"><?php echo wp_get_attachment_image($img_id, 'full'); ?></a>
                                 </li>
                             <?php } ?>
                         </ul>
                     </div>
                     <?php break;
                     case 'masonry':
-                        echo bridge_qode_get_blog_gallery_layout($bridge_qode_array_id);
+                        echo qode_get_blog_gallery_layout($array_id);
                         break;
                     } ?>
 
 				</div>
 				<div class="post_text">
 					<div class="post_text_inner">
-						<h2 itemprop="name" class="entry_title"><span itemprop="dateCreated" class="date entry_date updated"><?php the_time('d M'); ?><meta itemprop="interactionCount" content="UserComments: <?php echo get_comments_number(bridge_qode_get_page_id()); ?>"/></span> <?php the_title(); ?></h2>
+						<h2 itemprop="name" class="entry_title"><span itemprop="dateCreated" class="date entry_date updated"><?php the_time('d M'); ?><meta itemprop="interactionCount" content="UserComments: <?php echo get_comments_number(qode_get_page_id()); ?>"/></span> <?php the_title(); ?></h2>
 						<div class="post_info">
-							<span class="time"><?php esc_html_e('Posted at','bridge'); ?> <?php the_time('H:i'); ?><?php esc_html_e('h','bridge'); ?></span>
-							<?php esc_html_e('in','bridge'); ?> <?php the_category(', '); ?>
+							<span class="time"><?php _e('Posted at','qode'); ?> <?php the_time('H:i'); ?><?php _e('h','qode'); ?></span>
+							<?php _e('in','qode'); ?> <?php the_category(', '); ?>
 							<span class="post_author">
-								<?php esc_html_e('by','bridge'); ?>
+								<?php _e('by','qode'); ?>
 								<a itemprop="author" class="post_author_link" href="<?php echo get_author_posts_url( get_the_author_meta( 'ID' ) ); ?>"><?php the_author_meta('display_name'); ?></a>
 							</span>
-							<?php if($bridge_qode_blog_hide_comments != "yes"){ ?>
-								<span class="dots"><i class="fa fa-square"></i></span><a itemprop="url" class="post_comments" href="<?php comments_link(); ?>" target="_self"><?php comments_number('0 ' . esc_html__('Comments','bridge'), '1 '.esc_html__('Comment','bridge'), '% '.esc_html__('Comments','bridge') ); ?></a>
+							<?php if($blog_hide_comments != "yes"){ ?>
+								<span class="dots"><i class="fa fa-square"></i></span><a itemprop="url" class="post_comments" href="<?php comments_link(); ?>" target="_self"><?php comments_number('0 ' . __('Comments','qode'), '1 '.__('Comment','qode'), '% '.__('Comments','qode') ); ?></a>
 							<?php } ?>
-                            <?php bridge_qode_get_template_part('templates/blog-parts/blog','share-like-post-info',$bridge_qode_params); ?>
+                            <?php qode_get_template_part('templates/blog-parts/blog','share-like-post-info',$params); ?>
 						</div>
-						<?php echo do_shortcode($bridge_qode_filtered_content); ?>	
+						<?php echo do_shortcode($filtered_content); ?>	
 					</div>
 				</div>
 
@@ -209,16 +209,16 @@ $bridge_qode_post_format = get_post_format();
 					<div class="post_text">
 						<div class="post_text_inner">
 							<div class="post_info">
-								<span class="time"><?php esc_html_e('Posted at','bridge'); ?> <?php the_time('d M, H:i'); ?><?php esc_html_e('h','bridge'); ?></span>
-								<?php esc_html_e('in','bridge'); ?> <?php the_category(', '); ?>
+								<span class="time"><?php _e('Posted at','qode'); ?> <?php the_time('d M, H:i'); ?><?php _e('h','qode'); ?></span>
+								<?php _e('in','qode'); ?> <?php the_category(', '); ?>
 								<span class="post_author">
-									<?php esc_html_e('by','bridge'); ?>
+									<?php _e('by','qode'); ?>
 									<a itemprop="author" class="post_author_link" href="<?php echo get_author_posts_url( get_the_author_meta( 'ID' ) ); ?>"><?php the_author_meta('display_name'); ?></a>
 								</span>
-								<?php if($bridge_qode_blog_hide_comments != "yes"){ ?>
-									<span class="dots"><i class="fa fa-square"></i></span><a itemprop="url" class="post_comments" href="<?php comments_link(); ?>" target="_self"><?php comments_number('0 ' . esc_html__('Comments','bridge'), '1 '.esc_html__('Comment','bridge'), '% '.esc_html__('Comments','bridge') ); ?></a>
+								<?php if($blog_hide_comments != "yes"){ ?>
+									<span class="dots"><i class="fa fa-square"></i></span><a itemprop="url" class="post_comments" href="<?php comments_link(); ?>" target="_self"><?php comments_number('0 ' . __('Comments','qode'), '1 '.__('Comment','qode'), '% '.__('Comments','qode') ); ?></a>
 								<?php } ?>
-                                <?php bridge_qode_get_template_part('templates/blog-parts/blog','share-like-post-info',$bridge_qode_params); ?>
+                                <?php qode_get_template_part('templates/blog-parts/blog','share-like-post-info',$params); ?>
 							</div>	
 							<i class="qoute_mark fa fa-quote-right pull-left"></i>
 							<div class="post_title entry_title">
@@ -243,18 +243,18 @@ $bridge_qode_post_format = get_post_format();
 				<?php } } ?>
 				<div class="post_text">
 					<div class="post_text_inner">
-						<h2 itemprop="name" class="entry_title"><span itemprop="dateCreated" class="date entry_date updated"><?php the_time('d M'); ?><meta itemprop="interactionCount" content="UserComments: <?php echo get_comments_number(bridge_qode_get_page_id()); ?>"/></span> <?php the_title(); ?></h2>
+						<h2 itemprop="name" class="entry_title"><span itemprop="dateCreated" class="date entry_date updated"><?php the_time('d M'); ?><meta itemprop="interactionCount" content="UserComments: <?php echo get_comments_number(qode_get_page_id()); ?>"/></span> <?php the_title(); ?></h2>
 						<div class="post_info">
-							<span class="time"><?php esc_html_e('Posted at','bridge'); ?> <?php the_time('H:i'); ?><?php esc_html_e('h','bridge'); ?></span>
-							<?php esc_html_e('in','bridge'); ?> <?php the_category(', '); ?>
+							<span class="time"><?php _e('Posted at','qode'); ?> <?php the_time('H:i'); ?><?php _e('h','qode'); ?></span>
+							<?php _e('in','qode'); ?> <?php the_category(', '); ?>
 							<span class="post_author">
-								<?php esc_html_e('by','bridge'); ?>
+								<?php _e('by','qode'); ?>
 								<a itemprop="author" class="post_author_link" href="<?php echo get_author_posts_url( get_the_author_meta( 'ID' ) ); ?>"><?php the_author_meta('display_name'); ?></a>
 							</span>
-							<?php if($bridge_qode_blog_hide_comments != "yes"){ ?>
-								<span class="dots"><i class="fa fa-square"></i></span><a itemprop="url" class="post_comments" href="<?php comments_link(); ?>" target="_self"><?php comments_number('0 ' . esc_html__('Comments','bridge'), '1 '.esc_html__('Comment','bridge'), '% '.esc_html__('Comments','bridge') ); ?></a>
+							<?php if($blog_hide_comments != "yes"){ ?>
+								<span class="dots"><i class="fa fa-square"></i></span><a itemprop="url" class="post_comments" href="<?php comments_link(); ?>" target="_self"><?php comments_number('0 ' . __('Comments','qode'), '1 '.__('Comment','qode'), '% '.__('Comments','qode') ); ?></a>
 							<?php } ?>
-                            <?php bridge_qode_get_template_part('templates/blog-parts/blog','share-like-post-info',$bridge_qode_params); ?>
+                            <?php qode_get_template_part('templates/blog-parts/blog','share-like-post-info',$params); ?>
 						</div>
 						<?php the_content(); ?>
 					</div>
@@ -263,14 +263,14 @@ $bridge_qode_post_format = get_post_format();
 		
 <?php
 }
-do_action('bridge_qode_action_after_article_content');
+do_action('qode_after_article_content');
 ?>
 	<?php if( has_tag()) { ?>
 		<div class="single_tags clearfix">
             <div class="tags_text">
-				<h5><?php esc_html_e('Tags:','bridge'); ?></h5>
+				<h5><?php _e('Tags:','qode'); ?></h5>
 				<?php 
-				if ((isset($bridge_qode_options['tags_border_style']) && $bridge_qode_options['tags_border_style'] !== '') || (isset($bridge_qode_options['tags_background_color']) && $bridge_qode_options['tags_background_color'] !== '')){
+				if ((isset($qode_options_proya['tags_border_style']) && $qode_options_proya['tags_border_style'] !== '') || (isset($qode_options_proya['tags_background_color']) && $qode_options_proya['tags_background_color'] !== '')){
 					the_tags('', ' ', '');
 				}
 				else{
@@ -280,9 +280,9 @@ do_action('bridge_qode_action_after_article_content');
 			</div>
 		</div>
 	<?php } ?>
-    <?php bridge_qode_get_template_part('templates/blog-parts/blog','share-like-below-text',$bridge_qode_params); ?>
+    <?php qode_get_template_part('templates/blog-parts/blog','share-like-below-text',$params); ?>
 	<?php 
-		$bridge_qode_args_pages = array(
+		$args_pages = array(
 			'before'           => '<p class="single_links_pages">',
 			'after'            => '</p>',
 			'link_before'      => '<span>',
@@ -290,9 +290,9 @@ do_action('bridge_qode_action_after_article_content');
 			'pagelink'         => '%'
 		);
 
-		wp_link_pages($bridge_qode_args_pages);
+		wp_link_pages($args_pages);
 	?>
-<?php if($bridge_qode_blog_author_info == "yes") { ?>
+<?php if($blog_author_info == "yes") { ?>
 	<div class="author_description">
 		<div class="author_description_inner">
 			<div class="image">

@@ -1,52 +1,52 @@
 <?php
-if(!function_exists('bridge_qode_verticalsplitslider_options_map')) {
+if(!function_exists('qode_verticalsplitslider_options_map')) {
     /**
      * Vertical Split Slider options page
      */
-    function bridge_qode_verticalsplitslider_options_map()
+    function qode_verticalsplitslider_options_map()
     {
 
-        $verticalSplitSliderPage = new BridgeQodeAdminPage("_vertical_split_slider", esc_html__('Vertical Split Slider', 'bridge'), "fa fa-arrows-v");
-        bridge_qode_framework()->qodeOptions->addAdminPage("verticalSplitSlider", $verticalSplitSliderPage);
+        $verticalSplitSliderPage = new QodeAdminPage("_vertical_split_slider", "Vertical Split Slider", "fa fa-arrows-v");
+        qode_framework()->qodeOptions->addAdminPage("verticalSplitSlider", $verticalSplitSliderPage);
 
         // General Style
 
-        $panel10 = new BridgeQodePanel(esc_html__('General Style', 'bridge'), "general_style");
+        $panel10 = new QodePanel("General Style", "general_style");
         $verticalSplitSliderPage->addChild("panel10", $panel10);
 
-        $group1 = new BridgeQodeGroup(esc_html__('Navigation Style', 'bridge'), esc_html__('Define style for navigation bullets', 'bridge'));
+        $group1 = new QodeGroup("Navigation Style", "Define style for navigation bullets");
         $panel10->addChild("group1", $group1);
 
-        $row1 = new BridgeQodeRow();
+        $row1 = new QodeRow();
         $group1->addChild("row1", $row1);
 
-        $vss_navigation_inactive_color = new BridgeQodeField("colorsimple", "vss_navigation_inactive_color", "", esc_html__('Navigation Color', 'bridge'), esc_html__('Define color for navigation dots', 'bridge'));
+        $vss_navigation_inactive_color = new QodeField("colorsimple", "vss_navigation_inactive_color", "", "Navigation Color", "Define color for navigation dots");
         $row1->addChild("vss_navigation_inactive_color", $vss_navigation_inactive_color);
 
-        $vss_navigation_inactive_border_color = new BridgeQodeField("colorsimple", "vss_navigation_inactive_border_color", "", esc_html__('Navigation Border Color', 'bridge'), esc_html__('Define border color for navigation dots', 'bridge'));
+        $vss_navigation_inactive_border_color = new QodeField("colorsimple", "vss_navigation_inactive_border_color", "", "Navigation Border Color", "Define border color for navigation dots");
         $row1->addChild("vss_navigation_inactive_border_color", $vss_navigation_inactive_border_color);
 
-        $vss_navigation_color = new BridgeQodeField("colorsimple", "vss_navigation_color", "", esc_html__('Navigation Active Color', 'bridge'), esc_html__('Define active color for navigation dots', 'bridge'));
+        $vss_navigation_color = new QodeField("colorsimple", "vss_navigation_color", "", "Navigation Active Color", "Define active color for navigation dots");
         $row1->addChild("vss_navigation_color", $vss_navigation_color);
 
-        $vss_navigation_border_color = new BridgeQodeField("colorsimple", "vss_navigation_border_color", "", esc_html__('Navigation Active Border Color', 'bridge'), esc_html__('Define active border color for navigation dots', 'bridge'));
+        $vss_navigation_border_color = new QodeField("colorsimple", "vss_navigation_border_color", "", "Navigation Active Border Color", "Define active border color for navigation dots");
         $row1->addChild("vss_navigation_border_color", $vss_navigation_border_color);
 
-        $vss_navigation_size = new BridgeQodeField("text", "vss_navigation_size", "", esc_html__('Navigation Size (px)', 'bridge'), esc_html__('Define size for navigation dots', 'bridge'), array(), array("col_width" => 1));
+        $vss_navigation_size = new QodeField("text", "vss_navigation_size", "", "Navigation Size (px)", "Define size for navigation dots", array(), array("col_width" => 1));
         $panel10->addChild("vss_navigation_size", $vss_navigation_size);
 
-        $vss_left_panel_size = new BridgeQodeField("text", "vss_left_panel_size", "", esc_html__('Left Slide Panel size (%)', 'bridge'), esc_html__('Define size for left slide panel. Note that sum of left and right slide panel should be 100.', 'bridge'), array(), array("col_width" => 1));
+        $vss_left_panel_size = new QodeField("text", "vss_left_panel_size", "", "Left Slide Panel size (%)", "Define size for left slide panel. Note that sum of left and right slide panel should be 100.", array(), array("col_width" => 1));
         $panel10->addChild("vss_left_panel_size", $vss_left_panel_size);
 
-        $vss_right_panel_size = new BridgeQodeField("text", "vss_right_panel_size", "", esc_html__('Right Slide Panel size (%)', 'bridge'), esc_html__('Define size for right slide panel. Note that sum of left and right slide panel should be 100.', 'bridge'), array(), array("col_width" => 1));
+        $vss_right_panel_size = new QodeField("text", "vss_right_panel_size", "", "Right Slide Panel size (%)", "Define size for right slide panel. Note that sum of left and right slide panel should be 100.", array(), array("col_width" => 1));
         $panel10->addChild("vss_right_panel_size", $vss_right_panel_size);
 
-       bridge_qode_add_admin_field(
+       qode_add_admin_field(
             array(
                 'name'              => 'vss_responsive_advanced',
                 'type'              => 'yesno',
-                'label'             => esc_html__('Advanced Responsive', 'bridge'),
-                'description'       => esc_html__('Enable this option for advanced responsive on smaller devices', 'bridge'),
+                'label'             => esc_html__('Advanced Responsive', 'qode'),
+                'description'       => esc_html__('Enable this option for advanced responsive on smaller devices', 'qode'),
                 'default_value'     => 'no',
                 'parent'            => $panel10,
                 'args' => array(
@@ -57,7 +57,7 @@ if(!function_exists('bridge_qode_verticalsplitslider_options_map')) {
             )
         );
 
-        $qode_vss_responsive_advanced_options_container = bridge_qode_add_admin_container(
+        $qode_vss_responsive_advanced_options_container = qode_add_admin_container(
             array(
                 'parent'          => $panel10,
                 'name'            => 'qode_vss_responsive_advanced_options_container',
@@ -66,19 +66,19 @@ if(!function_exists('bridge_qode_verticalsplitslider_options_map')) {
             )
         );
 
-        bridge_qode_add_admin_field( array(
+        qode_add_admin_field( array(
                 'type'          => 'select',
                 'name'          => 'vss_responsive_advanced_width',
                 'default_value' => '768',
-                'label'         => esc_html__('Advanced Responsive Breakpoint', 'bridge'),
-                'description'   => esc_html__('Choose a width at which advanced responsive options will take effect.', 'bridge'),
+                'label'         => esc_html__('Advanced Responsive Breakpoint', 'qode'),
+                'description'   => esc_html__('Choose a width at which advanced responsive options will take effect.'),
                 'parent'        => $qode_vss_responsive_advanced_options_container,
                 'options'       => array(
-                    '1000'  => esc_html__('1000px', 'bridge'),
-                    '768'   => esc_html__('768px', 'bridge'),
-                    '600'   => esc_html__('600px', 'bridge')
+                    '1000'  => '1000px',
+                    '768'   => '768px',
+                    '600'   => '600px'
                 )
         ) );
     }
-    add_action('bridge_qode_action_options_map','bridge_qode_verticalsplitslider_options_map',120);
+    add_action('qode_options_map','qode_verticalsplitslider_options_map',120);
 }

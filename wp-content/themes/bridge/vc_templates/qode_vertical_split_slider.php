@@ -10,5 +10,5 @@ $html .= '<div class="vertical_split_slider" '.$data_attr.'>';
 $html .= do_shortcode($content);
 $html .= '</div>';
 
-echo bridge_qode_get_module_part( $html );
+echo $html;
 

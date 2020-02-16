@@ -1,11 +1,11 @@
 <?php
-if(!function_exists('bridge_qode_map_left_menu_meta_fields')) {
+if(!function_exists('qode_map_left_menu_meta_fields')) {
 
-	function bridge_qode_map_left_menu_meta_fields() {
-		$qodeLeftMenuArea = bridge_qode_create_meta_box(
+	function qode_map_left_menu_meta_fields() {
+		$qodeLeftMenuArea = qode_add_meta_box(
 			array(
 				'scope' => array('page', 'portfolio_page', 'post'),
-				'title' => esc_html__('Qode Left Menu Area', 'bridge'),
+				'title' => esc_html__('Qode Left Menu Area', 'qode'),
 				'name' => 'page_left_menu',
 				'hidden_property' => 'vertical_area',
 				'hidden_values' => array('no')
@@ -13,20 +13,20 @@ if(!function_exists('bridge_qode_map_left_menu_meta_fields')) {
 		);
 
 
-		$qode_page_vertical_area_transparency = new BridgeQodeMetaField("selectblank","qode_page_vertical_area_transparency","",esc_html__( 'Enable transparent left menu area', 'bridge'), esc_html__( 'Enabling this option will make Left Menu background transparent', 'bridge'), array(
-			'no'	=> esc_html__( 'No', 'bridge' ),
-			'yes'	=> esc_html__( 'Yes', 'bridge' )
+		$qode_page_vertical_area_transparency = new QodeMetaField("selectblank","qode_page_vertical_area_transparency","","Enable transparent left menu area","Enabling this option will make Left Menu background transparent ", array(
+			"no" => "No",
+			"yes" => "Yes"
 		));
 		$qodeLeftMenuArea->addChild("qode_page_vertical_area_transparency",$qode_page_vertical_area_transparency);
 
-		$qode_page_vertical_area_background = new BridgeQodeMetaField("color","qode_page_vertical_area_background","", esc_html__( 'Left Menu Area Background Color', 'bridge'), esc_html__( 'Choose a color for Left Menu background', 'bridge'));
+		$qode_page_vertical_area_background = new QodeMetaField("color","qode_page_vertical_area_background","","Left Menu Area Background Color","Choose a color for Left Menu background");
 		$qodeLeftMenuArea->addChild("qode_page_vertical_area_background",$qode_page_vertical_area_background);
 
-		$qode_page_vertical_area_background_image = new BridgeQodeMetaField("image","qode_page_vertical_area_background_image","", esc_html__( 'Left Menu Area Background Image', 'bridge'), esc_html__( 'Choose an image for Left Menu background', 'bridge'));
+		$qode_page_vertical_area_background_image = new QodeMetaField("image","qode_page_vertical_area_background_image","","Left Menu Area Background Image","Choose an image for Left Menu background");
 		$qodeLeftMenuArea->addChild("qode_page_vertical_area_background_image",$qode_page_vertical_area_background_image);
 
 
 	}
 
-	add_action('bridge_qode_action_meta_boxes_map', 'bridge_qode_map_left_menu_meta_fields');
+	add_action('qode_meta_boxes_map', 'qode_map_left_menu_meta_fields');
 }

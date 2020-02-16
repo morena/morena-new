@@ -1,34 +1,33 @@
-<?php
-$bridge_qode_options = bridge_qode_return_global_options();
-$bridge_qode_enable_navigation_title = isset($bridge_qode_options['enable_navigation_title']) && $bridge_qode_options['enable_navigation_title'] == 'yes';
-$bridge_qode_additional_navigation_class = $bridge_qode_enable_navigation_title ? 'navigation_title' : '';
+<?php global $qode_options_proya;
+$enable_navigation_title = isset($qode_options_proya['enable_navigation_title']) && $qode_options_proya['enable_navigation_title'] == 'yes';
+$additional_navigation_class = $enable_navigation_title ? 'navigation_title' : '';
 
-$bridge_qode_navigation_through_category = false;
-if (isset($bridge_qode_options['portfolio_navigation_through_same_category']) && $bridge_qode_options['portfolio_navigation_through_same_category'] === "yes") {
-    $bridge_qode_navigation_through_category = true;
+$navigation_through_category = false;
+if (isset($qode_options_proya['portfolio_navigation_through_same_category']) && $qode_options_proya['portfolio_navigation_through_same_category'] === "yes") {
+    $navigation_through_category = true;
 }
 ?>
-<div class="portfolio_navigation <?php echo esc_attr($bridge_qode_additional_navigation_class); ?>">
+<div class="portfolio_navigation <?php echo esc_attr($additional_navigation_class); ?>">
     <div class="portfolio_prev">
         <?php
-            if($bridge_qode_navigation_through_category){
-                $bridge_qode_prev_html_info = '';
-                if(get_previous_post() != "" && $bridge_qode_enable_navigation_title){
-                    $bridge_qode_prev_post = get_previous_post(true,'','portfolio_category');
-                    $bridge_qode_prev_html_info = bridge_qode_get_portfolio_navigation_post_category_and_title($bridge_qode_prev_post);
+            if($navigation_through_category){
+                $prev_html_info = '';
+                if(get_previous_post() != "" && $enable_navigation_title){
+                    $prev_post = get_previous_post(true,'','portfolio_category');
+                    $prev_html_info = getPortfolionavigationPostCategoryAndTitle($prev_post);
                 }
 
-                $bridge_qode_prev_html = '<i class="fa fa-angle-left"></i>'.$bridge_qode_prev_html_info;
-                previous_post_link('%link', $bridge_qode_prev_html, true,'','portfolio_category');
+                $prev_html = '<i class="fa fa-angle-left"></i>'.$prev_html_info;
+                previous_post_link('%link', $prev_html, true,'','portfolio_category');
             } else {
-                $bridge_qode_prev_html_info = '';
-                if(get_previous_post() != "" && $bridge_qode_enable_navigation_title){
-                    $bridge_qode_prev_post = get_previous_post();
-                    $bridge_qode_prev_html_info = bridge_qode_get_portfolio_navigation_post_category_and_title($bridge_qode_prev_post);
+                $prev_html_info = '';
+                if(get_previous_post() != "" && $enable_navigation_title){
+                    $prev_post = get_previous_post();
+                    $prev_html_info = getPortfolionavigationPostCategoryAndTitle($prev_post);
                 }
 
-                $bridge_qode_prev_html = '<i class="fa fa-angle-left"></i>'.$bridge_qode_prev_html_info;
-                previous_post_link('%link', $bridge_qode_prev_html);
+                $prev_html = '<i class="fa fa-angle-left"></i>'.$prev_html_info;
+                previous_post_link('%link', $prev_html);
             }
         ?>
     </div>
@@ -37,22 +36,22 @@ if (isset($bridge_qode_options['portfolio_navigation_through_same_category']) &&
     <?php } ?>
     <div class="portfolio_next">
         <?php
-            if($bridge_qode_navigation_through_category){
-                $bridge_qode_next_html_info = '';
-                if(get_next_post() != "" && $bridge_qode_enable_navigation_title){
-                    $bridge_qode_next_post = get_next_post(true,'','portfolio_category');
-                    $bridge_qode_next_html_info = bridge_qode_get_portfolio_navigation_post_category_and_title($bridge_qode_next_post);
+            if($navigation_through_category){
+                $next_html_info = '';
+                if(get_next_post() != "" && $enable_navigation_title){
+                    $next_post = get_next_post(true,'','portfolio_category');
+                    $next_html_info = getPortfolionavigationPostCategoryAndTitle($next_post);
                 }
-                $bridge_qode_next_html = $bridge_qode_next_html_info.'<i class="fa fa-angle-right"></i>';
-                next_post_link('%link',$bridge_qode_next_html, true,'','portfolio_category');
+                $next_html = $next_html_info.'<i class="fa fa-angle-right"></i>';
+                next_post_link('%link',$next_html, true,'','portfolio_category');
             } else {
-                $bridge_qode_next_html_info = '';
-                if(get_next_post() != "" && $bridge_qode_enable_navigation_title){
-                    $bridge_qode_next_post = get_next_post();
-                    $bridge_qode_next_html_info = bridge_qode_get_portfolio_navigation_post_category_and_title($bridge_qode_next_post);
+                $next_html_info = '';
+                if(get_next_post() != "" && $enable_navigation_title){
+                    $next_post = get_next_post();
+                    $next_html_info = getPortfolionavigationPostCategoryAndTitle($next_post);
                 }
-                $bridge_qode_next_html = $bridge_qode_next_html_info.'<i class="fa fa-angle-right"></i>';
-                next_post_link('%link',$bridge_qode_next_html);
+                $next_html = $next_html_info.'<i class="fa fa-angle-right"></i>';
+                next_post_link('%link',$next_html);
             }
         ?>
     </div>

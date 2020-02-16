@@ -1,7 +1,7 @@
 <?php
 // Code in else part is because of compatibility for older versions of VC.
 
-if(version_compare(bridge_qode_get_vc_version(), '4.7.4') >= 0) {
+if(version_compare(qode_get_vc_version(), '4.7.4') >= 0) {
 	/**
 	 * Shortcode attributes
 	 * @var $atts
@@ -109,7 +109,7 @@ if(version_compare(bridge_qode_get_vc_version(), '4.7.4') >= 0) {
 
     $pause_on_hover_data = '';
     if($pause_on_hover !== ''){
-        $pause_on_hover_data .= 'data-pause-on-hover="'. ($pause_on_hover == 'yes' ? 'true' : 'false').'"';
+        $pause_on_hover_data .= 'data-pasue-on-hover="'. ($pause_on_hover == 'yes' ? 'true' : 'false').'"';
     }
 
     $drag_data = '';
@@ -130,7 +130,7 @@ if(version_compare(bridge_qode_get_vc_version(), '4.7.4') >= 0) {
 		$images = '-1,-2,-3';
 	}
 
-	$pretty_rel_random = ' data-rel="prettyPhoto[rel-' . get_the_ID() . '-' . wp_rand() . ']"';
+	$pretty_rel_random = ' data-rel="prettyPhoto[rel-' . get_the_ID() . '-' . rand() . ']"';
 
 	if ( 'custom_link' === $onclick ) {
 		$custom_links = vc_value_from_safe( $custom_links );
@@ -162,7 +162,7 @@ if(version_compare(bridge_qode_get_vc_version(), '4.7.4') >= 0) {
 
 			case 'external_link':
 				$image = esc_attr( $image );
-				$dimensions = function_exists('vc_extract_dimensions') ?  vc_extract_dimensions( $external_img_size ) : vcExtractDimensions( $external_img_size );
+				$dimensions = vcExtractDimensions( $external_img_size );
 				$hwstring = $dimensions ? image_hwstring( $dimensions[0], $dimensions[1] ) : '';
 				$thumbnail = '<img itemprop="image" ' . $hwstring . ' src="' . $image . '" />';
 				$large_img_src = $image;
@@ -256,7 +256,7 @@ if(version_compare(bridge_qode_get_vc_version(), '4.7.4') >= 0) {
 	$output .= '</div>';
 	$output .= '</div>';
 
-	echo bridge_qode_get_module_part( $output );
+	echo $output;
 
 
 }else {
@@ -354,7 +354,7 @@ if(version_compare(bridge_qode_get_vc_version(), '4.7.4') >= 0) {
 
     $pause_on_hover_data = '';
     if($pause_on_hover !== ''){
-        $pause_on_hover_data .= 'data-pause-on-hover="'. ($pause_on_hover == 'yes' ? true : false).'"';
+        $pause_on_hover_data .= 'data-pasue-on-hover="'. ($pause_on_hover == 'yes' ? true : false).'"';
     }
 
     $drag_data = '';
@@ -383,7 +383,7 @@ if(version_compare(bridge_qode_get_vc_version(), '4.7.4') >= 0) {
 //if ( $images == '' ) return null;
 	if ($images == '') $images = '-1,-2,-3';
 
-	$pretty_rel_random = ' rel="prettyPhoto[rel-' . wp_rand() . ']"'; //rel-'.wp_rand();
+	$pretty_rel_random = ' rel="prettyPhoto[rel-' . rand() . ']"'; //rel-'.rand();
 
 	if ($onclick == 'custom_link') {
 		$custom_links = explode(',', $custom_links);
@@ -447,5 +447,5 @@ if(version_compare(bridge_qode_get_vc_version(), '4.7.4') >= 0) {
 	$output .= "\n\t\t" . '</div> ' . $this->endBlockComment('.wpb_wrapper');
 	$output .= "\n\t" . '</div> ' . $this->endBlockComment('.wpb_gallery');
 
-	echo bridge_qode_get_module_part( $output );
+	echo $output;
 }

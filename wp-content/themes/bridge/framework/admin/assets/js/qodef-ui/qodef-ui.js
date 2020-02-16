@@ -38,15 +38,18 @@
         qodefInitDatePicker();
 		qodefRemoveVCDeprecatedClass();
 	    qodeImportThemeOptions();
+	    qodeShowDemoExample();
+	    qodeDemosPluginsToInstall();
+	    qodeDemosImport();
+	    if ($('#import_example').length > 0) {
+		    $('#import_example').on('change', function (e) {
+			    qodeShowDemoExample();
+		    });
+	    }
         qodefSelect2();
         qodefInitGeocomplete();
-	    qodefShowHidePostFormats();
     });
-
-	$(window).load(function () {
-		qodefShowHidePostFormatsGutenberg();
-	});
-
+    
     function qodefRemoveVCDeprecatedClass() {
 		$('.wpb-layout-element-button').each( function() {
 			$(this).removeClass('vc_element-deprecated');
@@ -64,7 +67,7 @@
             $('.qodef-input-change').addClass('yes');
 			checkBottomPaddingOfFormWrapDiv();
         });
-        $('.field.switch label:not(.selected)').on('click', function() {
+        $('.field.switch label:not(.selected)').click( function() {
             $('.qodef-input-change').addClass('yes');
 			checkBottomPaddingOfFormWrapDiv();
         });
@@ -73,7 +76,7 @@
                 return 'You haven\'t saved your changes.';
             }
         });
-        $('#anchornav input').on('click',function() {
+        $('#anchornav input').click(function() {
             if ($('.qodef-input-change.yes').length) {
                 $('.qodef-input-change.yes').removeClass('yes');
             }
@@ -86,7 +89,7 @@
     }
 
     function qodeScrollToAnchor () {
-        $('#anchornav a').on('click', function() {
+        $('#anchornav a').click( function() {
             $('html, body').animate({
                 scrollTop: $($(this).attr('href')).offset().top - 45
             }, 1000);
@@ -201,7 +204,7 @@
     }
 
     function qodefInitSwitch() {
-        $(".cb-enable").on('click',function(){
+        $(".cb-enable").click(function(){
             var parent = $(this).parents('.switch');
             $('.cb-disable',parent).removeClass('selected');
             $(this).addClass('selected');
@@ -219,7 +222,7 @@
             $('.checkboxhidden_flagproduct',parent).val("product");
             $('.checkboxhidden_flagcustomposttype',parent).val( $('.checkboxhidden_flagcustomposttype',parent).parent().data('custom-post-type'));
         });
-        $(".cb-disable").on('click',function(){
+        $(".cb-disable").click(function(){
             var parent = $(this).parents('.switch');
             $('.cb-enable',parent).removeClass('selected');
             $(this).addClass('selected');
@@ -237,11 +240,11 @@
             $('.checkboxhidden_flagproduct',parent).val("");
             $('.checkboxhidden_flagcustomposttype',parent).val("");
         });
-        $(".cb-enable.dependence").on('click',function(){
+        $(".cb-enable.dependence").click(function(){
             $($(this).data('hide')).fadeOut();
             $($(this).data('show')).fadeIn();
         });
-        $(".cb-disable.dependence").on('click',function(){
+        $(".cb-disable.dependence").click(function(){
             $($(this).data('hide')).fadeOut();
             $($(this).data('show')).fadeIn();
         });
@@ -558,19 +561,11 @@
 
                     $input_gallery_items.val(ids);
 
-
-	                var data = {
-		                action: 'bridge_qode_gallery_upload_get_images',
-		                ids: ids,
-		                post_name: $input_gallery_items.attr('name'),
-		                upload_gallery_nonce: $('#bridge-qode-update-images_' + $input_gallery_items.attr('name')).val()
-	                }
-
                     jQuery.ajax({
                         type: "post",
                         url: ajaxurl,
-	                    data:data,
-	                    success: function(data) {
+                        data: "action=qode_gallery_upload_get_images&ids=" + ids,
+                        success: function(data) {
 
                             $thumbs_wrap.empty().html(data);
 
@@ -584,7 +579,7 @@
 
             init: function() {
 
-                $qodef_upload_button.on('click',function(event) {
+                $qodef_upload_button.click(function(event) {
 
                     $thumbs_wrap = $(this).parent().prev().prev();
                     $input_gallery_items = $thumbs_wrap.next();
@@ -594,7 +589,7 @@
 
                 });
 
-                $qodef_clear_button.on('click',function(event) {
+                $qodef_clear_button.click(function(event) {
 
                     $thumbs_wrap = $qodef_upload_button.parent().prev().prev();
                     $input_gallery_items = $thumbs_wrap.next();
@@ -734,7 +729,7 @@
 		var qode_portfolio_additional_item = $('.qodef-portfolio-additional-item-holder').clone().html();
         $portfolio_item = '<div class="qodef-portfolio-additional-item" rel="">'+ qode_portfolio_additional_item +'</div>';
 		
-		$('a.qodef-add-item').on('click',function (event) {
+		$('a.qodef-add-item').click(function (event) {
 			event.preventDefault();
 			$(this).parent().before($($portfolio_item).hide().fadeIn(500));
             var portfolio_num = $(this).parent().siblings('.qodef-portfolio-additional-item').length;
@@ -878,7 +873,7 @@
         var qodef_portfolio_videos = $('.qodef-hidden-portfolio-videos').clone().html();
 
         $portfolio_videos = '<div class="qodef-portfolio-videos qodef-portfolio-media" rel="">'+ qodef_portfolio_videos +'</div>';
-        $('a.qodef-add-image').on('click',function (e) {
+        $('a.qodef-add-image').click(function (e) {
             e.preventDefault();
             $(this).parent().before($($portfolio_image).hide().fadeIn(500));
             var portfolio_num = $(this).parent().siblings('.qodef-portfolio-media').length;
@@ -888,7 +883,7 @@
             $(this).parent().prev().find('.number').text(portfolio_num);
         });
 
-        $('a.qodef-add-video').on('click',function (e) {
+        $('a.qodef-add-video').click(function (e) {
             e.preventDefault();
             $(this).parent().before($($portfolio_videos).hide().fadeIn(500));
             var portfolio_num = $(this).parent().siblings('.qodef-portfolio-media').length;
@@ -1132,7 +1127,7 @@
     }
 
     function qodefInitAjaxForm() {
-        $('#qode_top_save_button').on('click', function() {
+        $('#qode_top_save_button').click( function() {
             $('.qode_ajax_form').submit();
             if ($('.qodef-input-change.yes').length) {
                 $('.qodef-input-change.yes').removeClass('yes');
@@ -1144,7 +1139,7 @@
         $(document).delegate(".qode_ajax_form", "submit", function (a) {
         var b = $(this);
         var c = {
-            action: "bridge_qode_save_options"
+            action: "qodef_save_options"
         };
         jQuery.ajax({
             url: ajaxurl,
@@ -1160,8 +1155,7 @@
     }
 
     function qodefInitDatePicker() {
-        $( ".qodef-input.datepicker:not(.qodef-formatted-date)" ).datepicker( { dateFormat: "MM dd, yy" });
-        $( ".qodef-input.datepicker.qodef-formatted-date" ).datepicker( { dateFormat: "yy-mm-dd" });
+        $( ".qodef-input.datepicker" ).datepicker( { dateFormat: "MM dd, yy" });
     }
 
 	function qodeImportThemeOptions(){
@@ -1199,6 +1193,205 @@
 		}
 	}
 
+	function qodeShowDemoExample(){
+		var optionSelected = $("#import_example option:selected").val();
+		$('#demo_site_img').attr('src', 'http://export.qodethemes.com/bridge-admin/images/demos/' + optionSelected + '.jpg' );
+		$('#qode-required-plugins').fadeOut(100);
+		jQuery.ajax({
+			type: 'POST',
+			url: ajaxurl,
+			dataType: 'html',
+			data: {
+				action: 'qode_requiredPluginsList',
+				example: optionSelected,
+			},
+			success: function(response){
+				$('#qode-required-plugins').html(response).fadeIn(100);
+			},
+			error: function(){
+				$('#qode-required-plugins').empty();
+			}
+		});
+	}
+
+	function qodeDemosPluginsToInstall(){
+		$('#qode-required-plugins').on('click', '.qode-demo-plugin-install-link', function (e) {
+			e.preventDefault();
+			var $this = $(this);
+			$this.next('.spinner').addClass('active');
+			var reqiredPlugins = $this.closest('#qode-required-plugins').find('.qode-required-demo-plugins-list').data('required-demo-plugins');
+			var link = $this.attr('href');
+			jQuery.ajax({
+				type: 'POST',
+				url: ajaxurl,
+				dataType: 'json',
+				data: {
+					action: 'qode_pluginsToInstall',
+					reqiredPlugins: reqiredPlugins,
+					link: link
+				},
+				success: function(response){
+					$this.next('.spinner').removeClass('active');
+					window.location.href = response['link'];
+				},
+				error: function(){
+
+				}
+			});
+			return false;
+		});
+	}
+	
+	
+	function qodeDemosImport(){
+		$(document).on('click', '#import_demo_data', function(e) {
+			e.preventDefault();
+			if ($( "#import_option" ).val() == "") {
+				alert('Please select Import Type.');
+				return false;
+			}
+			if (confirm('Are you sure, you want to import Demo Data now?')) {
+				$('.import_load').css('display','block');
+				var progressbar = $('#progressbar')
+				var import_opt = $( "#import_option" ).val();
+				var import_expl = $( "#import_example" ).val();
+				var p = 0;
+				if(import_opt == 'content'){
+					for(var i=1;i<10;i++){
+						var str;
+						if (i < 10) str = 'bridge_content_0'+i+'.xml';
+						else str = 'bridge_content_'+i+'.xml';
+						jQuery.ajax({
+							type: 'POST',
+							url: ajaxurl,
+							data: {
+								action: 'qode_dataImport',
+								xml: str,
+								example: import_expl,
+								import_attachments: ($("#import_attachments").is(':checked') ? 1 : 0)
+							},
+							success: function(data, textStatus, XMLHttpRequest){
+								p+= 10;
+								$('.progress-value').html((p) + '%');
+								progressbar.val(p);
+								if (p == 90) {
+									str = 'bridge_content_10.xml';
+									jQuery.ajax({
+										type: 'POST',
+										url: ajaxurl,
+										data: {
+											action: 'qode_dataImport',
+											xml: str,
+											example: import_expl,
+											import_attachments: ($("#import_attachments").is(':checked') ? 1 : 0)
+										},
+										success: function(data, textStatus, XMLHttpRequest){
+											p+= 10;
+											$('.progress-value').html((p) + '%');
+											progressbar.val(p);
+											$('.progress-bar-message').html('<div class="alert alert-success"><strong>Import is completed</strong></div>');
+										},
+										error: function(MLHttpRequest, textStatus, errorThrown){
+										}
+									});
+								}
+							},
+							error: function(MLHttpRequest, textStatus, errorThrown){
+							}
+						});
+					}
+				} else if(import_opt == 'widgets') {
+					jQuery.ajax({
+						type: 'POST',
+						url: ajaxurl,
+						data: {
+							action: 'qode_widgetsImport',
+							example: import_expl
+						},
+						success: function(data, textStatus, XMLHttpRequest){
+							$('.progress-value').html((100) + '%');
+							progressbar.val(100);
+						},
+						error: function(MLHttpRequest, textStatus, errorThrown){
+						}
+					});
+					$('.progress-bar-message').html('<div class="alert alert-success"><strong>Import is completed</strong></div>');
+				} else if(import_opt == 'options'){
+					jQuery.ajax({
+						type: 'POST',
+						url: ajaxurl,
+						data: {
+							action: 'qode_optionsImport',
+							example: import_expl
+						},
+						success: function(data, textStatus, XMLHttpRequest){
+							$('.progress-value').html((100) + '%');
+							progressbar.val(100);
+						},
+						error: function(MLHttpRequest, textStatus, errorThrown){
+						}
+					});
+					$('.progress-bar-message').html('<div class="alert alert-success"><strong>Import is completed</strong></div>');
+				}else if(import_opt == 'complete_content'){
+					for(var i=1;i<10;i++){
+						var str;
+						if (i < 10) str = 'bridge_content_0'+i+'.xml';
+						else str = 'bridge_content_'+i+'.xml';
+						jQuery.ajax({
+							type: 'POST',
+							url: ajaxurl,
+							data: {
+								action: 'qode_dataImport',
+								xml: str,
+								example: import_expl,
+								import_attachments: ($("#import_attachments").is(':checked') ? 1 : 0)
+							},
+							success: function(data, textStatus, XMLHttpRequest){
+								p+= 10;
+								$('.progress-value').html((p) + '%');
+								progressbar.val(p);
+								if (p == 90) {
+									str = 'bridge_content_10.xml';
+									jQuery.ajax({
+										type: 'POST',
+										url: ajaxurl,
+										data: {
+											action: 'qode_dataImport',
+											xml: str,
+											example: import_expl,
+											import_attachments: ($("#import_attachments").is(':checked') ? 1 : 0)
+										},
+										success: function(data, textStatus, XMLHttpRequest){
+											jQuery.ajax({
+												type: 'POST',
+												url: ajaxurl,
+												data: {
+													action: 'qode_otherImport',
+													example: import_expl
+												},
+												success: function(data, textStatus, XMLHttpRequest){
+													$('.progress-value').html((100) + '%');
+													progressbar.val(100);
+													$('.progress-bar-message').html('<div class="alert alert-success">Import is completed.</div>');
+												},
+												error: function(MLHttpRequest, textStatus, errorThrown){
+												}
+											});
+										},
+										error: function(MLHttpRequest, textStatus, errorThrown){
+										}
+									});
+								}
+							},
+							error: function(MLHttpRequest, textStatus, errorThrown){
+							}
+						});
+					}
+				}
+			}
+			return false;
+		});
+	}
 
     function qodefSelect2() {
         var holder = $('select.qodef-select2');
@@ -1279,49 +1472,5 @@
             });
         }
     }
-
-	function qodefShowHidePostFormats() {
-		$('input[name="post_format"]').each(function () {
-			var id = $(this).attr('id');
-
-			if (id !== '' && id !== undefined) {
-				var metaboxName = id.replace(/-/g, '_');
-
-				$('#qodef-meta-box-' + metaboxName + '_meta').hide();
-			}
-		});
-
-		var selectedId = $("input[name='post_format']:checked").attr("id");
-
-		if (selectedId !== '' && selectedId !== undefined) {
-			var selected = selectedId.replace(/-/g, '_');
-			$('#qodef-meta-box-' + selected + '_meta').fadeIn();
-		}
-
-		$("input[name='post_format']").change(function () {
-			qodefShowHidePostFormats();
-		});
-	}
-
-	function qodefShowHidePostFormatsGutenberg() {
-		var gutenbergEditor = $('.block-editor__container, .gutenberg__editor');
-
-		if(gutenbergEditor.length) {
-
-			var gPostFormatField = gutenbergEditor.find('.editor-post-format');
-			gPostFormatField.find('select option').each(function () {
-				$('#qodef-meta-box-post_format_' + $(this).val() + '_meta').hide();
-			});
-
-			if (gPostFormatField.find('select option:selected')) {
-				$('#qodef-meta-box-post_format_' + gPostFormatField.find('select option:selected').val() + '_meta').fadeIn();
-			}
-
-			gPostFormatField.find('select').change(function(){
-				qodefShowHidePostFormatsGutenberg();
-			})
-		}
-	}
-
 
 })(jQuery);

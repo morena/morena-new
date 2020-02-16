@@ -5,20 +5,18 @@
 
     function qodefTwitterRequestToken() {
         if($('#qodef-tw-request-token-btn').length) {
-            $('#qodef-tw-request-token-btn').on('click', function(e) {
+            $('#qodef-tw-request-token-btn').click(function(e) {
                 e.preventDefault();
 
                 var that = $(this);
                 var currentPageUrl = $('input[data-name="current-page-url"]').val();
-                var twitterConnectNonce = $('input[name="bridge_qode_twitter_connect"]').val();
 
                 //@TODO get this from data attr
                 $(this).text('Working...');
 
                 var data = {
-                    action: 'bridge_qode_twitter_obtain_request_token',
-                    currentPageUrl: currentPageUrl,
-	                bridge_qode_twitter_connect: twitterConnectNonce
+                    action: 'qode_twitter_obtain_request_token',
+                    currentPageUrl: currentPageUrl
                 }
 
                 $.ajax({

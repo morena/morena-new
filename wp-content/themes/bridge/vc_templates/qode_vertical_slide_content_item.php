@@ -42,5 +42,5 @@ $qode_splitted_item_data = "data-header_style='".$header_style."'"; //render emp
 $html .= "<div class='ms-section' ".$qode_splitted_item_style." ".$qode_splitted_item_data." >";
 $html .= do_shortcode($content);
 $html .= "</div>";
-echo bridge_qode_get_module_part( $html );
+echo $html;
 

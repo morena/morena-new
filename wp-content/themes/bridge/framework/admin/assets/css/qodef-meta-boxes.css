@@ -161,12 +161,6 @@ position: absolute;
 	padding-left: 20px;
 	background: #F2F4F5;
 }
-.qodef-meta-box .iris-picker,
-.qodef-meta-box .iris-picker * {
-    -moz-box-sizing: content-box;
-    -webkit-box-sizing: content-box;
-    box-sizing: content-box;
-}
 
 .qodef-page .qodef-page-section-subtitle {
     color:#a2a9af;
@@ -189,38 +183,3 @@ position: absolute;
     /*border-left: 18px solid #dbdee0;*/
     display: none;
 }
-
-/* Meta Boxes Repeater Field Style - Begin */
-
-.qodef-meta-box-holder .qodef-repeater-wrapper .qodef-repeater-fields-holder{
-    padding-bottom: 0;
-}
-
-.qodef-meta-box-holder .qodef-repeater-wrapper .qodef-repeater-fields-holder:last-of-type{
-    padding-bottom: 40px;
-}
-
-.qodef-meta-box-holder .qodef-repeater-wrapper .qodef-repeater-fields-holder .qodef-repeater-sort{
-    border: 1px solid #ececec;
-    border-bottom: none;
-}
-
-.qodef-meta-box-holder .qodef-repeater-wrapper .qodef-repeater-fields-holder:last-of-type .qodef-repeater-sort{
-    border-bottom: 1px solid #ececec;
-}
-
-.qodef-meta-box-holder .qodef-repeater-wrapper .qodef-repeater-fields-holder .qodef-repeater-fields{
-    border-right: 1px solid #ececec;
-    border-top: 1px solid #ececec;
-    padding-bottom: 10px;
-}
-
-.qodef-meta-box-holder .qodef-repeater-wrapper .qodef-repeater-fields-holder:last-of-type .qodef-repeater-fields{
-    border-bottom: 1px solid #ececec;
-}
-
-.qodef-meta-box-holder .qodef-repeater-wrapper .qodef-repeater-fields-holder .qodef-repeater-fields .qodef-repeater-field-row:last-of-type .qodef-page-form-section{
-    border-bottom: none;
-}
-
-/* Meta Boxes Repeater Field Style - Begin */

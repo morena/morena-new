@@ -2,7 +2,7 @@
 
 // Code in else part is because of compatibility for older versions of VC.
 
-if(version_compare(bridge_qode_get_vc_version(), '4.7.4') >= 0) {
+if(version_compare(qode_get_vc_version(), '4.7.4') >= 0) {
 	/**
 	 * Shortcode attributes
 	 * @var $atts
@@ -91,7 +91,7 @@ if(version_compare(bridge_qode_get_vc_version(), '4.7.4') >= 0) {
 			break;
 
 		case 'external_link':
-			$dimensions = function_exists('vc_extract_dimensions') ?  vc_extract_dimensions( $external_img_size ) : vcExtractDimensions( $external_img_size );
+			$dimensions = vcExtractDimensions( $external_img_size );
 			$hwstring = $dimensions ? image_hwstring( $dimensions[0], $dimensions[1] ) : '';
 
 			$custom_src = $custom_src ? esc_attr( $custom_src ) : $default_src;
@@ -148,7 +148,7 @@ if(version_compare(bridge_qode_get_vc_version(), '4.7.4') >= 0) {
 //			wp_enqueue_style( 'prettyphoto' );
 
 			$a_attrs['class'] = 'qode-prettyphoto qode-single-image-pretty-photo';
-			$a_attrs['data-rel'] = 'prettyPhoto[rel-' . get_the_ID() . '-' . wp_rand() . ']';
+			$a_attrs['data-rel'] = 'prettyPhoto[rel-' . get_the_ID() . '-' . rand() . ']';
 
 			// backward compatibility
 			if ( vc_has_class( 'prettyphoto', $el_class ) ) {
@@ -197,7 +197,7 @@ if(version_compare(bridge_qode_get_vc_version(), '4.7.4') >= 0) {
 
 			$html .= '<div class ="bottom_title_holder">';
 			$html .= 	'<div class="image_caption">';
-			$html .=		'<div>' . esc_html($caption) . '</div>';
+			$html .=		'<div>' . esc_html__($caption) . '</div>';
 			$html .= '</div>';
 			$html .= '</div>';
 
@@ -217,7 +217,6 @@ if(version_compare(bridge_qode_get_vc_version(), '4.7.4') >= 0) {
 	$css_class = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, $class_to_filter, $this->settings['base'], $atts );
 
 	if ( in_array( $source, array( 'media_library', 'featured_image' ) ) && 'yes' === $add_caption ) {
-		$img_id = apply_filters( 'wpml_object_id', $img_id, 'attachment' );
 		$post = get_post( $img_id );
 		$caption = $post->post_excerpt;
 	} else {
@@ -259,7 +258,7 @@ if(version_compare(bridge_qode_get_vc_version(), '4.7.4') >= 0) {
 	</div>
 ';
 
-	echo bridge_qode_get_module_part( $output );
+	echo $output;
 
 } else { 
 	$output = $el_class = $image = $img_size = $img_link = $img_link_target = $img_link_large = $title = $alignment = $css_animation = $css = '';
@@ -300,7 +299,7 @@ if(version_compare(bridge_qode_get_vc_version(), '4.7.4') >= 0) {
 
 	if ( $img == null ) {
 		$img['thumbnail'] = '<img itemprop="image" class="vc_img-placeholder vc_single_image-img" src="' . vc_asset_url( 'vc/no_image.png' ) . '" />';
-	}
+	}//' <small>'.__('This is image placeholder, edit your page to replace it.', 'js_composer').'</small>';
 	$el_class = $this->getExtraClass( $el_class );
 
 	$a_class = '';
@@ -310,7 +309,7 @@ if(version_compare(bridge_qode_get_vc_version(), '4.7.4') >= 0) {
 		if ( in_array( "prettyphoto", $tmp_class ) ) {
 			wp_enqueue_script( 'prettyphoto' );
 			wp_enqueue_style( 'prettyphoto' );
-			$a_class = ' class="prettyphoto"' . ' rel="prettyPhoto[rel-' . get_the_ID() . '-' . wp_rand() . ']"';
+			$a_class = ' class="prettyphoto"' . ' rel="prettyPhoto[rel-' . get_the_ID() . '-' . rand() . ']"';
 			$el_class = str_ireplace( " prettyphoto", "", $el_class );
 		}
 	}
@@ -362,5 +361,5 @@ if(version_compare(bridge_qode_get_vc_version(), '4.7.4') >= 0) {
 	$output .= "\n\t\t".'</div>';
 	$output .= "\n\t" . '</div> ' . $this->endBlockComment( '.wpb_single_image' );
 
-	echo bridge_qode_get_module_part( $output );
+	echo $output;
 }

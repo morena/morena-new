@@ -1,7 +1,7 @@
 <?php
 $output = $title = $title_align = $el_class = '';
 extract(shortcode_atts(array(
-    'title' => esc_html__('Title', 'bridge'),
+    'title' => __("Title", "js_composer"),
     'title_align' => 'separator_align_center',
     'border' => '',
     'border_color' => '',
@@ -31,4 +31,4 @@ $output .= '<span>' . $title . '</span>';
 
 $output .='</div></div>'.$this->endBlockComment('separator')."\n";
 
-echo bridge_qode_get_module_part( $output );
+echo $output;

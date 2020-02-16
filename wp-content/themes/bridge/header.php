@@ -1,60 +1,69 @@
-<?php
-$bridge_qode_options = bridge_qode_return_global_options();
-?>
+<?php global $qode_options_proya, $wp_query; ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>" />
 	<?php
-    $bridge_qode_is_IE = bridge_qode_return_is_ie_variable();
+	if (isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false)) {
+		echo('<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">');
+	} ?>
 
-	if ( ! empty( $bridge_qode_is_IE ) && $bridge_qode_is_IE ) { ?>
-		<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
-	<?php } ?>
+	<title><?php wp_title(''); ?></title>
 
 	<?php
 	/**
-	 * bridge_qode_header_meta hook
+	 * qode_header_meta hook
 	 *
-	 * @see bridge_core_header_meta() - hooked with 10
-	 * @see bridge_qode_user_scalable_meta() - hooked with 10
+	 * @see qode_header_meta() - hooked with 10
+	 * @see qode_user_scalable_meta() - hooked with 10
 	 */
-	do_action('bridge_qode_action_header_meta');
+	do_action('qode_header_meta');
 	?>
 
 	<link rel="profile" href="http://gmpg.org/xfn/11" />
 	<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
-
+    <?php if(qode_options()->getOption('favicon_image') !== ''){ ?>
+        <link rel="shortcut icon" type="image/x-icon" href="<?php echo esc_url($qode_options_proya['favicon_image']); ?>">
+        <link rel="apple-touch-icon" href="<?php echo esc_url($qode_options_proya['favicon_image']); ?>"/>
+    <?php } ?>
 	<?php wp_head(); ?>
 </head>
 
 <body <?php body_class(); ?> itemscope itemtype="http://schema.org/WebPage">
 
-
 <?php
-//Wordpress 5.2 default action
-do_action( 'wp_body_open' );
-
-?>
-
-<?php
-$params = bridge_qode_header_parameters();
+$params = qode_header_parameters();
 extract($params);
 
-echo bridge_qode_get_module_template_part('templates/parts/ajax-loader', 'header');
+echo qode_get_module_template_part('templates/parts/ajax-loader', 'header');
 
-echo bridge_qode_get_module_template_part('templates/side-area/side-area', 'header', '', $params);
-echo bridge_qode_get_module_template_part('templates/panel-area', 'panel-area', '', $params);
+echo qode_get_module_template_part('templates/side-area/side-area', 'header', '', $params);
 ?>
 
 <div class="wrapper">
 	<div class="wrapper_inner">
 
-    <?php do_action('bridge_qode_action_after_wrapper_inner'); ?>
+    <?php do_action('qode_after_wrapper_inner'); ?>
+
+    <!-- Google Analytics start -->
+    <?php if (qode_options()->getOptionValue('google_analytics_code') != ""){?>
+        <script>
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', '<?php echo $qode_options_proya['google_analytics_code']; ?>']);
+            _gaq.push(['_trackPageview']);
+
+            (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+    <?php } ?>
+    <!-- Google Analytics end -->
 
 	<?php
     if($enable_vertical_menu) {
-		echo bridge_qode_get_module_template_part('templates/vertical-header', 'header', '', $params);
+		echo qode_get_module_template_part('templates/vertical-header', 'header', '', $params);
 	}else{
         switch($header_bottom_appearance){
             case 'stick menu_bottom':
@@ -67,23 +76,23 @@ echo bridge_qode_get_module_template_part('templates/panel-area', 'panel-area', 
                 $header_appearance_slug = $header_bottom_appearance;
             break;
         }
-        echo bridge_qode_get_module_template_part('templates/header-appearance/header', 'header', $header_appearance_slug, $params);
+        echo qode_get_module_template_part('templates/header-appearance/header', 'header', $header_appearance_slug, $params);
     }
 
-	echo bridge_qode_get_module_template_part('templates/parts/back-to-top', 'header', '', $params);
-	echo bridge_qode_get_module_template_part('templates/popup-menu/popup-menu', 'header', '', $params);
-	echo bridge_qode_get_module_template_part('templates/parts/fullscreen-search', 'header', '', $params);
+	echo qode_get_module_template_part('templates/parts/back-to-top', 'header', '', $params);
+	echo qode_get_module_template_part('templates/popup-menu/popup-menu', 'header', '', $params);
+	echo qode_get_module_template_part('templates/parts/fullscreen-search', 'header', '', $params);
     ?>
 	
 	
-    <?php if(bridge_qode_options()->getOptionValue('paspartu') == 'yes'){ ?>
-    <div class="paspartu_outer <?php echo bridge_qode_get_paspartu_class(); ?>">
-        <?php if(bridge_qode_options()->getOptionValue('vertical_area') == "yes" && bridge_qode_options()->getOptionValue('vertical_menu_inside_paspartu') == 'no') { ?>
+    <?php if(qode_options()->getOptionValue('paspartu') == 'yes'){ ?>
+    <div class="paspartu_outer <?php echo qode_get_paspartu_class(); ?>">
+        <?php if(qode_options()->getOptionValue('vertical_area') == "yes" && qode_options()->getOptionValue('vertical_menu_inside_paspartu') == 'no') { ?>
             <div class="paspartu_middle_inner">
         <?php }?>
 
-        <?php if((bridge_qode_options()->getOptionValue('paspartu_on_top') == 'yes' && bridge_qode_options()->getOptionValue('paspartu_on_top_fixed') == 'yes') ||
-            (bridge_qode_options()->getOptionValue('vertical_area') == "yes" && bridge_qode_options()->getOptionValue('vertical_menu_inside_paspartu') == 'yes')){ ?>
+        <?php if((qode_options()->getOptionValue('paspartu_on_top') == 'yes' && qode_options()->getOptionValue('paspartu_on_top_fixed') == 'yes') ||
+            (qode_options()->getOptionValue('vertical_area') == "yes" && qode_options()->getOptionValue('vertical_menu_inside_paspartu') == 'yes')){ ?>
             <div class="paspartu_top"></div>
         <?php }?>
 
@@ -99,35 +108,27 @@ echo bridge_qode_get_module_template_part('templates/panel-area', 'panel-area', 
             ?>
         </div>
     <?php } ?>
-	
-    <?php if(is_active_sidebar('right_side_fixed')){ ?>
-        <div class="qode_right_side_fixed">
-	        <?php
-	        dynamic_sidebar('right_side_fixed');
-	        ?>
-        </div>
-    <?php } ?>
 
-    <div class="content <?php echo bridge_qode_get_content_class(); ?>">
+    <div class="content <?php echo qode_get_content_class(); ?>">
     <?php
     $animation = get_post_meta($id, "qode_show-animation", true);
     if (!empty($_SESSION['qode_animation']) && $animation == ""){ $animation = $_SESSION['qode_animation']; }
-    if(in_array(bridge_qode_options()->getOptionValue('page_transitions'), array('1', '2', '3', '4')) || in_array($animation, array("updown","fade","updown_fade","leftright"))){ ?>
+    if(in_array(qode_options()->getOptionValue('page_transitions'), array('1', '2', '3', '4')) || in_array($animation, array("updown","fade","updown_fade","leftright"))){ ?>
         <div class="meta">
 
             <?php
             /**
-             * bridge_qode_action_ajax_meta hook
+             * qode_ajax_meta hook
              *
-             * @hooked bridge_qode_action_ajax_meta - 10
+             * @hooked qode_ajax_meta - 10
              */
-            do_action('bridge_qode_action_ajax_meta'); ?>
+            do_action('qode_ajax_meta'); ?>
 
-            <span id="qode_page_id"><?php echo esc_attr( bridge_qode_get_page_id() ); ?></span>
+            <span id="qode_page_id"><?php echo $wp_query->get_queried_object_id(); ?></span>
             <div class="body_classes"><?php echo implode( ',', get_body_class()); ?></div>
         </div>
     <?php } ?>
-    <div class="content_inner <?php echo esc_attr( $animation );?> ">
-    <?php if(in_array(bridge_qode_options()->getOptionValue('page_transitions'), array('1', '2', '3', '4')) || in_array($animation, array("updown","fade","updown_fade","leftright"))){
-         do_action('bridge_qode_action_visual_composer_custom_shortcodce_css');
+    <div class="content_inner <?php echo $animation;?> ">
+    <?php if(in_array(qode_options()->getOptionValue('page_transitions'), array('1', '2', '3', '4')) || in_array($animation, array("updown","fade","updown_fade","leftright"))){
+         do_action('qode_visual_composer_custom_shortcodce_css');
     } ?>

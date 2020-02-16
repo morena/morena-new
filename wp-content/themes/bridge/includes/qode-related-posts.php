@@ -1,6 +1,6 @@
 <?php
 
-if ( ! function_exists('bridge_qode_get_related_post_type')) {
+if ( ! function_exists('qode_get_related_post_type')) {
 	/**
 	 * Function for returning latest posts types
 	 *
@@ -8,7 +8,7 @@ if ( ! function_exists('bridge_qode_get_related_post_type')) {
 	 * @param array $options
 	 * @return WP_Query
 	 */
-	function bridge_qode_get_related_post_type($post_id, $options = array()) {
+	function qode_get_related_post_type($post_id, $options = array()) {
 
 		$post_type = get_post_type($post_id);
 		//Get tags
@@ -36,9 +36,9 @@ if ( ! function_exists('bridge_qode_get_related_post_type')) {
 		if ($tag_ids) {
 
 			if ($post_type == 'portfolio_page') {
-				$related_by_tag = bridge_qode_get_related_custom_post_type_by_param($post_id, $tag_ids, 'portfolio_tag', $options); //For Custom Posts
+				$related_by_tag = qode_get_related_custom_post_type_by_param($post_id, $tag_ids, 'portfolio_tag', $options); //For Custom Posts
 			} else {
-				$related_by_tag = bridge_qode_get_related_posts($post_id, $tag_ids, 'tag', $options);
+				$related_by_tag = qode_get_related_posts($post_id, $tag_ids, 'tag', $options);
 			}
 
 			if (!empty($related_by_tag->posts)) {
@@ -51,9 +51,9 @@ if ( ! function_exists('bridge_qode_get_related_post_type')) {
 		if ($categories && !$hasRelatedByTag) {
 
 			if ($post_type == 'portfolio_page') {
-				$related_by_category = bridge_qode_get_related_custom_post_type_by_param($post_id, $category_ids, 'portfolio_category', $options);
+				$related_by_category = qode_get_related_custom_post_type_by_param($post_id, $category_ids, 'portfolio_category', $options);
 			} else {
-				$related_by_category = bridge_qode_get_related_posts($post_id, $category_ids, 'category', $options);
+				$related_by_category = qode_get_related_posts($post_id, $category_ids, 'category', $options);
 			}
 
 			if (!empty($related_by_category->posts)) {
@@ -68,7 +68,7 @@ if ( ! function_exists('bridge_qode_get_related_post_type')) {
 
 }
 
-if ( ! function_exists('bridge_qode_get_related_posts') ) {
+if ( ! function_exists('qode_get_related_posts') ) {
 	/**
 	 * Function for related posts
 	 *
@@ -78,7 +78,7 @@ if ( ! function_exists('bridge_qode_get_related_posts') ) {
 	 * @param array $options
 	 * @return WP_Query
 	 */
-	function bridge_qode_get_related_posts($post_id, $term_ids, $slug, $options = array()) {
+	function qode_get_related_posts($post_id, $term_ids, $slug, $options = array()) {
 
 		//Query options
 		$posts_per_page = -1;
@@ -101,7 +101,7 @@ if ( ! function_exists('bridge_qode_get_related_posts') ) {
 	}
 }
 
-if ( ! function_exists('bridge_qode_get_related_custom_post_type_by_param') ) {
+if ( ! function_exists('qode_get_related_custom_post_type_by_param') ) {
 	/**
 	 * @param $post_id - Post ID
 	 * @param $term_ids - Category or Tag IDs
@@ -109,7 +109,7 @@ if ( ! function_exists('bridge_qode_get_related_custom_post_type_by_param') ) {
 	 * @param array $options
 	 * @return WP_Query
 	 */
-	function bridge_qode_get_related_custom_post_type_by_param($post_id, $term_ids, $taxonomy, $options = array()) {
+	function qode_get_related_custom_post_type_by_param($post_id, $term_ids, $taxonomy, $options = array()) {
 
 		//Query options
 		$posts_per_page = -1;

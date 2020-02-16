@@ -1,5 +1,5 @@
 <?php
-if ( ! function_exists('bridge_qode_blog_image_size_media') ) {
+if ( ! function_exists( 'qode_blog_image_size_media' ) ) {
     /**
      * Add Blog Image Sizes option
      *
@@ -8,13 +8,13 @@ if ( ! function_exists('bridge_qode_blog_image_size_media') ) {
      *
      * @return mixed
      */
-    function bridge_qode_blog_image_size_media($form_fields, $post ) {
+    function qode_blog_image_size_media( $form_fields, $post ) {
 
         $options = array(
-            'default'   => esc_html__('Default', 'bridge'),
-            'large_height' => esc_html__('Large Height', 'bridge'),
-            'large_width' => esc_html__('Large Width', 'bridge'),
-            'large_width_height' => esc_html__('Large Width/Height', 'bridge')
+            'default'   => esc_html__('Default', 'qode'),
+            'large_height' => esc_html__('Large Height', 'qode'),
+            'large_width' => esc_html__('Large Width', 'qode'),
+            'large_width_height' => esc_html__('Large Width/Height', 'qode')
         );
 
         $html = '';
@@ -42,11 +42,11 @@ if ( ! function_exists('bridge_qode_blog_image_size_media') ) {
         return $form_fields;
     }
 
-    add_filter( 'attachment_fields_to_edit', 'bridge_qode_blog_image_size_media', 10, 2 );
+    add_filter( 'attachment_fields_to_edit', 'qode_blog_image_size_media', 10, 2 );
 
 }
 
-if ( ! function_exists('bridge_qode_blog_image_size_media_save') ) {
+if ( ! function_exists( 'qode_blog_image_size_media_save' ) ) {
     /**
      * Save values of Portfolio Image sizes in media uploader
      *
@@ -55,7 +55,7 @@ if ( ! function_exists('bridge_qode_blog_image_size_media_save') ) {
      *
      * @return mixed
      */
-    function bridge_qode_blog_image_size_media_save($post, $attachment ) {
+    function qode_blog_image_size_media_save( $post, $attachment ) {
 
         if( isset( $attachment['blog-image-size'] ) ) {
             update_post_meta( $post['ID'], 'blog_image_size', $attachment['blog-image-size'] );
@@ -65,17 +65,17 @@ if ( ! function_exists('bridge_qode_blog_image_size_media_save') ) {
 
     }
 
-    add_filter( 'attachment_fields_to_save', 'bridge_qode_blog_image_size_media_save', 10, 2 );
+    add_filter( 'attachment_fields_to_save', 'qode_blog_image_size_media_save', 10, 2 );
 
 }
 
-if(! function_exists('bridge_qode_get_blog_gallery_layout')) {
+if(! function_exists('qode_get_blog_gallery_layout')) {
     /**
      * Function get blog masonry layout for gallery post type
      *
      * return html
      */
-    function bridge_qode_get_blog_gallery_layout($array_id, $wrap = false)
+    function qode_get_blog_gallery_layout($array_id, $wrap = false)
     {
         $html = '';
 
@@ -132,37 +132,37 @@ if(! function_exists('bridge_qode_get_blog_gallery_layout')) {
     }
 }
 
-if(! function_exists('bridge_qode_check_post_layout')){
+if(! function_exists('qode_check_post_layout')){
     /**
      * Function check post layout
      *
      * return string
      */
-    function bridge_qode_check_post_layout($id){
+    function qode_check_post_layout($id){
         $post_layout = get_post_meta($id, 'post_layout_meta', true);
         return $post_layout;
     }
 }
 
-if(! function_exists('bridge_qode_check_gallery_post_layout')){
+if(! function_exists('qode_check_gallery_post_layout')){
     /**
      * Function check gallery post layout
      *
      * return string
      */
-    function bridge_qode_check_gallery_post_layout($id){
+    function qode_check_gallery_post_layout($id){
         $gallery_post_layout = get_post_meta($id, 'gallery_type', true);
         return $gallery_post_layout;
     }
 }
 
-if(! function_exists('bridge_qode_blog_compound_get_sticky_posts')){
+if(! function_exists('qode_blog_compound_get_sticky_posts')){
     /**
      * Function that returns sticky posts
      *
      * return html
      */
-    function bridge_qode_blog_compound_get_sticky_posts($category, $paged){
+    function qode_blog_compound_get_sticky_posts($category,$paged){
 
         $args = array(
             'cat' => $category,
@@ -177,7 +177,7 @@ if(! function_exists('bridge_qode_blog_compound_get_sticky_posts')){
             echo '<div class="blog_compound sticky_posts">';
             while ($blog_query->have_posts()) {
                 $blog_query->the_post();
-                bridge_qode_get_template_part('templates/blog_compound_sticky', 'loop');
+                qode_get_template_part('templates/blog_compound_sticky', 'loop');
             }
             wp_reset_postdata();
             echo '</div>';
@@ -186,8 +186,8 @@ if(! function_exists('bridge_qode_blog_compound_get_sticky_posts')){
     }
 }
 
-if (!function_exists('bridge_qode_get_category_color')) {
-	function bridge_qode_get_category_color($term_id) {
+if (!function_exists('qode_get_category_color')) {
+	function qode_get_category_color($term_id) {
 		$cat_meta_color = get_term_meta($term_id,'category_color',true);
 
 		$category_color = '';
@@ -199,9 +199,9 @@ if (!function_exists('bridge_qode_get_category_color')) {
 	}
 }
 
-if (!function_exists('bridge_qode_get_category_color_name')) {
-	function bridge_qode_get_category_color_name($category, $count) {
-		$category_color = bridge_qode_get_category_color($category->term_id);
+if (!function_exists('qode_get_category_color_name')) {
+	function qode_get_category_color_name($category, $count) {
+		$category_color = qode_get_category_color($category->term_id);
 		$category_link = get_category_link($category->term_id);
 		$category_count = $category->count;
 		$category_name = get_cat_name($category->term_id);
@@ -220,8 +220,8 @@ if (!function_exists('bridge_qode_get_category_color_name')) {
 	}
 }
 
-if (!function_exists('bridge_qode_category_color_name')) {
-	function bridge_qode_category_color_name($term_id) {
-		echo bridge_qode_get_category_color_name($term_id, false);
+if (!function_exists('qode_category_color_name')) {
+	function qode_category_color_name($term_id) {
+		echo qode_get_category_color_name($term_id, false);
 	}
 }

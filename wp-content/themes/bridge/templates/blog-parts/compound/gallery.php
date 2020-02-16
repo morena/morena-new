@@ -22,7 +22,7 @@
             </div>
             <?php break;
         case 'masonry':
-            echo bridge_qode_get_blog_gallery_layout($array_id,true);
+            echo qode_get_blog_gallery_layout($array_id,true);
             break;
     } ?>
 </div>

@@ -1,8 +1,8 @@
 <?php
 
-if (!function_exists('bridge_qode_pagination')) {
-function bridge_qode_pagination($pages = '', $range = 4, $paged = 1){
-	global $bridge_qode_options;
+if (!function_exists('pagination')) {
+function pagination($pages = '', $range = 4, $paged = 1){  
+	global $qode_options_proya;
     $showitems = $range+1;  
  
     if($pages == ''){
@@ -11,8 +11,8 @@ function bridge_qode_pagination($pages = '', $range = 4, $paged = 1){
         if(!$pages){
             $pages = 1;
         }
-    }
-
+    }   
+ 
     if(1 != $pages){
         echo "<div class='pagination'><ul>";
         if($paged > 2 && $paged > $range+1 && $showitems < $pages) echo "<li class='first'><a itemprop='url' href='".get_pagenum_link(1)."'><i class='fa fa-angle-double-left'></i></a></li>";
@@ -24,12 +24,7 @@ function bridge_qode_pagination($pages = '', $range = 4, $paged = 1){
  
         for ($i=1; $i <= $pages; $i++){
             if (1 != $pages &&( !($i >= $paged+$range+1 || $i <= $paged-$range-1) || $pages <= $showitems )){
-                /*echo ($paged == $i)? "<li class='active'><span>".$i."</span></li>":"<li><a itemprop='url' href='".get_pagenum_link($i)."' class='inactive'>".$i."</a></li>";*/
-                if($paged == $i){
-                    echo "<li class='active'><span>".$i."</span></li>";
-                } else{
-                    echo "<li><a itemprop='url' href='".get_pagenum_link($i)."' class='inactive'>".$i."</a></li>";
-                }
+                echo ($paged == $i)? "<li class='active'><span>".$i."</span></li>":"<li><a itemprop='url' href='".get_pagenum_link($i)."' class='inactive'>".$i."</a></li>";
             }
         }
 		

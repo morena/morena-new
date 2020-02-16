@@ -1,17 +1,17 @@
 <?php
-if(!function_exists('bridge_qode_import_export_options_map')) {
+if(!function_exists('qode_import_export_options_map')) {
     /**
      * Import/Export options page
      */
-    function bridge_qode_import_export_options_map(){
+    function qode_import_export_options_map(){
 
-        $importexportPage = new BridgeQodeAdminPage("_importexport",  esc_html__( 'Import/Export Options', 'bridge'), "fa fa-database");
-        bridge_qode_framework()->qodeOptions->addAdminPage("Import/Export Options", $importexportPage);
+        $importexportPage = new QodeAdminPage("_importexport", "Import/Export Options", "fa fa-database");
+        qode_framework()->qodeOptions->addAdminPage("Import/Export Options", $importexportPage);
 
 
-        $panel1 = new BridgeQodeImportExport( esc_html__( 'Import/Export Options', 'bridge'), "importexport_section");
+        $panel1 = new QodeImportExport("Import/Export Options", "importexport_section");
 		$importexportPage->addChild("panel1", $panel1);
 
     }
-    add_action('bridge_qode_action_options_map','bridge_qode_import_export_options_map',215);
+    add_action('qode_options_map','qode_import_export_options_map',215);
 }

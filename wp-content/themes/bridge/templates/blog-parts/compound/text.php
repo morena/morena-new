@@ -1,4 +1,4 @@
 
 <div class="post_text">
-    <?php bridge_qode_excerpt(); ?>
+    <?php qode_excerpt(); ?>
 </div>

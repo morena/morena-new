@@ -5,9 +5,9 @@
  * 
  */
  
-if( ! class_exists('BridgeQodeSidebar') ){
+if( ! class_exists( 'qode_sidebar' ) ){
 	
-	class BridgeQodeSidebar{
+	class qode_sidebar{
 	
 		var $sidebars  = array();
 		var $stored    = "";
@@ -15,7 +15,7 @@ if( ! class_exists('BridgeQodeSidebar') ){
 		// load needed stuff on widget page
 		function __construct(){
 			$this->stored	= 'qode_sidebars';
-			$this->title = esc_html__('Custom Widget Area','bridge');
+			$this->title = __('Custom Widget Area','qode');
 		    
 			add_action('load-widgets.php', array(&$this, 'load_assets') , 5 );
 			add_action('widgets_init', array(&$this, 'register_custom_sidebars') , 1000 );
@@ -27,8 +27,8 @@ if( ! class_exists('BridgeQodeSidebar') ){
 			add_action('admin_print_scripts', array(&$this, 'template_add_widget_field') );
 			add_action('load-widgets.php', array(&$this, 'add_sidebar_area'), 100);
 			
-			wp_enqueue_script('bridge-qode-sidebar', QODE_ROOT . '/js/admin/qode-sidebar.js');
-			wp_enqueue_style( 'bridge-qode-sidebar', QODE_ROOT . '/css/admin/qode-sidebar.css');
+			wp_enqueue_script('qode_sidebar' , QODE_ROOT . '/js/admin/qode_sidebar.js');  
+			wp_enqueue_style( 'qode_sidebar' , QODE_ROOT . '/css/admin/qode_sidebar.css');
 		}
 		
 		//widget form template
@@ -39,8 +39,8 @@ if( ! class_exists('BridgeQodeSidebar') ){
 			echo "\n<script type='text/html' id='qode-add-widget'>";
 			echo "\n  <form class='qode-add-widget' method='POST'>";
 			echo "\n  <h3>". $this->title ."</h3>";
-			echo "\n    <span class='input_wrap'><input type='text' value='' placeholder = '".esc_html__('Enter Name of the new Widget Area', 'bridge')."' name='qode-add-widget' /></span>";
-			echo "\n    <input class='button' type='submit' value='".esc_html__('Add Widget Area', 'bridge')."' />";
+			echo "\n    <span class='input_wrap'><input type='text' value='' placeholder = '".__('Enter Name of the new Widget Area')."' name='qode-add-widget' /></span>";
+			echo "\n    <input class='button' type='submit' value='".__('Add Widget Area')."' />";
 			echo "\n    ".$nonce;
 			echo "\n  </form>";
 			echo "\n</script>\n";
@@ -50,7 +50,7 @@ if( ! class_exists('BridgeQodeSidebar') ){
 		function add_sidebar_area(){
 			if(!empty($_POST['qode-add-widget'])){
 				$this->sidebars = get_option($this->stored);
-				$name = $this->get_name(sanitize_text_field($_POST['qode-add-widget']));
+				$name = $this->get_name($_POST['qode-add-widget']);
 
 				if(empty($this->sidebars)){
 					$this->sidebars = array($name);
@@ -127,7 +127,7 @@ if( ! class_exists('BridgeQodeSidebar') ){
 				'after_title'   => '</h5>'
 			);
 				
-			$args = apply_filters('bridge_qode_filter_custom_widget_args', $args);
+			$args = apply_filters('qode_custom_widget_args', $args);
 
 			if(is_array($this->sidebars)){
 				foreach ($this->sidebars as $sidebar){	

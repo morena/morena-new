@@ -26,7 +26,7 @@ global $post, $product;
 <?php if ( $product->is_on_sale() ) : ?>
 	
 	<?php /*** Our code modification inside Woo template - begin ***/ ?>
-	<?php echo apply_filters( 'woocommerce_sale_flash', '<span class="onsale onsale-outter"><span class="onsale-inner">'.esc_html__( 'Sale', 'bridge' ).'</span></span>', $post, $product ); ?>
+	<?php echo apply_filters( 'woocommerce_sale_flash', '<span class="onsale onsale-outter"><span class="onsale-inner">'.__( 'Sale', 'woocommerce' ).'</span></span>', $post, $product ); ?>
 	<?php /*** Our code modification inside Woo template - end ***/ ?>
 	
 <?php endif;

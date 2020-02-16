@@ -1,84 +1,119 @@
 <?php
-if(!function_exists('bridge_qode_option_has_value')) {
-	function bridge_qode_option_has_value($name) {
-		global $bridge_qode_options;
-		global $bridge_qode_framework;
-		if (array_key_exists($name, $bridge_qode_framework->qodeOptions->options)) {
-			if (isset($bridge_qode_options[$name])) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			global $post;
-			$value = get_post_meta($post->ID, $name, true);
-			if (isset($value) && $value !== "") {
-				return true;
-			} else {
-				return false;
-			}
 
+function qodef_option_has_value($name) {
+	global $qode_options_proya;
+	global $qodeFramework;
+	if (array_key_exists($name, $qodeFramework->qodeOptions->options)) {
+		if(isset($qode_options_proya[$name])){
+			return true;
+		} else {
+			return false;
 		}
+	} else {
+		global $post;
+		$value = get_post_meta( $post->ID, $name, true );
+		if (isset($value) && $value !== "") {
+            return true;
+        } else {
+            return false;
+        }
+
 	}
 }
 
-if(!function_exists('bridge_qode_option_get_value')) {
-	function bridge_qode_option_get_value($name) {
-		global $bridge_qode_options;
-		global $bridge_qode_framework;
+function qodef_option_get_value($name) {
+	global $qode_options_proya;
+	global $qodeFramework;
 
-		if (array_key_exists($name, $bridge_qode_framework->qodeOptions->options)) {
-			if (isset($bridge_qode_options[$name])) {
-				return $bridge_qode_options[$name];
-			} else {
-				return $bridge_qode_framework->qodeOptions->getOption($name);
-			}
+	if (array_key_exists($name, $qodeFramework->qodeOptions->options)) {
+		if(isset($qode_options_proya[$name])){
+			return $qode_options_proya[$name];
 		} else {
-			global $post;
-
-			if (is_object($post) && property_exists($post, 'ID')) {
-				$value = get_post_meta($post->ID, $name, true);
-				if (isset($value) && $value !== "") {
-					return $value;
-				} else {
-					return $bridge_qode_framework->qodeMetaBoxes->getOption($name);
-				}
-			}
+			return $qodeFramework->qodeOptions->getOption($name);
 		}
+	} else {
+		global $post;
+
+        if(is_object($post) && property_exists($post, 'ID')) {
+            $value = get_post_meta( $post->ID, $name, true );
+            if (isset($value) && $value !== "") {
+                return $value;
+            }
+
+            else {
+                return $qodeFramework->qodeMetaBoxes->getOption($name);
+            }
+        }
 	}
 }
+if(!function_exists('qode_option_get_uploaded_file_type')) {
+	function qode_option_get_uploaded_file_type($value) {
 
-if(!function_exists('bridge_qode_option_get_uploaded_file_type')) {
-	function bridge_qode_option_get_uploaded_file_type($value) {
-
-		$id = bridge_qode_get_attachment_id_from_url($value);
+		$id = qode_get_attachment_id_from_url($value);
 
 		return wp_mime_type_icon( $id);
 
 	}
 }
-if(!function_exists('bridge_qode_option_get_uploaded_file_title')) {
-	function bridge_qode_option_get_uploaded_file_title($value) {
+if(!function_exists('qode_option_get_uploaded_file_title')) {
+	function qode_option_get_uploaded_file_title($value) {
 
-		$id = bridge_qode_get_attachment_id_from_url($value);
+		$id = qode_get_attachment_id_from_url($value);
 
 		return get_the_title($id);
 
 	}
 }
-if(!function_exists('bridge_qode_get_attachment_thumb_url')) {
-	function bridge_qode_get_attachment_thumb_url($attachment_url) {
-		$attachment_id = bridge_qode_get_attachment_id_from_url($attachment_url);
+function qodef_generate_filename( $file, $w, $h ) {
+    $info         = pathinfo( $file );
+    $dir = "";
+    if(!empty($info['dirname'])){
+        $dir          = $info['dirname'];
+    }
+    $ext = "";
+    $name = "";
+    if(!empty($info['extension'])){
+        $ext          = $info['extension'];
+        $name         = wp_basename( $file, ".$ext" );
+    }
 
-		if (!empty($attachment_id)) {
-			return wp_get_attachment_thumb_url($attachment_id);
-		} else {
-			return $attachment_url;
-		}
+    $suffix       = "{$w}x{$h}";
+    if (qodef_url_exists("{$dir}/{$name}-{$suffix}.{$ext}"))
+        return "{$dir}/{$name}-{$suffix}.{$ext}";
+    else
+        return $file;
+}
+
+function qodef_url_exists($url){
+    $url = str_replace("http://", "", $url);
+    if (strstr($url, "/")) {
+        $url = explode("/", $url, 2);
+        $url[1] = "/".$url[1];
+    } else {
+        $url = array($url, "/");
+    }
+
+    $fh = fsockopen($url[0], 80);
+    if ($fh) {
+        fputs($fh,"GET ".$url[1]." HTTP/1.1\nHost:".$url[0]."\n\n");
+        if (fread($fh, 22) == "HTTP/1.1 404 Not Found") { return FALSE; }
+        else { return TRUE;    }
+
+    } else { return FALSE;}
+}
+
+function qodef_get_attachment_thumb_url($attachment_url) {
+	$attachment_id = qode_get_attachment_id_from_url($attachment_url);
+
+	if(!empty($attachment_id)) {
+		return wp_get_attachment_thumb_url($attachment_id);
+	} else {
+		return $attachment_url;
 	}
 }
-if(!function_exists('bridge_qode_get_theme_info_item')) {
-	function bridge_qode_get_theme_info_item($item) {
+
+if(!function_exists('qode_get_theme_info_item')) {
+	function qode_get_theme_info_item($item) {
 		if($item !== '') {
 			$current_theme = wp_get_theme();
 
@@ -93,14 +128,14 @@ if(!function_exists('bridge_qode_get_theme_info_item')) {
 	}
 }
 
-if(!function_exists('bridge_qode_get_native_fonts_list')) {
+if(!function_exists('qode_get_native_fonts_list')) {
     /**
      * Function that returns array of native fonts
      * @return array
      */
-    function bridge_qode_get_native_fonts_list(){
+    function qode_get_native_fonts_list(){
 
-        return apply_filters('bridge_qode_filter_native_fonts_list', array(
+        return apply_filters('qode_native_fonts_list', array(
             'Arial',
             'Arial Black',
             'Comic Sans MS',
@@ -118,37 +153,15 @@ if(!function_exists('bridge_qode_get_native_fonts_list')) {
     }
 }
 
-if(!function_exists('bridge_qode_get_custom_fonts_list')) {
-    /**
-     * Function that returns array of custom fonts
-     * @return array
-     */
-    function bridge_qode_get_custom_fonts_list(){
-		$custom_fonts_list = array();
-		$custom_fonts = bridge_qode_options()->getOptionValue('qode_custom_fonts');
-		if(!empty($custom_fonts)) {
-			foreach ($custom_fonts as $custom_font) {
-
-				if($custom_font['qode_custom_font_name'] != '') {
-					$custom_fonts_list[] = $custom_font['qode_custom_font_name'];
-				}
-			}
-
-		}
-
-		return $custom_fonts_list;
-    }
-}
-
-if(!function_exists('bridge_qode_get_native_fonts_array')) {
+if(!function_exists('qode_get_native_fonts_array')) {
     /**
      * Function that returns formatted array of native fonts
      *
-     * @uses bridge_qode_get_native_fonts_list()
+     * @uses qode_get_native_fonts_list()
      * @return array
      */
-    function bridge_qode_get_native_fonts_array(){
-        $native_fonts_list = bridge_qode_get_native_fonts_list();
+    function qode_get_native_fonts_array(){
+        $native_fonts_list = qode_get_native_fonts_list();
         $native_font_index = 0;
         $native_fonts_array = array();
 
@@ -161,73 +174,38 @@ if(!function_exists('bridge_qode_get_native_fonts_array')) {
     }
 }
 
-if(!function_exists('bridge_qode_get_custom_fonts_array')) {
-    /**
-     * Function that returns formatted array of native fonts
-     *
-     * @uses bridge_qode_get_custom_fonts_array()
-     * @return array
-     */
-    function bridge_qode_get_custom_fonts_array(){
-        $custom_fonts_list = bridge_qode_get_custom_fonts_list();
-        $custom_font_index = 0;
-        $custom_fonts_array = array();
-
-        foreach($custom_fonts_list as $custom_font){
-			$custom_fonts_array[$custom_font_index] = array('family' => $custom_font);
-            $custom_font_index++;
-        }
-
-        return $custom_fonts_array;
-    }
-}
-
-if(!function_exists('bridge_qode_is_native_font')) {
+if(!function_exists('qode_is_native_font')) {
     /**
      * Function that checks if given font is native font
      * @param $font_family string
      * @return bool
      */
-    function bridge_qode_is_native_font($font_family) {
-        return  in_array(str_replace('+', ' ', $font_family), bridge_qode_get_native_fonts_list());
+    function qode_is_native_font($font_family) {
+        return  in_array(str_replace('+', ' ', $font_family), qode_get_native_fonts_list());
     }
 }
 
-if(!function_exists('bridge_qode_is_custom_font')) {
-	/**
-	 * Function that checks if given font is custom font
-	 * @param $font_family string
-	 * @return bool
-	 */
-	function bridge_qode_is_custom_font($font_family) {
-		return  in_array(str_replace('+', ' ', $font_family), bridge_qode_get_custom_fonts_list());
-	}
-}
 
-if(!function_exists('bridge_qode_merge_fonts')) {
+if(!function_exists('qode_merge_fonts')) {
     /**
      * Function that merge google and native fonts
      *
-     * @uses bridge_qode_get_native_fonts_array()
+     * @uses qode_get_native_fonts_array()
      * @return array
      */
-    function bridge_qode_merge_fonts() {
-        global $bridge_qode_font_arrays;
-        $native_fonts = bridge_qode_get_native_fonts_array();
-        $custom_fonts = bridge_qode_get_custom_fonts_array();
+    function qode_merge_fonts() {
+        global $fontArrays;
+        $native_fonts = qode_get_native_fonts_array();
 
         if(is_array($native_fonts) && count($native_fonts)){
-            $bridge_qode_font_arrays = array_merge($native_fonts, $bridge_qode_font_arrays);
-        }
-        if(is_array($custom_fonts) && count($custom_fonts)){
-            $bridge_qode_font_arrays = array_merge($custom_fonts, $bridge_qode_font_arrays);
+            $fontArrays = array_merge($native_fonts, $fontArrays);
         }
     }
 
-    add_action('admin_init', 'bridge_qode_merge_fonts');
+    add_action('admin_init', 'qode_merge_fonts');
 }
 
-if(!function_exists('bridge_qode_resize_image')) {
+if(!function_exists('qode_resize_image')) {
     /**
      * Functin that generates custom thumbnail for given attachment
      * @param null $attach_id id of attachment
@@ -237,18 +215,18 @@ if(!function_exists('bridge_qode_resize_image')) {
      * @param bool $crop whether to crop image or not
      * @return array returns array containing img_url, width and height
      *
-     * @see bridge_qode_get_attachment_id_from_url()
+     * @see qode_get_attachment_id_from_url()
      * @see get_attached_file()
      * @see wp_get_attachment_url()
      * @see wp_get_image_editor()
      */
-    function bridge_qode_resize_image($attach_id = null, $attach_url = null, $width = null, $height = null, $crop = true) {
+    function qode_resize_image($attach_id = null, $attach_url = null, $width = null, $height = null, $crop = true) {
         $return_array = array();
 
         //is attachment id empty?
         if(empty($attach_id) && $attach_url !== '') {
             //get attachment id from url
-            $attach_id = bridge_qode_get_attachment_id_from_url($attach_url);
+            $attach_id = qode_get_attachment_id_from_url($attach_url);
         }
 
         if(!empty($attach_id) && (isset($width) && isset($height))) {
@@ -261,6 +239,7 @@ if(!function_exists('bridge_qode_resize_image')) {
 
             //break down img path to array so we can use it's components in building thumbnail path
             $img_path_array = pathinfo($img_path);
+//            var_dump($attach_id); exit;
             //build thumbnail path
             $new_img_path = $img_path_array['dirname'].'/'.$img_path_array['filename'].'-'.$width.'x'.$height.'.'.$img_path_array['extension'];
 
@@ -308,7 +287,7 @@ if(!function_exists('bridge_qode_resize_image')) {
     }
 }
 
-if(!function_exists('bridge_qode_generate_thumbnail')) {
+if(!function_exists('qode_generate_thumbnail')) {
     /**
      * Generates thumbnail img tag. It calls qode_resize_image function which resizes img on the fly
      * @param null $attach_id attachment id
@@ -318,18 +297,18 @@ if(!function_exists('bridge_qode_generate_thumbnail')) {
      * @param bool $crop whether to crop thumbnail or not
      * @return string generated img tag
      *
-     * @see bridge_qode_resize_image()
-     * @see bridge_qode_get_attachment_id_from_url()
+     * @see qode_resize_image()
+     * @see qode_get_attachment_id_from_url()
      */
-    function bridge_qode_generate_thumbnail($attach_id = null, $attach_url = null, $width = null, $height = null, $crop = true) {
+    function qode_generate_thumbnail($attach_id = null, $attach_url = null, $width = null, $height = null, $crop = true) {
         //is attachment id empty?
         if(empty($attach_id)) {
             //get attachment id from attachment url
-            $attach_id = bridge_qode_get_attachment_id_from_url($attach_url);
+            $attach_id = qode_get_attachment_id_from_url($attach_url);
         }
 
         if(!empty($attach_id) || !empty($attach_url)) {
-            $img_info = bridge_qode_resize_image($attach_id, $attach_url, $width, $height, $crop);
+            $img_info = qode_resize_image($attach_id, $attach_url, $width, $height, $crop);
             $img_alt = !empty($attach_id) ? get_post_meta($attach_id, '_wp_attachment_image_alt', true) : '';
 
             if(is_array($img_info) && count($img_info)) {
@@ -341,57 +320,57 @@ if(!function_exists('bridge_qode_generate_thumbnail')) {
     }
 }
 
-if(!function_exists('bridge_qode_inline_style')) {
+if(!function_exists('qode_inline_style')) {
     /**
      * Function that echoes generated style attribute
      * @param $value string | array attribute value
      *
-     * @see bridge_qode_get_inline_style()
+     * @see qode_get_inline_style()
      */
-    function bridge_qode_inline_style($value) {
-        echo bridge_qode_get_inline_style($value);
+    function qode_inline_style($value) {
+        echo qode_get_inline_style($value);
     }
 }
 
-if(!function_exists('bridge_qode_get_inline_style')) {
+if(!function_exists('qode_get_inline_style')) {
     /**
      * Function that generates style attribute and returns generated string
      * @param $value string | array value of style attribute
      * @return string generated style attribute
      *
-     * @see bridge_qode_get_inline_style()
+     * @see qode_get_inline_style()
      */
-    function bridge_qode_get_inline_style($value) {
-        return bridge_qode_get_inline_attr($value, 'style', ';');
+    function qode_get_inline_style($value) {
+        return qode_get_inline_attr($value, 'style', ';');
     }
 }
 
-if(!function_exists('bridge_qode_class_attribute')) {
+if(!function_exists('qode_class_attribute')) {
     /**
      * Function that echoes class attribute
      * @param $value string value of class attribute
      *
-     * @see bridge_qode_get_class_attribute()
+     * @see qode_get_class_attribute()
      */
-    function bridge_qode_class_attribute($value) {
-        echo bridge_qode_get_class_attribute($value);
+    function qode_class_attribute($value) {
+        echo qode_get_class_attribute($value);
     }
 }
 
-if(!function_exists('bridge_qode_get_class_attribute')) {
+if(!function_exists('qode_get_class_attribute')) {
     /**
      * Function that returns generated class attribute
      * @param $value string value of class attribute
      * @return string generated class attribute
      *
-     * @see bridge_qode_get_inline_attr()
+     * @see qode_get_inline_attr()
      */
-    function bridge_qode_get_class_attribute($value) {
-        return bridge_qode_get_inline_attr($value, 'class');
+    function qode_get_class_attribute($value) {
+        return qode_get_inline_attr($value, 'class');
     }
 }
 
-if(!function_exists('bridge_qode_get_inline_attr')) {
+if(!function_exists('qode_get_inline_attr')) {
     /**
      * Function that generates html attribute
      * @param $value string | array value of html attribute
@@ -399,7 +378,7 @@ if(!function_exists('bridge_qode_get_inline_attr')) {
      * @param $glue string glue with which to implode $attr. Used only when $attr is array
      * @return string generated html attribute
      */
-    function bridge_qode_get_inline_attr($value, $attr, $glue = ' ') {
+    function qode_get_inline_attr($value, $attr, $glue = ' ') {
         if(!empty($value)) {
 
             if(is_array($value) && count($value)) {
@@ -415,7 +394,7 @@ if(!function_exists('bridge_qode_get_inline_attr')) {
     }
 }
 
-if(!function_exists('bridge_qode_inline_attr')) {
+if(!function_exists('qode_inline_attr')) {
     /**
      * Function that generates html attribute
      *
@@ -425,12 +404,12 @@ if(!function_exists('bridge_qode_inline_attr')) {
      *
      * @return string generated html attribute
      */
-    function bridge_qode_inline_attr($value, $attr, $glue = '') {
-        echo bridge_qode_get_inline_attr($value, $attr, $glue);
+    function qode_inline_attr($value, $attr, $glue = '') {
+        echo qode_get_inline_attr($value, $attr, $glue);
     }
 }
 
-if(!function_exists('bridge_qode_get_inline_attrs')) {
+if(!function_exists('qode_get_inline_attrs')) {
 	/**
 	 * Generate multiple inline attributes
 	 *
@@ -438,12 +417,12 @@ if(!function_exists('bridge_qode_get_inline_attrs')) {
 	 *
 	 * @return string
 	 */
-	function bridge_qode_get_inline_attrs($attrs) {
+	function qode_get_inline_attrs($attrs) {
 		$output = '';
 
 		if(is_array($attrs) && count($attrs)) {
 			foreach($attrs as $attr => $value) {
-				$output .= ' '.bridge_qode_get_inline_attr($value, $attr);
+				$output .= ' '.qode_get_inline_attr($value, $attr);
 			}
 		}
 
@@ -453,14 +432,14 @@ if(!function_exists('bridge_qode_get_inline_attrs')) {
 	}
 }
 
-if(!function_exists('bridge_qode_filter_px')) {
+if(!function_exists('qode_filter_px')) {
     /**
      * Removes px in provided value if value ends with px
      * @param $value
      * @return string
      */
-    function bridge_qode_filter_px($value) {
-        if($value !== '' && bridge_qode_string_ends_with($value, 'px')) {
+    function qode_filter_px($value) {
+        if($value !== '' && qode_string_ends_with($value, 'px')) {
             $value = substr($value, 0, strpos($value, 'px'));
         }
 
@@ -468,14 +447,14 @@ if(!function_exists('bridge_qode_filter_px')) {
     }
 }
 
-if(!function_exists('bridge_qode_string_starts_with')) {
+if(!function_exists('qode_string_starts_with')) {
     /**
      * Checks if $haystack starts with $needle and returns proper bool value
      * @param $haystack string to check
      * @param $needle string with which $haystack needs to start
      * @return bool
      */
-    function bridge_qode_string_starts_with($haystack, $needle) {
+    function qode_string_starts_with($haystack, $needle) {
         if($haystack !== '' && $needle !== '') {
             return (substr($haystack, 0, strlen($needle)) == $needle);
         }
@@ -484,14 +463,14 @@ if(!function_exists('bridge_qode_string_starts_with')) {
     }
 }
 
-if(!function_exists('bridge_qode_string_ends_with')) {
+if(!function_exists('qode_string_ends_with')) {
     /**
      * Checks if $haystack ends with $needle and returns proper bool value
      * @param $haystack string to check
      * @param $needle string with which $haystack needs to end
      * @return bool
      */
-    function bridge_qode_string_ends_with($haystack, $needle) {
+    function qode_string_ends_with($haystack, $needle) {
         if($haystack !== '' && $needle !== '') {
             return (substr($haystack, -strlen($needle), strlen($needle)) == $needle);
         }
@@ -500,31 +479,31 @@ if(!function_exists('bridge_qode_string_ends_with')) {
     }
 }
 
-if(!function_exists('bridge_qode_icon_collections')) {
+if(!function_exists('qode_icon_collections')) {
     /**
      * Returns instance of QodeIconCollections class
      *
-     * @return BridgeQodeIconCollections
+     * @return QodeIconCollections
      */
-    function bridge_qode_icon_collections() {
-        return BridgeQodeIconCollections::getInstance();
+    function qode_icon_collections() {
+        return QodeIconCollections::getInstance();
     }
 }
 
-if(!function_exists('bridge_qode_kses_img')) {
+if(!function_exists('qode_kses_img')) {
     /**
      * Function that does escaping of img html.
      * It uses wp_kses function with predefined attributes array.
      * Should be used for escaping img tags in html.
-     * Defines bridge_qode_filter_filter_kses_img_atts filter that can be used for changing allowed html attributes
+     * Defines qode_filter_kses_img_atts filter that can be used for changing allowed html attributes
      *
      * @see wp_kses()
      *
      * @param $content string string to escape
      * @return string escaped output
      */
-    function bridge_qode_kses_img($content) {
-        $img_atts = apply_filters('bridge_qode_filter_kses_img_atts', array(
+    function qode_kses_img($content) {
+        $img_atts = apply_filters('qode_filter_kses_img_atts', array(
             'src' => true,
             'alt' => true,
             'height' => true,
@@ -540,7 +519,7 @@ if(!function_exists('bridge_qode_kses_img')) {
     }
 }
 
-if(!function_exists('bridge_qode_get_template_part')) {
+if(!function_exists('qode_get_template_part')) {
     /**
      * Loads template part with parameters. If file with slug parameter added exists it will load that file, else it will load file without slug added.
      * Child theme friendly function
@@ -549,7 +528,7 @@ if(!function_exists('bridge_qode_get_template_part')) {
      * @param string $slug
      * @param array $params array of parameters to pass to template
      */
-    function bridge_qode_get_template_part($template, $slug = '', $params = array()) {
+    function qode_get_template_part($template, $slug = '', $params = array()) {
         if(is_array($params) && count($params)) {
             extract($params);
         }
@@ -564,14 +543,14 @@ if(!function_exists('bridge_qode_get_template_part')) {
             $templates[] = $template.'.php';
         }
 
-        $located = bridge_qode_find_template_path($templates);
+        $located = qode_find_template_path($templates);
 
         if($located) {
             include($located);
         }
     }
 }
-if(!function_exists('bridge_qode_get_module_template_part')) {
+if(!function_exists('qode_get_module_template_part')) {
 	/**
 	 * Loads module template part.
 	 *
@@ -580,15 +559,15 @@ if(!function_exists('bridge_qode_get_module_template_part')) {
 	 * @param string $slug
 	 * @param array $params array of parameters to pass to template
 	 *
-	 * @see bridge_qode_get_template_part()
+	 * @see qode_get_template_part()
 	 */
-	function bridge_qode_get_module_template_part($template, $module, $slug = '', $params = array()) {
+	function qode_get_module_template_part($template, $module, $slug = '', $params = array()) {
 		$template_path = 'framework/modules/'.$module;
 
-		bridge_qode_get_template_part($template_path.'/'.$template, $slug, $params);
+		qode_get_template_part($template_path.'/'.$template, $slug, $params);
 	}
 }
-if(!function_exists('bridge_qode_return_template_part')) {
+if(!function_exists('qode_return_template_part')) {
 	/**
 	 * Loads template part with parameters. If file with slug parameter added exists it will load that file, else it will load file without slug added.
 	 * Child theme friendly function
@@ -598,9 +577,9 @@ if(!function_exists('bridge_qode_return_template_part')) {
 	 * @param array $params array of parameters to pass to template
 	 *
 	 * @return html
-	 * @see bridge_qode_get_template_part()
+	 * @see qode_get_template_part()
 	 */
-	function bridge_qode_return_template_part($template, $slug = '', $params = array()) {
+	function qode_return_template_part($template, $slug = '', $params = array()) {
 		if(is_array($params) && count($params)) {
 			extract($params);
 		}
@@ -615,7 +594,7 @@ if(!function_exists('bridge_qode_return_template_part')) {
 			$templates[] = $template.'.php';
 		}
 
-		$located = bridge_qode_find_template_path($templates);
+		$located = qode_find_template_path($templates);
 
 		if($located) {
 			ob_start();
@@ -626,7 +605,7 @@ if(!function_exists('bridge_qode_return_template_part')) {
 		return $html;
 	}
 }
-if(!function_exists('bridge_qode_return_module_template_part')) {
+if(!function_exists('qode_return_module_template_part')) {
 	/**
 	 * Loads module template part.
 	 *
@@ -636,15 +615,15 @@ if(!function_exists('bridge_qode_return_module_template_part')) {
 	 * @param array $params array of parameters to pass to template
 	 *
 	 * @return html
-	 * @see bridge_qode_get_template_part()
+	 * @see qode_get_template_part()
 	 */
-	function bridge_qode_return_module_template_part($template, $module, $slug = '', $params = array()) {
+	function qode_return_module_template_part($template, $module, $slug = '', $params = array()) {
 		$template_path = 'framework/modules/'.$module;
 
-		return bridge_qode_return_template_part($template_path.'/'.$template, $slug, $params);
+		return qode_return_template_part($template_path.'/'.$template, $slug, $params);
 	}
 }
-if(!function_exists('bridge_qode_get_shortcode_template_part')) {
+if(!function_exists('qode_get_shortcode_template_part')) {
     /**
      * Loads module template part.
      *
@@ -654,9 +633,9 @@ if(!function_exists('bridge_qode_get_shortcode_template_part')) {
      * @param array $params array of parameters to pass to template
      *
      * @return html
-     * @see bridge_qode_get_template_part()
+     * @see qode_get_template_part()
      */
-    function bridge_qode_get_shortcode_template_part($template, $shortcode, $slug = '', $params = array()) {
+    function qode_get_shortcode_template_part($template, $shortcode, $slug = '', $params = array()) {
 
         //HTML Content from template
         $html          = '';
@@ -677,7 +656,7 @@ if(!function_exists('bridge_qode_get_shortcode_template_part')) {
 
             $templates[] = $temp.'.php';
         }
-        $located = bridge_qode_find_template_path($templates);
+        $located = qode_find_template_path($templates);
         if($located) {
             ob_start();
             include($located);
@@ -688,7 +667,7 @@ if(!function_exists('bridge_qode_get_shortcode_template_part')) {
     }
 }
 
-if(!function_exists('bridge_qode_find_template_path')) {
+if(!function_exists('qode_find_template_path')) {
     /**
      * Find template path and return it
      *
@@ -696,10 +675,9 @@ if(!function_exists('bridge_qode_find_template_path')) {
      *
      * @return string
      */
-    function bridge_qode_find_template_path($template_names, $plugin = false) {
+    function qode_find_template_path($template_names) {
         $located = '';
         foreach((array) $template_names as $template_name) {
-
             if(!$template_name) {
                 continue;
             }
@@ -709,21 +687,14 @@ if(!function_exists('bridge_qode_find_template_path')) {
             } elseif(file_exists(get_template_directory().'/'.$template_name)) {
                 $located = get_template_directory().'/'.$template_name;
                 break;
-            }elseif ( $plugin && file_exists( $template_name ) ) {
-
-				$located = $template_name;
-				break;
-			}
+            }
         }
 
         return $located;
-
-
-
     }
 }
 
-if(!function_exists('bridge_qode_dynamic_css')) {
+if(!function_exists('qode_dynamic_css')) {
     /**
      * Generates css based on selector and rules that are provided
      *
@@ -736,7 +707,7 @@ if(!function_exists('bridge_qode_dynamic_css')) {
      *
      * @return string
      */
-    function bridge_qode_dynamic_css($selector, $rules) {
+    function qode_dynamic_css($selector, $rules) {
         $output = '';
         //check if selector and rules are valid data
         if(!empty($selector) && (is_array($rules) && count($rules))) {
@@ -761,7 +732,7 @@ if(!function_exists('bridge_qode_dynamic_css')) {
     }
 }
 
-if(!function_exists('bridge_qode_execute_shortcode')) {
+if(!function_exists('qode_execute_shortcode')) {
     /**
      * @param $shortcode_tag - shortcode base
      * @param $atts - shortcode attributes
@@ -769,11 +740,11 @@ if(!function_exists('bridge_qode_execute_shortcode')) {
      *
      * @return mixed|string
      */
-    function bridge_qode_execute_shortcode($shortcode_tag, $atts, $content = null) {
+    function qode_execute_shortcode($shortcode_tag, $atts, $content = null) {
         global $shortcode_tags;
 
         if(!isset($shortcode_tags[$shortcode_tag])) {
-            return esc_html__('Shortcode doesn\'t exist', 'bridge');
+            return 'Shortcode doesn\'t exist';
         }
 
         if(is_array($shortcode_tags[$shortcode_tag])) {
@@ -789,8 +760,32 @@ if(!function_exists('bridge_qode_execute_shortcode')) {
     }
 }
 
-if(!function_exists('bridge_qode_replace_newline')) {
-	function bridge_qode_replace_newline($text ) {
+if(!function_exists('qode_get_meta_field_intersect')) {
+	/**
+	 * @param $name
+	 * @param $post_id
+	 *
+	 * @return bool|mixed|void
+	 */
+	function qode_get_meta_field_intersect($name, $post_id = '') {
+		$post_id = !empty($post_id) ? $post_id : get_the_ID();
+
+		$value = qode_options()->getOptionValue($name);
+
+		if($post_id !== -1) {
+			$meta_field = get_post_meta($post_id, $name.'_meta', true);
+			if($meta_field !== '' && $meta_field !== false) {
+				$value = $meta_field;
+			}
+		}
+
+		$value = apply_filters('qode_meta_field_intersect_'.$name, $value);
+
+		return $value;
+	}
+}
+if(!function_exists('qode_replace_newline')) {
+	function qode_replace_newline( $text ) {
 		/**
 		 * @param $text
 		 *
@@ -802,14 +797,27 @@ if(!function_exists('bridge_qode_replace_newline')) {
 	}
 }
 
-if ( ! function_exists('bridge_qode_get_custom_sidebars') ) {
+if(!function_exists('qode_export_theme_options')) {
+	/**
+	 * Function that export options from db.
+	 */
+	function qode_export_theme_options() {
+		$options = get_option("qode_options_proya");
+		$output = base64_encode(serialize($options));
+
+		return $output;
+	}
+
+}
+
+if ( ! function_exists( 'qode_get_custom_sidebars' ) ) {
 	/**
 	 * Function that returns all custom made sidebars.
 	 *
 	 * @uses get_option()
 	 * @return array array of custom made sidebars where key and value are sidebar name
 	 */
-	function bridge_qode_get_custom_sidebars() {
+	function qode_get_custom_sidebars() {
 		$custom_sidebars = get_option( 'qode_sidebars' );
 		$formatted_array             = array();
 
@@ -823,13 +831,43 @@ if ( ! function_exists('bridge_qode_get_custom_sidebars') ) {
 	}
 }
 
-if( ! function_exists('bridge_qode_ajax_status') ) {
+if(!function_exists('qode_import_theme_options')) {
+	/**
+	 * Function that import theme options to db.
+	 * It hooks to ajax wp_ajax_qode_import_theme_options action.
+	 */
+	function qode_import_theme_options() {
+
+		if(current_user_can('administrator')) {
+			if (empty($_POST) || !isset($_POST)) {
+				qode_ajax_status('error', esc_html__('Import field is empty', 'qode'));
+			} else {
+				$data = $_POST;
+				if (wp_verify_nonce($data['nonce'], 'qodef_import_theme_options_secret_value')) {
+					$content = $data['content'];
+					$unserialized_content = unserialize(base64_decode($content));
+					update_option( 'qode_options_proya', $unserialized_content);
+					qode_ajax_status('success', esc_html__('Options are imported successfully', 'qode'));
+				} else {
+					qode_ajax_status('error', esc_html__('Non valid authorization', 'qode'));
+				}
+
+			}
+		} else {
+			qode_ajax_status('error', esc_html__('You don\'t have privileges for this operation', 'qode'));
+		}
+	}
+
+	add_action('wp_ajax_qode_import_theme_options', 'qode_import_theme_options');
+}
+
+if( ! function_exists( 'qode_ajax_status' ) ) {
 
 	/**
 	 * Function that return status from ajax functions
 	 */
 
-	function bridge_qode_ajax_status($status, $message, $data = NULL) {
+	function qode_ajax_status($status, $message, $data = NULL) {
 
 		$response = array (
 			'status' => $status,
@@ -842,7 +880,7 @@ if( ! function_exists('bridge_qode_ajax_status') ) {
 
 }
 
-if(!function_exists('bridge_qode_attachment_image_additional_fields')) {
+if(!function_exists('qode_attachment_image_additional_fields')) {
 	/**
 	 * Add Attachment Image Sizes option
 	 *
@@ -851,7 +889,7 @@ if(!function_exists('bridge_qode_attachment_image_additional_fields')) {
 	 *
 	 * @return mixed
 	 */
-	function bridge_qode_attachment_image_additional_fields($form_fields, $post) {
+	function qode_attachment_image_additional_fields($form_fields, $post) {
 
 		// ADDING IMAGE LINK FILED - START //
 
@@ -868,8 +906,8 @@ if(!function_exists('bridge_qode_attachment_image_additional_fields')) {
 		// ADDING IMAGE TARGET FILED - START //
 
 		$options_image_target = array(
-			'_self' 	=> esc_html__('Same Window', 'bridge'),
-			'_blank'	=> esc_html__('New Window', 'bridge'),
+			'_self' 	=> esc_html__('Same Window', 'qode'),
+			'_blank'	=> esc_html__('New Window', 'qode'),
 		);
 
 		$html_image_target     = '';
@@ -901,11 +939,11 @@ if(!function_exists('bridge_qode_attachment_image_additional_fields')) {
 		return $form_fields;
 	}
 
-	add_filter('attachment_fields_to_edit', 'bridge_qode_attachment_image_additional_fields', 10, 2);
+	add_filter('attachment_fields_to_edit', 'qode_attachment_image_additional_fields', 10, 2);
 
 }
 
-if(!function_exists('bridge_qode_attachment_image_additional_fields_save')) {
+if(!function_exists('qode_attachment_image_additional_fields_save')) {
 	/**
 	 * Save values of Attachment Image sizes in media uploader
 	 *
@@ -914,7 +952,7 @@ if(!function_exists('bridge_qode_attachment_image_additional_fields_save')) {
 	 *
 	 * @return mixed
 	 */
-	function bridge_qode_attachment_image_additional_fields_save($post, $attachment) {
+	function qode_attachment_image_additional_fields_save($post, $attachment) {
 
 
 		if(isset($attachment['attachment-image-custom-link'])) {
@@ -930,72 +968,111 @@ if(!function_exists('bridge_qode_attachment_image_additional_fields_save')) {
 
 	}
 
-	add_filter('attachment_fields_to_save', 'bridge_qode_attachment_image_additional_fields_save', 10, 2);
+	add_filter('attachment_fields_to_save', 'qode_attachment_image_additional_fields_save', 10, 2);
 
 }
 
+if(!function_exists('qode_send_contact_page_form')) {
 
-if ( ! function_exists('bridge_qode_show_comments') ) {
+	function qode_send_contact_page_form() {
+
+		if(isset($_POST['form_data'])){
+
+			$data_string = $_POST['form_data'];
+			parse_str($data_string, $data_array);
+
+			$send_mail =  true;
+			$use_recaptcha =  qode_options()->getOptionValue('use_recaptcha');
+			$secret_key =  qode_options()->getOptionValue('recaptcha_private_key');
+
+
+			$email_to		= qode_options()->getOptionValue('receive_mail');
+			$email_from 	= qode_options()->getOptionValue('email_from');
+			$subject 		= qode_options()->getOptionValue('email_subject');
+
+			$first_name		= qode_replace_newline($data_array['fname']);
+			$last_name		= qode_replace_newline($data_array['lname']);
+			$website		= $data_array['website'];
+			$message		= $data_array['message'];
+
+			$text = "Name: " . $first_name . " " . $last_name . "\n";
+			$text .= "Email: " . $data_array['email'] . "\n";
+			$text .= "WebSite: " . $website . "\n";
+			$text .= "Message: " . $message;
+
+			$headers = "MIME-Version: 1.0" . "\r\n";
+			$headers .= "Content-type:text/plain; charset=utf-8" . "\r\n";
+			$headers .= "From: '".$first_name." ".$last_name."' <".$email_from."> " . "\r\n";
+
+			if($use_recaptcha == 'yes' && $secret_key != ''){
+				$captcha = $data_array['g-recaptcha-response'];
+				$response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=".$secret_key."&response=".$captcha);
+				$response_keys = json_decode($response,true);
+
+				if(!$response_keys['success']){
+					$send_mail = false;
+					qode_ajax_status('error', esc_html__('Invalid Captcha', 'qode'));
+				}
+			}
+
+			if($send_mail){
+				$result = wp_mail($email_to, $subject, $text, $headers);
+				if($result) {
+					qode_ajax_status('success', '<strong>' . esc_html__('THANK YOU!', 'qode') . ' </strong>' . esc_html__('Your email was successfully sent. We will contact you as soon as possible.', 'qode'));
+				} else {
+					qode_ajax_status('error', esc_html__('Email server problem', 'qode'));
+				}
+			}
+
+		}
+		wp_die();
+
+	}
+
+	add_action('wp_ajax_nopriv_qode_send_contact_page_form', 'qode_send_contact_page_form');
+	add_action( 'wp_ajax_qode_send_contact_page_form', 'qode_send_contact_page_form' );
+
+}
+
+if ( ! function_exists( 'qode_show_comments' ) ) {
 	/**
 	 * Functions which check are comments enabled on page
 	 *
 	 * @return boolean
 	 */
-	function bridge_qode_show_comments() {
+	function qode_show_comments() {
 		$comments = false;
-		$comments = apply_filters( 'bridge_qode_filter_post_type_comments', $comments );
+		$comments = apply_filters( 'qode_post_type_comments', $comments );
 
 		return $comments;
 	}
 }
 
-if ( ! function_exists('bridge_qode_get_meta_field_intersect') ) {
+if ( ! function_exists( 'qode_get_meta_field_intersect' ) ) {
 	/**
 	 * @param $name
 	 * @param $post_id
 	 *
 	 * @return bool|mixed|void
 	 */
-	function bridge_qode_get_meta_field_intersect($name, $post_id = '' ) {
+	function qode_get_meta_field_intersect( $name, $post_id = '' ) {
 		$post_id = ! empty( $post_id ) ? $post_id : get_the_ID();
 
-		if ( bridge_qode_is_woocommerce_installed() && bridge_qode_is_woocommerce_shop() ) {
-			$post_id = bridge_qode_get_woo_shop_page_id();
+		if ( qode_is_woocommerce_installed() && qode_is_woocommerce_shop() ) {
+			$post_id = qode_get_woo_shop_page_id();
 		}
 
-		$value = bridge_qode_options()->getOptionValue( $name );
+		$value = qode_options()->getOptionValue( $name );
 
 		if ( $post_id !== - 1 ) {
-			$meta_field = get_post_meta( $post_id, $name . '_meta', true );
+			$meta_field = get_post_meta( $post_id, 'qode_' . $name . '_meta', true );
 			if ( $meta_field !== '' && $meta_field !== false ) {
 				$value = $meta_field;
 			}
 		}
 
-		$value = apply_filters( 'bridge_qode_filter_meta_field_intersect_' . $name, $value );
+		$value = apply_filters( 'qode_meta_field_intersect_' . $name, $value );
 
 		return $value;
-	}
-}
-
-if ( ! function_exists('bridge_qode_add_custom_upload_mimes') ) {
-
-	function bridge_qode_add_custom_upload_mimes($existing_mimes) {
-
-		$existing_mimes['ttf'] = 'font/ttf';
-		$existing_mimes['otf'] = 'font/otf';
-		$existing_mimes['woff'] = 'font/woff';
-		$existing_mimes['woff2'] = 'font/woff2';
-
-		return $existing_mimes;
-	}
-	add_filter('upload_mimes', 'bridge_qode_add_custom_upload_mimes');
-}
-
-if ( ! function_exists( 'bridge_qode_return_global_options' ) ) {
-	function bridge_qode_return_global_options() {
-		global $bridge_qode_options;
-
-		return $bridge_qode_options;
 	}
 }

@@ -1,6 +1,6 @@
 <?php
 
-if(bridge_qode_timetable_schedule_installed()) {
+if(qode_timetable_schedule_installed()) {
 	include_once QODE_FRAMEWORK_MODULES_ROOT_DIR.'/timetable-schedule/timetable-functions.php';
 	include_once QODE_FRAMEWORK_MODULES_ROOT_DIR.'/timetable-schedule/visual-composer-map.php';
 	include_once QODE_FRAMEWORK_MODULES_ROOT_DIR.'/timetable-schedule/options-map/map.php';

@@ -20,7 +20,6 @@ $j(document).ready(function() {
 	$j(document).on('qodeAjaxPageLoad', function(){
         qodeInitProductListMasonryPinterestShortcode();
 	});
-	qodeOpenSingleProductReviewsAccordion();
 });
 
 function initSelect2() {
@@ -166,9 +165,10 @@ function qodeWishlistRefresh() {
             url: QodeAdminAjax.ajaxurl,
             type: "POST",
             data: {
-                'action' : 'bridge_qode_product_ajax_wishlist'
+                'action' : 'qode_product_ajax_wishlist'
             },
             success:function(data) {
+
 
                 $j('.qode-wishlist-widget-holder .qode-wishlist-items-number span').html(data['wishlist_count_products']);
             }
@@ -399,11 +399,10 @@ function qodeInitProductListFilter(){
         loadData.orderby = queryParams.orderby !== undefined ? queryParams.orderby : '';
         loadData.minPrice = queryParams.minprice !== undefined ? queryParams.minprice : '';
         loadData.maxPrice = queryParams.maxprice !== undefined ? queryParams.maxprice : '';
-        loadData.categoryNonce = clickedLink.parents('.qode-pl-categories-nonce-holder').data('nonce') !== undefined ? clickedLink.parents('ul').data('nonce') : '';
 
         loader.fadeIn();
 
-        var ajaxData = qode.modules.common.setLoadMoreAjaxData(loadData, 'bridge_qode_product_ajax_load_category');
+        var ajaxData = qode.modules.common.setLoadMoreAjaxData(loadData, 'qode_product_ajax_load_category');
 
         $j.ajax({
             type: 'POST',
@@ -463,7 +462,7 @@ function qodeAddingToCart() {
     var addToCartButtons = $j('.qode-pli-add-to-cart .add_to_cart_button');
 
     if (addToCartButtons.length) {
-        addToCartButtons.on('click', function(){
+        addToCartButtons.click(function(){
             $j(this).text(qodeGlobalVars.vars.qodeAddingToCartLabel);
         });
     }
@@ -473,7 +472,7 @@ function qodeAddingToWishlist() {
     var wishlistButtons = $j('.add_to_wishlist');
 
     if (wishlistButtons.length) {
-        wishlistButtons.on('click', function(){
+        wishlistButtons.click(function(){
             var wishlistButton = $j(this),
                 wishlistItem,
                 wishlistItemOffset,
@@ -513,22 +512,5 @@ function qodeAddingToWishlist() {
                 }, 1000);
             });
         });
-    }
-}
-
-function qodeOpenSingleProductReviewsAccordion(){
-    var productSummary = $j('.qode-single-product-summary');
-
-    if( productSummary.length ){
-        var reviewLink = productSummary.find('.woocommerce-review-link'),
-            wooReviewAccordion = productSummary.find('.reviews_tab');
-
-        if( reviewLink.length && wooReviewAccordion.length ){ //check if link exists and if accordions exist so it is desired product type with accordions, not tabs
-            reviewLink.on('click', function(){
-                if( ! wooReviewAccordion.hasClass('ui-state-active')){ //check if it is already opened
-                    wooReviewAccordion.trigger('click');
-                }
-            })
-        }
     }
 }

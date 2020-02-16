@@ -1,5 +1,5 @@
 <?php
-if(version_compare(bridge_qode_get_vc_version(), '4.6.2') >= 0) {
+if(version_compare(qode_get_vc_version(), '4.6.2') >= 0) {
 	$height = $el_class = $background_image = $image_repeat = '';
 	$atts = vc_map_get_attributes($this->getShortcode(), $atts);
 	extract($atts);
@@ -23,7 +23,7 @@ $height = $value . $unit;
 $inline_css = ( (float) $height >= 0.0 ) ? ' style="height: ' . $height . '"' : '';
 
 
-if(version_compare(bridge_qode_get_vc_version(), '4.7.4') >= 0) {
+if(version_compare(qode_get_vc_version(), '4.7.4') >= 0) {
 	$class = 'vc_empty_space ' . $this->getExtraClass( $el_class ). vc_shortcode_custom_css_class( $css, ' ' );
 } else {
 	$class .= $this->getExtraClass( $el_class );
@@ -41,8 +41,8 @@ if($background_image != ""){
 	}
 }
 ?>
-	<div class="<?php echo esc_attr( trim( $css_class ) ); ?>" <?php echo wp_kses_post( $inline_css ); ?> ><span
+	<div class="<?php echo esc_attr( trim( $css_class ) ); ?>" <?php echo $inline_css; ?> ><span
 			class="vc_empty_space_inner">
-			<span class="empty_space_image" <?php echo wp_kses_post( $image );?> ></span>
+			<span class="empty_space_image" <?php echo $image;?> ></span>
 		</span></div>
-<?php echo bridge_qode_get_module_part( $this->endBlockComment( 'empty_space' ) . "\n" );
+<?php echo $this->endBlockComment( 'empty_space' ) . "\n";

@@ -1,49 +1,49 @@
 <?php
-	$bridge_qode_options = bridge_qode_return_global_options();
-	$bridge_qode_page_id = bridge_qode_get_page_id();
+	global $qode_options_proya;
+	$page_id = qode_get_page_id();
 ?>
 <?php 
-$bridge_qode_content_bottom_area = "yes";
-if(get_post_meta($bridge_qode_page_id, "qode_enable_content_bottom_area", true) != ""){
-	$bridge_qode_content_bottom_area = get_post_meta($bridge_qode_page_id, "qode_enable_content_bottom_area", true);
+$content_bottom_area = "yes";
+if(get_post_meta($page_id, "qode_enable_content_bottom_area", true) != ""){
+	$content_bottom_area = get_post_meta($page_id, "qode_enable_content_bottom_area", true);
 } else{
-	if (isset($bridge_qode_options['enable_content_bottom_area'])) {
-		$bridge_qode_content_bottom_area = $bridge_qode_options['enable_content_bottom_area'];
+	if (isset($qode_options_proya['enable_content_bottom_area'])) {
+		$content_bottom_area = $qode_options_proya['enable_content_bottom_area'];
 	}
 }
-$bridge_qode_content_bottom_area_sidebar = "";
-if(get_post_meta($bridge_qode_page_id, 'qode_choose_content_bottom_sidebar', true) != ""){
-	$bridge_qode_content_bottom_area_sidebar = get_post_meta($bridge_qode_page_id, 'qode_choose_content_bottom_sidebar', true);
+$content_bottom_area_sidebar = "";
+if(get_post_meta($page_id, 'qode_choose_content_bottom_sidebar', true) != ""){
+	$content_bottom_area_sidebar = get_post_meta($page_id, 'qode_choose_content_bottom_sidebar', true);
 } else {
-	if(isset($bridge_qode_options['content_bottom_sidebar_custom_display'])) {
-		$bridge_qode_content_bottom_area_sidebar = $bridge_qode_options['content_bottom_sidebar_custom_display'];
+	if(isset($qode_options_proya['content_bottom_sidebar_custom_display'])) {
+		$content_bottom_area_sidebar = $qode_options_proya['content_bottom_sidebar_custom_display'];
 	}
 }
-$bridge_qode_content_bottom_area_in_grid = true;
-if(get_post_meta($bridge_qode_page_id, 'qode_content_bottom_sidebar_in_grid', true) != ""){
-	if(get_post_meta($bridge_qode_page_id, 'qode_content_bottom_sidebar_in_grid', true) == "yes") {
-		$bridge_qode_content_bottom_area_in_grid = true;
+$content_bottom_area_in_grid = true;
+if(get_post_meta($page_id, 'qode_content_bottom_sidebar_in_grid', true) != ""){
+	if(get_post_meta($page_id, 'qode_content_bottom_sidebar_in_grid', true) == "yes") {
+		$content_bottom_area_in_grid = true;
 	} else {
-		$bridge_qode_content_bottom_area_in_grid = false;
+		$content_bottom_area_in_grid = false;
 	} 
 }
 else {
-	if(isset($bridge_qode_options['content_bottom_in_grid'])){if ($bridge_qode_options['content_bottom_in_grid'] == "no") $bridge_qode_content_bottom_area_in_grid = false;}
+	if(isset($qode_options_proya['content_bottom_in_grid'])){if ($qode_options_proya['content_bottom_in_grid'] == "no") $content_bottom_area_in_grid = false;}
 }
-$bridge_qode_content_bottom_background_color = '';
-if(get_post_meta($bridge_qode_page_id, "qode_content_bottom_background_color", true) != ""){
-	$bridge_qode_content_bottom_background_color = get_post_meta($bridge_qode_page_id, "qode_content_bottom_background_color", true);
+$content_bottom_background_color = '';
+if(get_post_meta($page_id, "qode_content_bottom_background_color", true) != ""){
+	$content_bottom_background_color = get_post_meta($page_id, "qode_content_bottom_background_color", true);
 }
 ?>
-	<?php if($bridge_qode_content_bottom_area == "yes") { ?>
-	<?php if($bridge_qode_content_bottom_area_in_grid){ ?>
+	<?php if($content_bottom_area == "yes") { ?>
+	<?php if($content_bottom_area_in_grid){ ?>
 		<div class="container">
 			<div class="container_inner clearfix">
 	<?php } ?>
-		<div class="content_bottom" <?php if($bridge_qode_content_bottom_background_color != ''){ echo 'style="background-color:'.$bridge_qode_content_bottom_background_color.';"'; } ?>>
-			<?php dynamic_sidebar($bridge_qode_content_bottom_area_sidebar); ?>
+		<div class="content_bottom" <?php if($content_bottom_background_color != ''){ echo 'style="background-color:'.$content_bottom_background_color.';"'; } ?>>
+			<?php dynamic_sidebar($content_bottom_area_sidebar); ?>
 		</div>
-		<?php if($bridge_qode_content_bottom_area_in_grid){ ?>
+		<?php if($content_bottom_area_in_grid){ ?>
 					</div>
 				</div>
 			<?php } ?>
@@ -53,13 +53,13 @@ if(get_post_meta($bridge_qode_page_id, "qode_content_bottom_background_color", t
 </div>
 
 <?php
-if(isset($bridge_qode_options['paspartu']) && $bridge_qode_options['paspartu'] == 'yes'){?>
-        <?php if(isset($bridge_qode_options['vertical_area']) && $bridge_qode_options['vertical_area'] == "yes" && isset($bridge_qode_options['vertical_menu_inside_paspartu']) && $bridge_qode_options['vertical_menu_inside_paspartu'] == 'no') { ?>
+if(isset($qode_options_proya['paspartu']) && $qode_options_proya['paspartu'] == 'yes'){?>
+        <?php if(isset($qode_options_proya['vertical_area']) && $qode_options_proya['vertical_area'] == "yes" && isset($qode_options_proya['vertical_menu_inside_paspartu']) && $qode_options_proya['vertical_menu_inside_paspartu'] == 'no') { ?>
         </div> <!-- paspartu_middle_inner close div -->
         <?php } ?>
     </div> <!-- paspartu_inner close div -->
-    <?php if((isset($bridge_qode_options['paspartu_on_bottom']) && $bridge_qode_options['paspartu_on_bottom'] == 'yes') ||
-        (isset($bridge_qode_options['vertical_area']) && $bridge_qode_options['vertical_area'] == "yes" && isset($bridge_qode_options['vertical_menu_inside_paspartu']) && $bridge_qode_options['vertical_menu_inside_paspartu'] == 'yes')){ ?>
+    <?php if((isset($qode_options_proya['paspartu_on_bottom']) && $qode_options_proya['paspartu_on_bottom'] == 'yes') ||
+        (isset($qode_options_proya['vertical_area']) && $qode_options_proya['vertical_area'] == "yes" && isset($qode_options_proya['vertical_menu_inside_paspartu']) && $qode_options_proya['vertical_menu_inside_paspartu'] == 'yes')){ ?>
         <div class="paspartu_bottom"></div>
     <?php }?>
     </div> <!-- paspartu_outer close div -->
@@ -69,95 +69,95 @@ if(isset($bridge_qode_options['paspartu']) && $bridge_qode_options['paspartu'] =
 
 <?php
 
-$bridge_qode_footer_classes_array = array();
-$bridge_qode_footer_classes = '';
+$footer_classes_array = array();
+$footer_classes = '';
 
-$bridge_qode_paspartu = false;
-if(isset($bridge_qode_options['paspartu']) && $bridge_qode_options['paspartu'] == 'yes'){
-    $bridge_qode_paspartu = true;
+$paspartu = false;
+if(isset($qode_options_proya['paspartu']) && $qode_options_proya['paspartu'] == 'yes'){
+    $paspartu = true;
 }
 
-if(isset($bridge_qode_options['paspartu']) && $bridge_qode_options['paspartu'] == 'yes' && isset($bridge_qode_options['paspartu_footer_alignment']) && $bridge_qode_options['paspartu_footer_alignment'] == 'yes'){
-    $bridge_qode_footer_classes_array[]= 'paspartu_footer_alignment';
+if(isset($qode_options_proya['paspartu']) && $qode_options_proya['paspartu'] == 'yes' && isset($qode_options_proya['paspartu_footer_alignment']) && $qode_options_proya['paspartu_footer_alignment'] == 'yes'){
+    $footer_classes_array[]= 'paspartu_footer_alignment';
 }
 
-if(isset($bridge_qode_options['uncovering_footer']) && $bridge_qode_options['uncovering_footer'] == "yes" && $bridge_qode_paspartu == false){
-    $bridge_qode_footer_classes_array[] = 'uncover';
+if(isset($qode_options_proya['uncovering_footer']) && $qode_options_proya['uncovering_footer'] == "yes" && $paspartu == false){
+    $footer_classes_array[] = 'uncover';
 }
 
-$bridge_qode_display_footer_top = true;
+$display_footer_top = true;
 
-/*$footer_top_per_page_option = get_post_meta($bridge_qode_page_id, "footer_top_per_page", true);
+/*$footer_top_per_page_option = get_post_meta($page_id, "footer_top_per_page", true);
 if(!empty($footer_top_per_page_option)){
 	$footer_top_per_page = $footer_top_per_page_option;
 }
 
 
-if (isset($bridge_qode_options['show_footer_top'])) {
-	if ($bridge_qode_options['show_footer_top'] == "no" && $footer_top_per_page_option == 'no') $bridge_qode_display_footer_top = false;
+if (isset($qode_options_proya['show_footer_top'])) {
+	if ($qode_options_proya['show_footer_top'] == "no" && $footer_top_per_page_option == 'no') $display_footer_top = false;
 }*/
 
-$bridge_qode_display_footer_text = true;
+$display_footer_text = true;
 
-/*if (isset($bridge_qode_options['footer_text'])) {
-	if ($bridge_qode_options['footer_text'] == "yes") $bridge_qode_display_footer_text = true;
+/*if (isset($qode_options_proya['footer_text'])) {
+	if ($qode_options_proya['footer_text'] == "yes") $display_footer_text = true;
 }*/
 
 //is some class added to footer classes array?
-if(is_array($bridge_qode_footer_classes_array) && count($bridge_qode_footer_classes_array)) {
+if(is_array($footer_classes_array) && count($footer_classes_array)) {
     //concat all classes and prefix it with class attribute
-    $bridge_qode_footer_classes = esc_attr(implode(' ', $bridge_qode_footer_classes_array));
+    $footer_classes = esc_attr(implode(' ', $footer_classes_array));
 }
 
 ?>
 
-<?php if($bridge_qode_display_footer_top || $bridge_qode_display_footer_text) { ?>
-	<footer <?php echo bridge_qode_get_inline_attr($bridge_qode_footer_classes, 'class'); ?>>
+<?php if($display_footer_top || $display_footer_text) { ?>
+	<footer <?php echo qode_get_inline_attr($footer_classes, 'class'); ?>>
 		<div class="footer_inner clearfix">
 		<?php
-		$bridge_qode_footer_in_grid = true;
-		if(isset($bridge_qode_options['footer_in_grid'])){
-			if ($bridge_qode_options['footer_in_grid'] != "yes") {
-				$bridge_qode_footer_in_grid = false;
+		$footer_in_grid = true;
+		if(isset($qode_options_proya['footer_in_grid'])){
+			if ($qode_options_proya['footer_in_grid'] != "yes") {
+				$footer_in_grid = false;
 			}
 		}
 
 		
-		$bridge_qode_footer_top_columns = 4;
-		if (isset($bridge_qode_options['footer_top_columns'])) {
-			$bridge_qode_footer_top_columns = $bridge_qode_options['footer_top_columns'];
+		$footer_top_columns = 4;
+		if (isset($qode_options_proya['footer_top_columns'])) {
+			$footer_top_columns = $qode_options_proya['footer_top_columns'];
 		}
 
-        $bridge_qode_footer_top_border_color = !empty($bridge_qode_options['footer_top_border_color']) ? $bridge_qode_options['footer_top_border_color'] : '';
-        $bridge_qode_footer_top_border_width = isset($bridge_qode_options['footer_top_border_width']) && $bridge_qode_options['footer_top_border_width'] !== '' ? $bridge_qode_options['footer_top_border_width'].'px' : '1px';
-        $bridge_qode_footer_top_border_in_grid = 'no';
-        $bridge_qode_footer_top_border_in_grid_class = '';
+        $footer_top_border_color = !empty($qode_options_proya['footer_top_border_color']) ? $qode_options_proya['footer_top_border_color'] : '';
+        $footer_top_border_width = isset($qode_options_proya['footer_top_border_width']) && $qode_options_proya['footer_top_border_width'] !== '' ? $qode_options_proya['footer_top_border_width'].'px' : '1px';
+        $footer_top_border_in_grid = 'no';
+        $footer_top_border_in_grid_class = '';
 
-        if(isset($bridge_qode_options['footer_top_border_in_grid'])) {
-            $bridge_qode_footer_top_border_in_grid = $bridge_qode_options['footer_top_border_in_grid'];
-            $bridge_qode_footer_top_border_in_grid_class = $bridge_qode_footer_top_border_in_grid == 'yes' ? 'in_grid' : '';
+        if(isset($qode_options_proya['footer_top_border_in_grid'])) {
+            $footer_top_border_in_grid = $qode_options_proya['footer_top_border_in_grid'];
+            $footer_top_border_in_grid_class = $footer_top_border_in_grid == 'yes' ? 'in_grid' : '';
         }
 
-        $bridge_qode_footer_top_border_style = array();
-        if($bridge_qode_footer_top_border_color !== '') {
-            $bridge_qode_footer_top_border_style[] = 'background-color: '.$bridge_qode_footer_top_border_color;
+        $footer_top_border_style = array();
+        if($footer_top_border_color !== '') {
+            $footer_top_border_style[] = 'background-color: '.$footer_top_border_color;
         }
 
-        if($bridge_qode_footer_top_border_width !== '') {
-            $bridge_qode_footer_top_border_style[] = 'height: '.$bridge_qode_footer_top_border_width;
+        if($footer_top_border_width !== '') {
+            $footer_top_border_style[] = 'height: '.$footer_top_border_width;
         }
 
-		if($bridge_qode_display_footer_top) { ?>
+		if($display_footer_top) { ?>
 		<div class="footer_top_holder">
-            <?php if($bridge_qode_footer_top_border_color !== '') { ?>
-                <div <?php bridge_qode_inline_style($bridge_qode_footer_top_border_style); ?> <?php bridge_qode_class_attribute('footer_top_border '.$bridge_qode_footer_top_border_in_grid_class); ?>></div>
+            <?php if($footer_top_border_color !== '') { ?>
+                <div <?php qode_inline_style($footer_top_border_style); ?> <?php qode_class_attribute('footer_top_border '.$footer_top_border_in_grid_class); ?>></div>
             <?php } ?>
-			<div class="footer_top<?php if(!$bridge_qode_footer_in_grid) {echo " footer_top_full";} ?>">
-				<?php if($bridge_qode_footer_in_grid){ ?>
+			<div class="footer_top<?php if(!$footer_in_grid) {echo " footer_top_full";} ?>">
+				<?php if($footer_in_grid){ ?>
 				<div class="container">
 					<div class="container_inner">
 				<?php } ?>
-						<?php switch ($bridge_qode_footer_top_columns) { 
+						<?php switch ($footer_top_columns) { 
 							case 6:
 						?>
 							<div class="two_columns_50_50 clearfix">
@@ -280,17 +280,17 @@ if(is_array($bridge_qode_footer_classes_array) && count($bridge_qode_footer_clas
 							break;
 						}
 						?>
-				<?php if($bridge_qode_footer_in_grid){ ?>
+				<?php if($footer_in_grid){ ?>
 					</div>
 				</div>
 				<?php } ?>
 			</div>
-			<?php if (isset($bridge_qode_options['footer_angled_section'])  && $bridge_qode_options['footer_angled_section'] == "yes"){ ?>
+			<?php if (isset($qode_options_proya['footer_angled_section'])  && $qode_options_proya['footer_angled_section'] == "yes"){ ?>
 				<svg class="angled-section svg-footer-bottom" preserveAspectRatio="none" viewBox="0 0 86 86" width="100%" height="86">
-					<?php if(isset($bridge_qode_options['footer_angled_section_direction']) && $bridge_qode_options['footer_angled_section_direction'] == 'from_left_to_right'){ ?>
+					<?php if(isset($qode_options_proya['footer_angled_section_direction']) && $qode_options_proya['footer_angled_section_direction'] == 'from_left_to_right'){ ?>
 						<polygon points="0,0 0,86 86,86" />
 					<?php }
-					if(isset($bridge_qode_options['footer_angled_section_direction']) && $bridge_qode_options['footer_angled_section_direction'] == 'from_right_to_left'){ ?>
+					if(isset($qode_options_proya['footer_angled_section_direction']) && $qode_options_proya['footer_angled_section_direction'] == 'from_right_to_left'){ ?>
 						<polygon points="0,86 86,0 86,86" />
 					<?php } ?>
 				</svg>
@@ -300,48 +300,48 @@ if(is_array($bridge_qode_footer_classes_array) && count($bridge_qode_footer_clas
 		<?php
 
 
-		$bridge_qode_footer_bottom_columns = 1;
-		if (isset($bridge_qode_options['footer_bottom_columns'])) {
-			$bridge_qode_footer_bottom_columns = $bridge_qode_options['footer_bottom_columns'];
+		$footer_bottom_columns = 1;
+		if (isset($qode_options_proya['footer_bottom_columns'])) {
+			$footer_bottom_columns = $qode_options_proya['footer_bottom_columns'];
 		}
 
-		$bridge_qode_footer_bottom_in_grid = false;
-		if(isset($bridge_qode_options['footer_bottom_in_grid'])){
-			if ($bridge_qode_options['footer_bottom_in_grid'] == "yes") {
-				$bridge_qode_footer_bottom_in_grid = true;
+		$footer_bottom_in_grid = false;
+		if(isset($qode_options_proya['footer_bottom_in_grid'])){
+			if ($qode_options_proya['footer_bottom_in_grid'] == "yes") {
+				$footer_bottom_in_grid = true;
 			}
 		}
 
-        $bridge_qode_footer_bottom_border_color = !empty($bridge_qode_options['footer_bottom_border_color']) ? $bridge_qode_options['footer_bottom_border_color'] : '';
-        $bridge_qode_footer_bottom_border_width = isset($bridge_qode_options['footer_bottom_border_width']) && $bridge_qode_options['footer_bottom_border_width'] !== '' ? $bridge_qode_options['footer_bottom_border_width'].'px' : '1px';
-        $bridge_qode_footer_bottom_border_in_grid = 'no';
-        $bridge_qode_footer_bottom_border_in_grid_class = '';
+        $footer_bottom_border_color = !empty($qode_options_proya['footer_bottom_border_color']) ? $qode_options_proya['footer_bottom_border_color'] : '';
+        $footer_bottom_border_width = isset($qode_options_proya['footer_bottom_border_width']) && $qode_options_proya['footer_bottom_border_width'] !== '' ? $qode_options_proya['footer_bottom_border_width'].'px' : '1px';
+        $footer_bottom_border_in_grid = 'no';
+        $footer_bottom_border_in_grid_class = '';
 
-        if(isset($bridge_qode_options['footer_bottom_border_in_grid'])) {
-            $bridge_qode_footer_bottom_border_in_grid = $bridge_qode_options['footer_bottom_border_in_grid'];
-            $bridge_qode_footer_bottom_border_in_grid_class = $bridge_qode_footer_bottom_border_in_grid == 'yes' ? 'in_grid' : '';
+        if(isset($qode_options_proya['footer_bottom_border_in_grid'])) {
+            $footer_bottom_border_in_grid = $qode_options_proya['footer_bottom_border_in_grid'];
+            $footer_bottom_border_in_grid_class = $footer_bottom_border_in_grid == 'yes' ? 'in_grid' : '';
         }
 
-        $bridge_qode_footer_bottom_border_style = array();
-        if($bridge_qode_footer_bottom_border_color !== '') {
-            $bridge_qode_footer_bottom_border_style[] = 'background-color: '.$bridge_qode_footer_bottom_border_color;
+        $footer_bottom_border_style = array();
+        if($footer_bottom_border_color !== '') {
+            $footer_bottom_border_style[] = 'background-color: '.$footer_bottom_border_color;
         }
 
-        if($bridge_qode_footer_bottom_border_width !== '') {
-            $bridge_qode_footer_bottom_border_style[] = 'height: '.$bridge_qode_footer_bottom_border_width;
+        if($footer_bottom_border_width !== '') {
+            $footer_bottom_border_style[] = 'height: '.$footer_bottom_border_width;
         }
 
-		if($bridge_qode_display_footer_text){ ?>
+		if($display_footer_text){ ?>
 			<div class="footer_bottom_holder">
-                <?php if($bridge_qode_footer_bottom_border_color !== '') { ?>
-                    <div <?php bridge_qode_inline_style($bridge_qode_footer_bottom_border_style); ?> <?php bridge_qode_class_attribute('footer_bottom_border '.$bridge_qode_footer_bottom_border_in_grid_class); ?>></div>
+                <?php if($footer_bottom_border_color !== '') { ?>
+                    <div <?php qode_inline_style($footer_bottom_border_style); ?> <?php qode_class_attribute('footer_bottom_border '.$footer_bottom_border_in_grid_class); ?>></div>
                 <?php } ?>
-				<?php if($bridge_qode_footer_bottom_in_grid){ ?>
+				<?php if($footer_bottom_in_grid){ ?>
 				<div class="container">
 					<div class="container_inner">
 				<?php } ?>
 		<?php
-			switch ($bridge_qode_footer_bottom_columns) {
+			switch ($footer_bottom_columns) {
 			case 1:
 			?>
 			<div class="footer_bottom">
@@ -403,7 +403,7 @@ if(is_array($bridge_qode_footer_classes_array) && count($bridge_qode_footer_clas
 				</div>
 		<?php break; ?>
 		<?php } ?>
-			<?php if($bridge_qode_footer_bottom_in_grid){ ?>
+			<?php if($footer_bottom_in_grid){ ?>
 				</div>
 			</div>
 			<?php } ?>

@@ -11,8 +11,9 @@
  * the readme will list any important changes.
  *
  * @see 	    https://docs.woocommerce.com/document/template-structure/
+ * @author 		WooThemes
  * @package 	WooCommerce/Templates
- * @version     3.6.0
+ * @version     3.3.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -35,27 +36,27 @@ if ( is_user_logged_in() ) {
 	</div>
 	
 	<p class="form-row form-row-first">
-		<input type="text" placeholder="<?php esc_html_e( 'Username or email', 'bridge' ); ?>" class="input-text placeholder" name="username" id="username" />
+		<input type="text" placeholder="<?php _e( 'Username or email', 'woocommerce' ); ?>" class="input-text placeholder" name="username" id="username" />
 	</p>
 	<p class="form-row form-row-last">
-		<input class="input-text placeholder" placeholder="<?php esc_html_e( 'Password', 'bridge' ); ?>" type="password" name="password" id="password" />
+		<input class="input-text placeholder" placeholder="<?php _e( 'Password', 'woocommerce' ); ?>" type="password" name="password" id="password" />
 	</p>
 	<div class="clear"></div>
-
+	
 	<?php do_action( 'woocommerce_login_form' ); ?>
-
+	
 	<p class="form-row">
-		<label class="woocommerce-form__label woocommerce-form__label-for-checkbox inline woo-my-account-rememberme">
-			<input class="woocommerce-form__input woocommerce-form__input-checkbox" name="rememberme" type="checkbox" id="rememberme" value="forever" /> <span><?php esc_html_e( 'Remember me', 'bridge' ); ?></span>
-		</label>
 		<?php wp_nonce_field( 'woocommerce-login' ); ?>
+		<input type="submit" class="button" name="login" value="<?php esc_attr_e( 'Login', 'woocommerce' ); ?>" />
+		<a class="lost_password" href="<?php echo esc_url( wp_lostpassword_url() ); ?>"><?php _e( 'Lost your password?', 'woocommerce' ); ?></a>
 		<input type="hidden" name="redirect" value="<?php echo esc_url( $redirect ) ?>" />
-		<input type="submit" class="button" name="login" value="<?php esc_attr_e( 'Login', 'bridge' ); ?>" />
-		<a class="lost_password" href="<?php echo esc_url( wp_lostpassword_url() ); ?>"><?php esc_html_e( 'Lost your password?', 'bridge' ); ?></a>
+		<label class="woocommerce-form__label woocommerce-form__label-for-checkbox inline woo-my-account-rememberme">
+			<input class="woocommerce-form__input woocommerce-form__input-checkbox" name="rememberme" type="checkbox" id="rememberme" value="forever" /> <span><?php _e( 'Remember me', 'woocommerce' ); ?></span>
+		</label>
 	</p>
-
+	
 	<div class="clear"></div>
-
+	
 	<?php do_action( 'woocommerce_login_form_end' ); ?>
 
 </form>

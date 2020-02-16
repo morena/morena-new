@@ -1,5 +1,5 @@
 <?php if($display_header_top == "yes"){ ?>
-	<div class="header_top clearfix" <?php echo wp_kses_post( $header_top_color_per_page ); ?> >
+	<div class="header_top clearfix" <?php echo $header_top_color_per_page; ?> >
 		<?php if($header_in_grid){ ?>
 		<div class="container">
 			<div class="container_inner clearfix">

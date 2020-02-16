@@ -1,5 +1,5 @@
 <?php
-$product = bridge_qode_return_woocommerce_global_variable();
+$product = qode_return_woocommerce_global_variable();
 
 if ( version_compare( WOOCOMMERCE_VERSION, '3.0' ) >= 0 ) {
 	$product_id = $product->get_id();
@@ -12,15 +12,15 @@ if ( version_compare( WOOCOMMERCE_VERSION, '3.0' ) >= 0 ) {
 }
 
 if (get_post_meta($product_id, 'qode_single_product_new_meta', true) === 'yes'){ ?>
-    <span class="qode-<?php echo esc_attr($class_name); ?>-new-product"><?php esc_html_e('NEW', 'bridge'); ?></span>
+    <span class="qode-<?php echo esc_attr($class_name); ?>-new-product"><?php esc_html_e('NEW', 'qode'); ?></span>
 <?php } ?>
 
 <?php if ($product->is_on_sale() && $product->is_in_stock()) { ?>
-    <span class="qode-<?php echo esc_attr($class_name); ?>-onsale"><?php echo bridge_qode_woocommerce_sale_percentage(intval($product_regular_price), intval($product_sale_price)); ?></span>
+    <span class="qode-<?php echo esc_attr($class_name); ?>-onsale"><?php echo qode_woocommerce_sale_percentage(intval($product_regular_price), intval($product_sale_price)); ?></span>
 <?php } ?>
 
 <?php if (!$product->is_in_stock()) { ?>
-	<span class="qode-<?php echo esc_attr($class_name); ?>-out-of-stock"><?php esc_html_e('SOLD', 'bridge'); ?></span>
+	<span class="qode-<?php echo esc_attr($class_name); ?>-out-of-stock"><?php esc_html_e('SOLD', 'qode'); ?></span>
 <?php }
 
 $product_image_size = 'shop_catalog';

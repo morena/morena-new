@@ -1,1 +1,1 @@
-<div class="qode-<?php echo esc_attr($class_name); ?>-messsage"><p><?php esc_html_e('No products were found!', 'bridge'); ?></p></div>
+<div class="qode-<?php echo esc_attr($class_name); ?>-messsage"><p><?php esc_html_e('No products were found!', 'qode'); ?></p></div>

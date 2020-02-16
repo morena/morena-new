@@ -20,10 +20,10 @@ $html .=
 					do_shortcode($content).
 				'</ul>'.
 			'</div>'.
-			'<img itemprop="image" class="qode-ids-frame" src="'.get_template_directory_uri() . '/img/in-device-slider-'.esc_attr($device).'.png" alt="'. esc_html__('Device Frame', 'bridge') .'">'.
+			'<img itemprop="image" class="qode-ids-frame" src="'.get_template_directory_uri() . '/img/in-device-slider-'.esc_attr($device).'.png" alt="">'.
 		'</div>'.
 	'</div>'.
 '';
 
-echo bridge_qode_get_module_part( $html );
+echo $html;
 

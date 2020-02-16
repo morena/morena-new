@@ -1,6 +1,6 @@
 <?php
 
-	$product = bridge_qode_return_woocommerce_global_variable();
+	$product = qode_return_woocommerce_global_variable();
 
     if ( version_compare( WOOCOMMERCE_VERSION, '3.0' ) >= 0 ) {
         $product_type = $product->get_type();
@@ -21,7 +21,7 @@
 	?>
 	
 	<div class="qode-<?php echo esc_attr($class_name); ?>-add-to-cart">
-		<?php echo apply_filters( 'bridge_qode_filter_product_list_add_to_cart_link',
+		<?php echo apply_filters( 'qode_product_list_add_to_cart_link',
 			sprintf( '<a rel="nofollow" href="%s" data-quantity="%s" data-product_id="%s" data-product_sku="%s" class="%s">%s</a>',
 				esc_url( $product->add_to_cart_url() ),
 				esc_attr( isset( $quantity ) ? $quantity : 1 ),

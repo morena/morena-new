@@ -1,23 +1,24 @@
 <?php
-class BridgeQodeWoocommerceDropdownCart extends WP_Widget {
+class Woocommerce_Dropdown_Cart extends WP_Widget {
 
 	public function __construct() {
 		parent::__construct(
 	 		'woocommerce-dropdown-cart', // Base ID
-			esc_html__('Bridge Woocommerce Dropdown Cart', 'bridge'), // Name
-			array( 'description' => esc_html__( 'Display a shop cart icon with a dropdown that shows products that are in the cart', 'bridge' ), ) // Args
+			'Woocommerce Dropdown Cart', // Name
+			array( 'description' => __( 'Woocommerce Dropdown Cart', 'qode' ), ) // Args
 		);
 	}
 
 	public function widget( $args, $instance ) {
+		global $post;
 		extract( $args );
-		echo wp_kses_post( $before_widget );
+		echo $before_widget;
 		global $woocommerce;
-		global $bridge_qode_options;
+		global $qode_options_proya;
 		$cart_holder_class = 'header_cart';
 
-		if (isset($bridge_qode_options['woo_cart_type'])){
-			$cart_type = $bridge_qode_options['woo_cart_type'];
+		if (isset($qode_options_proya['woo_cart_type'])){
+			$cart_type = $qode_options_proya['woo_cart_type'];
 			switch ($cart_type) {
 				case 'font-elegant':
 					$cart_holder_class = "header_cart cart_icon";
@@ -37,15 +38,18 @@ class BridgeQodeWoocommerceDropdownCart extends WP_Widget {
 		<div class="shopping_cart_outer">
 		<div class="shopping_cart_inner">
 		<div class="shopping_cart_header">
-			<a class="<?php echo esc_attr($cart_holder_class);?>" href="<?php echo wc_get_cart_url(); ?>"><span class="header_cart_span"><?php echo esc_attr( WC()->cart->cart_contents_count ); ?></span></a>
+			<a class="<?php echo esc_attr($cart_holder_class);?>" href="<?php echo wc_get_cart_url(); ?>"><span class="header_cart_span"><?php echo $woocommerce->cart->cart_contents_count; ?></span></a>
 			<div class="shopping_cart_dropdown">
 			<div class="shopping_cart_dropdown_inner">
 				<?php
+					$cart_is_empty = sizeof( $woocommerce->cart->get_cart() ) <= 0;
 					$list_class = array( 'cart_list', 'product_list_widget' );
 				?>
 					<ul class="<?php echo implode(' ', $list_class); ?>">
-						<?php if ( ! WC()->cart->is_empty() ) : ?>
-							<?php foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) :
+
+						<?php if ( !$cart_is_empty ) : ?>
+
+							<?php foreach ( $woocommerce->cart->get_cart() as $cart_item_key => $cart_item ) :
 
 								$_product = $cart_item['data'];
 
@@ -67,7 +71,7 @@ class BridgeQodeWoocommerceDropdownCart extends WP_Widget {
 								<li>
 									<a itemprop="url" href="<?php echo get_permalink( $cart_item['product_id'] ); ?>">
 
-										<?php echo bridge_qode_get_module_part( $_product->get_image() ); ?>
+										<?php echo $_product->get_image(); ?>
 
 										<?php echo apply_filters('woocommerce_widget_cart_product_title', $_product->get_title(), $_product ); ?>
 
@@ -76,56 +80,68 @@ class BridgeQodeWoocommerceDropdownCart extends WP_Widget {
 									<?php if ( version_compare( WOOCOMMERCE_VERSION, '3.3' ) >= 0 ) {
 										echo wc_get_formatted_cart_item_data( $cart_item );
 									} else {
-										echo bridge_qode_get_module_part( $woocommerce->cart->get_item_data( $cart_item ) );
+										echo $woocommerce->cart->get_item_data( $cart_item );
 									} ?>
 
 									<?php echo apply_filters( 'woocommerce_widget_cart_item_quantity', '<span class="quantity">' . sprintf( '%s &times; %s', $cart_item['quantity'], $product_price ) . '</span>', $cart_item, $cart_item_key ); ?>
 								</li>
+
 							<?php endforeach; ?>
 
 						<?php else : ?>
-							<li><?php esc_html_e( 'No products in the cart.', 'bridge' ); ?></li>
+
+							<li><?php _e( 'No products in the cart.', 'qode' ); ?></li>
+
 						<?php endif; ?>
+
 					</ul>
 				</div>
-                <a itemprop="url" href="<?php echo wc_get_cart_url(); ?>" class="qbutton white view-cart"><?php esc_html_e( 'Cart', 'bridge' ); ?> <i class="fa fa-shopping-cart"></i></a>
-				<span class="total"><?php esc_html_e( 'Total:', 'bridge' ); ?><span><?php wc_cart_totals_subtotal_html(); ?></span></span>
+			<?php if ( sizeof( $woocommerce->cart->get_cart() ) <= 0 ) : ?>
+			
+			<?php endif; ?>
+
+                <a itemprop="url" href="<?php echo wc_get_cart_url(); ?>" class="qbutton white view-cart"><?php _e( 'Cart', 'qode' ); ?> <i class="fa fa-shopping-cart"></i></a>
+
+                    <span class="total"><?php _e( 'Total', 'qode' ); ?>:<span><?php echo $woocommerce->cart->get_cart_subtotal(); ?></span></span>
+
+
+			<?php if ( sizeof( $woocommerce->cart->get_cart() ) <= 0 ) : ?>
+			
+			<?php endif; ?>
 	</div>
 </div>
 		</div>
 		</div>
 	<?php
-		echo wp_kses_post($after_widget);
+		echo $after_widget;
 	}
+
 	
 	public function update( $new_instance, $old_instance ) {
 		$instance = array();
-		
+
 		return $instance;
 	}
-}
 
-if ( ! function_exists( 'bridge_qode_register_woocommerce_dropdown_cart_widget' ) ) {
-	function bridge_qode_register_woocommerce_dropdown_cart_widget( $widgets ) {
-		$widgets[] = 'BridgeQodeWoocommerceDropdownCart';
-		
-		return $widgets;
-	}
-	
-	add_filter( 'bridge_core_filter_register_widgets', 'bridge_qode_register_woocommerce_dropdown_cart_widget' );
-}
-
+} 
+add_action('widgets_init', function () {
+	register_widget( "Woocommerce_Dropdown_Cart" );
+});
+?>
+<?php
 // WooCommerce plugin changed hooks in 3.0 version and because of that we have this condition
 if ( version_compare( WOOCOMMERCE_VERSION, '3.0' ) >= 0 ) {
-	add_filter( 'woocommerce_add_to_cart_fragments', 'bridge_qode_woocommerce_header_add_to_cart_fragment' );
+	add_filter( 'woocommerce_add_to_cart_fragments', 'woocommerce_header_add_to_cart_fragment' );
 } else {
-	add_filter( 'add_to_cart_fragments', 'bridge_qode_woocommerce_header_add_to_cart_fragment' );
+	add_filter( 'add_to_cart_fragments', 'woocommerce_header_add_to_cart_fragment' );
 }
-function bridge_qode_woocommerce_header_add_to_cart_fragment($fragments ) {
+function woocommerce_header_add_to_cart_fragment( $fragments ) {
+	global $woocommerce;
 	ob_start();
 	?>
-	<span class="header_cart_span"><?php echo WC()->cart->cart_contents_count; ?></span>
+	<span class="header_cart_span"><?php echo $woocommerce->cart->cart_contents_count; ?></span>
 	<?php
 		$fragments['span.header_cart_span'] = ob_get_clean();
 		return $fragments;	
 }
+?>

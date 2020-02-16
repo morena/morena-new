@@ -1,9 +1,9 @@
-<header class="<?php echo esc_attr( $header_classes ); ?> page_header">
+<header class="<?php echo $header_classes; ?> page_header">
     <div class="header_inner clearfix">
-		<?php echo bridge_qode_get_module_template_part('templates/search/search', 'header', '', $params); ?>
+		<?php echo qode_get_module_template_part('templates/search/search', 'header', '', $params); ?>
         <div class="header_top_bottom_holder">
-			<?php echo bridge_qode_get_module_template_part('templates/header-top/header-top', 'header', '', $params); ?>
-            <div class="header_bottom clearfix" <?php echo wp_kses_post( $header_color_per_page ); ?> >
+			<?php echo qode_get_module_template_part('templates/header-top/header-top', 'header', '', $params); ?>
+            <div class="header_bottom clearfix" <?php echo $header_color_per_page; ?> >
 				<?php if($header_in_grid){ ?>
                 <div class="container">
                     <div class="container_inner clearfix">
@@ -12,12 +12,12 @@
                             <div class="header_inner_left">
                                 <div class="side_menu_button_wrapper left">
                                     <div class="side_menu_button">
-										<?php echo bridge_qode_get_module_template_part('templates/popup-menu/popup-menu-button', 'header', '', $params); ?>
+										<?php echo qode_get_module_template_part('templates/popup-menu/popup-menu-button', 'header', '', $params); ?>
                                     </div>
                                 </div>
                             </div>
 							<?php
-							echo bridge_qode_get_logo(array(
+							echo qode_get_logo(array(
 								'logo_image' => true,
 								'logo_image_light' => true,
 								'logo_image_dark' => true,
@@ -33,7 +33,7 @@
 									} ?>
 
                                     <div class="side_menu_button">
-										<?php echo bridge_qode_get_module_template_part('templates/search/search-button', 'header', '', $params); ?>
+										<?php echo qode_get_module_template_part('templates/search/search-button', 'header', '', $params); ?>
                                     </div>
                                 </div>
                             </div>

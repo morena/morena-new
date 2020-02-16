@@ -13,10 +13,10 @@ $html .=
 			'<div class="qode-presl-small-slider">'.
 				'<ul class="slides"></ul>'.
 			'</div>'.
-			'<img itemprop="image" class="qode-presl-phone" src="'.get_template_directory_uri() . '/img/bridge-phone-hollow.png" alt="'. esc_html__('Phone', 'bridge') .'">'.
+			'<img itemprop="image" class="qode-presl-phone" src="'.get_template_directory_uri() . '/img/bridge-phone-hollow.png" alt="">'.
 		'</div>'.
 	'</div>'.
 '';
 
-echo bridge_qode_get_module_part( $html );
+echo $html;
 

@@ -1,4 +1,4 @@
-<?php 
+<?php // Child
 global $qode_options_proya;
 /* Set id on -1 beacause archive page id can have same id as some post and settings is not good */
 if(is_category() || is_tag() || is_author()){

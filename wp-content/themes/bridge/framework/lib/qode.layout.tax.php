@@ -4,7 +4,7 @@
    Class: QodeTaxonomyField
    A class that initializes Qode Taxonomy Field
 */
-class BridgeQodeTaxonomyField implements iBridgeQodeRender{
+class QodeTaxonomyField implements iRender{
     private $type;
 	private $name;
 	private $label;
@@ -19,16 +19,16 @@ class BridgeQodeTaxonomyField implements iBridgeQodeRender{
 		$this->description = $description;
 		$this->options = $options;
 		$this->args = $args;
-		add_filter('bridge_qode_filter_taxonomy_fields',array($this,'addFieldForEditSave'));
+		add_filter('qode_taxonomy_fields',array($this,'addFieldForEditSave'));
 	}
 
 	public function addFieldForEditSave($names){
 
 		if ( $this->type == 'icon' ) {
-			$icons_collections = \BridgeQodeIconCollections::getInstance()->getIconCollectionsKeys();
+			$icons_collections = \QodeIconCollections::getInstance()->getIconCollectionsKeys();
 
 			foreach ( $icons_collections as $icons_collection ) {
-				$icons_param = \BridgeQodeIconCollections::getInstance()->getIconCollectionParamNameByKey( $icons_collection );
+				$icons_param = \QodeIconCollections::getInstance()->getIconCollectionParamNameByKey( $icons_collection );
 
 				$names[] = $this->name . '_' . $icons_param;
 			}
@@ -43,11 +43,11 @@ class BridgeQodeTaxonomyField implements iBridgeQodeRender{
 	}
 }
 
-abstract class BridgeQodeTaxonomyFieldType {
+abstract class QodeTaxonomyFieldType {
 	abstract public function render( $name, $label="",$description="", $options = array(), $args = array());
 }
 
-class BridgeQodeTaxonomyFieldText extends BridgeQodeTaxonomyFieldType {
+class QodeTaxonomyFieldText extends QodeTaxonomyFieldType {
 	public function render( $name, $label="", $description="", $options = array(), $args = array() ) {
 		if(!isset( $_GET['tag_ID'])){ ?>
             <div class="form-field">
@@ -62,7 +62,7 @@ class BridgeQodeTaxonomyFieldText extends BridgeQodeTaxonomyFieldType {
             <tr class="form-field">
                 <th scope="row" valign="top"><label for="<?php echo esc_html($name); ?>"><?php echo esc_html($label); ?></label></th>
                 <td>
-                    <input type="text" name="<?php echo esc_html($name); ?>" id="<?php echo esc_html($name); ?>" value="<?php echo esc_attr($value) ? esc_attr($value) : ''; ?>">
+                    <input type="text" name="<?php echo esc_html($name); ?>" id="<?php echo esc_html($name); ?>" value="<?php echo $value ? $value : ''; ?>">
                     <p class="description"><?php echo esc_html($description); ?></p>
                 </td>
             </tr>
@@ -71,7 +71,7 @@ class BridgeQodeTaxonomyFieldText extends BridgeQodeTaxonomyFieldType {
 	}
 }
 
-class BridgeQodeTaxonomyFieldImage extends BridgeQodeTaxonomyFieldType {
+class QodeTaxonomyFieldImage extends QodeTaxonomyFieldType {
 	public function render( $name, $label="", $description="", $options = array(), $args = array() ) {
 		if(!isset( $_GET['tag_ID'])){ ?>
             <div class="form-field">
@@ -79,8 +79,8 @@ class BridgeQodeTaxonomyFieldImage extends BridgeQodeTaxonomyFieldType {
                 <input type="hidden" name="<?php echo esc_html($name); ?>" id="<?php echo esc_html($name); ?>" class="qode-tax-custom-media-url" value="">
                 <div class="qode-tax-image-wrapper"></div>
                 <p>
-                    <input type="button" class="button button-secondary qode-tax-media-add" name="qode-tax-media-add" value="<?php esc_html_e( 'Add Image', 'bridge' ); ?>" />
-                    <input type="button" class="button button-secondary qode-tax-media-remove" name="qode-tax-media-remove" value="<?php esc_html_e( 'Remove Image', 'bridge' ); ?>" />
+                    <input type="button" class="button button-secondary qode-tax-media-add" name="qode-tax-media-add" value="<?php esc_html_e( 'Add Image', 'qode' ); ?>" />
+                    <input type="button" class="button button-secondary qode-tax-media-remove" name="qode-tax-media-remove" value="<?php esc_html_e( 'Remove Image', 'qode' ); ?>" />
                 </p>
             </div>
 			<?php
@@ -94,15 +94,15 @@ class BridgeQodeTaxonomyFieldImage extends BridgeQodeTaxonomyFieldType {
                 </th>
                 <td>
 					<?php  ?>
-                    <input type="hidden" name="<?php echo esc_html($name); ?>" id="<?php echo esc_html($name); ?>" value="<?php echo esc_attr($image_id); ?>" class="qode-tax-custom-media-url">
+                    <input type="hidden" name="<?php echo esc_html($name); ?>" id="<?php echo esc_html($name); ?>" value="<?php echo $image_id; ?>" class="qode-tax-custom-media-url">
                     <div class="qode-tax-image-wrapper">
 						<?php if ( $image_id ) { ?>
 							<?php echo wp_get_attachment_image ( $image_id, 'thumbnail' ); ?>
 						<?php } ?>
                     </div>
                     <p>
-                        <input type="button" class="button button-secondary qode-tax-media-add" name="qode-tax-media-add" value="<?php esc_html_e( 'Add Image', 'bridge' ); ?>" />
-                        <input data-termid="<?php echo esc_html($_GET['tag_ID']); ?>" data-taxonomy="<?php echo esc_html($taxonomy); ?>" type="button" class="button button-secondary qode-tax-media-remove" name="qode-tax-media-remove" value="<?php esc_html_e( 'Remove Image', 'bridge' ); ?>" />
+                        <input type="button" class="button button-secondary qode-tax-media-add" name="qode-tax-media-add" value="<?php esc_html_e( 'Add Image', 'qode' ); ?>" />
+                        <input data-termid="<?php echo esc_html($_GET['tag_ID']); ?>" data-taxonomy="<?php echo esc_html($taxonomy); ?>" type="button" class="button button-secondary qode-tax-media-remove" name="qode-tax-media-remove" value="<?php esc_html_e( 'Remove Image', 'qode' ); ?>" />
                     </p>
                 </td>
             </tr>
@@ -111,7 +111,7 @@ class BridgeQodeTaxonomyFieldImage extends BridgeQodeTaxonomyFieldType {
 	}
 }
 
-class BridgeQodeTaxonomyFieldSelect extends BridgeQodeTaxonomyFieldType {
+class QodeTaxonomyFieldSelect extends QodeTaxonomyFieldType {
 	public function render( $name, $label = "", $description = "", $options = array(), $args = array(), $hidden = false ) {
 
 		$dependence = false;
@@ -194,10 +194,10 @@ class BridgeQodeTaxonomyFieldSelect extends BridgeQodeTaxonomyFieldType {
 	}
 }
 
-class BridgeQodeTaxonomyFieldIcon extends BridgeQodeTaxonomyFieldType {
+class QodeTaxonomyFieldIcon extends QodeTaxonomyFieldType {
 	public function render( $name, $label = "", $description = "", $options = array(), $args = array(), $hidden = false ) {
-		$options           = \BridgeQodeIconCollections::getInstance()->getIconCollectionsEmpty();
-		$icons_collections = \BridgeQodeIconCollections::getInstance()->getIconCollectionsKeys();
+		$options           = \QodeIconCollections::getInstance()->getIconCollectionsEmpty();
+		$icons_collections = \QodeIconCollections::getInstance()->getIconCollectionsKeys();
 
 		if ( ! isset( $_GET['tag_ID'] ) ) { ?>
 			<div class="form-field">
@@ -210,13 +210,13 @@ class BridgeQodeTaxonomyFieldIcon extends BridgeQodeTaxonomyFieldType {
 				<p class="description"><?php echo esc_html( $description ); ?></p>
 			</div>
 			<?php foreach ( $icons_collections as $icons_collection ) {
-				$icons_param = \BridgeQodeIconCollections::getInstance()->getIconCollectionParamNameByKey( $icons_collection );
+				$icons_param = \QodeIconCollections::getInstance()->getIconCollectionParamNameByKey( $icons_collection );
 				?>
 				<div class="form-field qode-icon-collection-holder" style="display: none" data-icon-collection="<?php echo esc_attr( $icons_collection ); ?>">
-					<label for="<?php echo esc_attr( $name ) . '_icon'; ?>"><?php esc_html_e( 'Icon', 'bridge' ); ?></label>
+					<label for="<?php echo esc_attr( $name ) . '_icon'; ?>"><?php esc_html_e( 'Icon', 'themenametd' ); ?></label>
 					<select name="<?php echo esc_attr( $name . '_' . $icons_param ) ?>" id="<?php echo esc_attr( $name . '_' . $icons_param ) ?>">
 						<?php
-						$icons = \BridgeQodeIconCollections::getInstance()->getIconCollection( $icons_collection );
+						$icons = \QodeIconCollections::getInstance()->getIconCollection( $icons_collection );
 						foreach ( $icons->icons as $option => $key ) { ?>
 							<option value="<?php echo esc_attr( $option ); ?>"><?php echo esc_attr( $key ); ?></option>
 						<?php } ?>
@@ -241,18 +241,18 @@ class BridgeQodeTaxonomyFieldIcon extends BridgeQodeTaxonomyFieldType {
 				</td>
 			</tr>
 			<?php foreach ( $icons_collections as $icons_collection ) {
-				$icons_param = \BridgeQodeIconCollections::getInstance()->getIconCollectionParamNameByKey( $icons_collection );
+				$icons_param = \QodeIconCollections::getInstance()->getIconCollectionParamNameByKey( $icons_collection );
 				$style       = 'display:none';
 				if ( $icon_pack == $icons_collection ) {
 					$style = 'display:table-row';
 				}
 				?>
 				<tr class="form-field qode-icon-collection-holder" style="<?php echo esc_attr( $style ); ?>" data-icon-collection="<?php echo esc_attr( $icons_collection ); ?>">
-					<th scope="row"><?php esc_html_e( 'Icon', 'bridge' ); ?></th>
+					<th scope="row"><?php esc_html_e( 'Icon', 'themenametd' ); ?></th>
 					<td>
 						<select name="<?php echo esc_attr( $name . '_' . $icons_param ) ?>" id="<?php echo esc_attr( $name . '_' . $icons_param ) ?>">
 							<?php
-							$icons      = \BridgeQodeIconCollections::getInstance()->getIconCollection( $icons_collection );
+							$icons      = \QodeIconCollections::getInstance()->getIconCollection( $icons_collection );
 							$activ_icon = get_term_meta( $_GET['tag_ID'], $name . '_' . $icons_param, true );
 							foreach ( $icons->icons as $option => $key ) { ?>
 								<option value="<?php echo esc_attr( $option ); ?>" <?php if ( $option == $activ_icon ) { echo 'selected'; } ?>><?php echo esc_attr( $key ); ?></option>
@@ -266,7 +266,7 @@ class BridgeQodeTaxonomyFieldIcon extends BridgeQodeTaxonomyFieldType {
 	}
 }
 
-class BridgeQodeTaxonomyFieldColor extends BridgeQodeTaxonomyFieldType {
+class QodeTaxonomyFieldColor extends QodeTaxonomyFieldType {
 	public function render( $name, $label="", $description="", $options = array(), $args = array() ) {
 
 		if(!isset( $_GET['tag_ID'])){ ?>
@@ -282,7 +282,7 @@ class BridgeQodeTaxonomyFieldColor extends BridgeQodeTaxonomyFieldType {
             <tr class="form-field">
                 <th scope="row" valign="top"><label for="<?php echo esc_html($name); ?>"><?php echo esc_html($label); ?></label></th>
                 <td>
-                    <input type="text" name="<?php echo esc_html($name); ?>" id="<?php echo esc_html($name); ?>" value="<?php echo esc_attr($value) ? esc_attr($value) : ''; ?>" class="qode-taxonomy-color-field">
+                    <input type="text" name="<?php echo esc_html($name); ?>" id="<?php echo esc_html($name); ?>" value="<?php echo $value ? $value : ''; ?>" class="qode-taxonomy-color-field">
                     <p class="description"><?php echo esc_html($description); ?></p>
                 </td>
             </tr>
@@ -292,34 +292,34 @@ class BridgeQodeTaxonomyFieldColor extends BridgeQodeTaxonomyFieldType {
 	}
 }
 
-class BridgeQodeTaxonomyFieldFactory {
+class QodeTaxonomyFieldFactory {
 
 	public function render( $field_type, $name, $label="", $description="", $options = array(), $args = array(), $hidden = false) {
 
 		switch ( strtolower( $field_type ) ) {
 
 			case 'text':
-				$field = new BridgeQodeTaxonomyFieldText();
+				$field = new QodeTaxonomyFieldText();
 				$field->render( $name, $label, $description, $options, $args, $hidden );
 				break;
 
 			case 'image':
-				$field = new BridgeQodeTaxonomyFieldImage();
+				$field = new QodeTaxonomyFieldImage();
 				$field->render( $name, $label, $description, $options, $args, $hidden );
 				break;
 
 			case 'selectblank':
-				$field = new BridgeQodeTaxonomyFieldSelect();
+				$field = new QodeTaxonomyFieldSelect();
 				$field->render( $name, $label, $description, $options, $args, $hidden );
 				break;
 
 			case 'icon':
-				$field = new BridgeQodeTaxonomyFieldIcon();
+				$field = new QodeTaxonomyFieldIcon();
 				$field->render( $name, $label, $description, $options, $args, $hidden );
 				break;
 
 			case 'color':
-				$field = new BridgeQodeTaxonomyFieldColor();
+				$field = new QodeTaxonomyFieldColor();
 				$field->render( $name, $label, $description, $options, $args, $hidden );
 				break;
 			default:

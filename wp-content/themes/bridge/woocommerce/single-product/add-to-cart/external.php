@@ -10,31 +10,27 @@
  * happen. When this occurs the version of the template file will be bumped and
  * the readme will list any important changes.
  *
- * @see https://docs.woocommerce.com/document/template-structure/
- * @package WooCommerce/Templates
- * @version 3.4.0
+ * @see 	    https://docs.woocommerce.com/document/template-structure/
+ * @author 		WooThemes
+ * @package 	WooCommerce/Templates
+ * @version     2.1.0
  */
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
-defined( 'ABSPATH' ) || exit;
-
-$bridge_qode_options = bridge_qode_return_global_options();
+global $qode_options_proya;
 
 $button_classes = 'single_add_to_cart_button qbutton button alt';
-if (isset($bridge_qode_options['woo_products_add_to_cart_hover_type']) && $bridge_qode_options['woo_products_add_to_cart_hover_type'] !== ''){
-	$button_classes .= ' '.$bridge_qode_options['woo_products_add_to_cart_hover_type'];
+if (isset($qode_options_proya['woo_products_add_to_cart_hover_type']) && $qode_options_proya['woo_products_add_to_cart_hover_type'] !== ''){
+	$button_classes .= ' '.$qode_options_proya['woo_products_add_to_cart_hover_type'];
 }
 ?>
 
 <?php do_action( 'woocommerce_before_add_to_cart_button' ); ?>
 
-    <form class="cart" action="<?php echo esc_url( $product_url ); ?>" method="get">
-        <?php do_action( 'woocommerce_before_add_to_cart_button' ); ?>
-
-        <button type="submit" class="single_add_to_cart_button button alt <?php echo esc_attr($button_classes); ?> "><?php echo esc_html( $button_text ); ?></button>
-
-        <?php wc_query_string_form_fields( $product_url ); ?>
-
-        <?php do_action( 'woocommerce_after_add_to_cart_button' ); ?>
-    </form>
+	<p class="cart">
+		<a href="<?php echo esc_url( $product_url ); ?>" rel="nofollow" class="single_add_to_cart_button button alt <?php echo esc_attr($button_classes); ?>"><?php echo esc_html( $button_text ); ?></a>
+	</p>
 
 <?php do_action( 'woocommerce_after_add_to_cart_button' ); ?>
