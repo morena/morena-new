@@ -5,12 +5,13 @@ include "qode.fontawesome.php";
 include "qode.fontelegant.php";
 include "qode.lineaicons.php";
 include "qode.dripicons.php";
+include "qode.kiko.php";
 /*
   Class: QodeIconCollections
   A class that initializes Qode Icon Collections
  */
 
-class QodeIconCollections {
+class BridgeQodeIconCollections {
 
     private static $instance;
     public $iconCollections;
@@ -36,10 +37,11 @@ class QodeIconCollections {
      */
     private function initIconCollections() {
         //name for Font Awesome needs to be icon because that was name for icon fields before we have added icon collections
-        $this->addIconCollection('font_awesome', new QodeIconsFontAwesome("Font Awesome", "icon"));
-        $this->addIconCollection('font_elegant', new QodeIconsFontElegant("Font Elegant", "fe_icon"));
-        $this->addIconCollection('linea_icons', new QodeIconsFontLinea("Linea Icons", "linea_icon"));
-        $this->addIconCollection('dripicons', new QodeIconsFontDripicons("Dripicons", "dripicon"));
+        $this->addIconCollection('font_awesome', new BridgeQodeIconsFontAwesome("Font Awesome", "icon"));
+        $this->addIconCollection('font_elegant', new BridgeQodeIconsFontElegant("Font Elegant", "fe_icon"));
+        $this->addIconCollection('linea_icons', new BridgeQodeIconsFontLinea("Linea Icons", "linea_icon"));
+        $this->addIconCollection('dripicons', new BridgeQodeIconsFontDripicons("Dripicons", "dripicon"));
+        $this->addIconCollection('kiko', new BridgeQodeIconsFontKiko("Kiko", "kiko"));
     }
 
 	public function getIconsMetaBoxOrOption($attributes) {
@@ -80,20 +82,21 @@ class QodeIconCollections {
 		}
 
 		$options = array(
-			'font_awesome'      => esc_html__('Font Awesome', 'qode'),
-			'font_elegant'      => esc_html__('Font Elegant', 'qode')
+			'font_awesome'      => esc_html__('Font Awesome', 'bridge'),
+			'font_elegant'      => esc_html__('Font Elegant', 'bridge')
 		);
 		if ($scope == 'regular' || $scope == 'back-to-top') {
 			$options = array(
-				'font_awesome'      => esc_html__('Font Awesome', 'qode'),
-				'font_elegant'      => esc_html__('Font Elegant', 'qode'),
-				'linea_icons'       => esc_html__('Linea Icons', 'qode'),
-				'dripicons'         => esc_html__('Dripicons', 'qode')
+				'font_awesome'      => esc_html__('Font Awesome', 'bridge'),
+				'font_elegant'      => esc_html__('Font Elegant', 'bridge'),
+				'linea_icons'       => esc_html__('Linea Icons', 'bridge'),
+				'dripicons'         => esc_html__('Dripicons', 'bridge'),
+				'kiko'         => esc_html__('Kiko', 'bridge'),
 			);
 		}
 
 		if ($type == 'meta-box') {
-			qode_add_meta_box_field(
+			bridge_qode_create_meta_box_field(
 				array(
 					'parent'        => $parent,
 					'type'          => 'select' . $field_type,
@@ -109,7 +112,7 @@ class QodeIconCollections {
 				)
 			);
 		} else if ($type == 'option') {
-			qode_add_admin_field(
+			bridge_qode_add_admin_field(
 				array(
 					'parent'        => $parent,
 					'type'          => 'select' . $field_type,
@@ -141,7 +144,7 @@ class QodeIconCollections {
 
 			$qode_icon_hide_values = $icon_collections_keys;
 
-			$qode_icon_pack_container = qode_add_admin_container(
+			$qode_icon_pack_container = bridge_qode_add_admin_container(
 				array(
 					'parent'          => $parent,
 					'name'            => $name . '_' . $collection_object->param . '_container',
@@ -153,7 +156,7 @@ class QodeIconCollections {
 			);
 
 			if ($type == 'meta-box') {
-				qode_add_meta_box_field(
+				bridge_qode_create_meta_box_field(
 					array(
 						'parent'        => $qode_icon_pack_container,
 						'type'          => 'select' . $field_type,
@@ -164,7 +167,7 @@ class QodeIconCollections {
 					)
 				);
 			} else if ($type == 'option') {
-				qode_add_admin_field(
+				bridge_qode_add_admin_field(
 					array(
 						'parent'        => $qode_icon_pack_container,
 						'type'          => 'select' . $field_type,
@@ -173,6 +176,138 @@ class QodeIconCollections {
 						'label'         => $collection_object->title,
 						'options'       => $icons_array
 					)
+				);
+			}
+		}
+	}
+
+    public function getIconWidgetParamsArray() {
+        $iconPackParams[] = array(
+            'type'    => 'dropdown',
+            'name'    => 'icon_pack',
+            'title'   => esc_html__( 'Icon Pack', 'bridge' ),
+            'options' => array_flip( $this->getIconCollectionsVC() )
+        );
+
+        $iconSetParams = array();
+        if ( is_array( $this->iconCollections ) && count( $this->iconCollections ) ) {
+            foreach ( $this->iconCollections as $key => $collection ) {
+                $iconSetParams[] = array(
+                    'type'    => 'dropdown',
+                    'title'   => $collection->title . esc_html__( ' Icon', 'bridge' ),
+                    'name'    => $collection->param,
+                    'options' => array_flip( $collection->getIconsArray() )
+                );
+            }
+        }
+
+        return array_merge( $iconPackParams, $iconSetParams );
+    }
+
+    public function getElementorParamsArray($control_object, $iconPackDependency = array(), $iconCollectionPrefix = "", $emptyIconPack = false){
+        if ($emptyIconPack) {
+            $iconCollectionsVC = $this->getIconCollectionsVCEmpty();
+        } else {
+            $iconCollectionsVC = $this->getIconCollectionsVC();
+        }
+
+        $control_object->add_control(
+            'icon_pack', [
+                'label' => esc_html__( 'Icon Pack', 'bridge' ),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'options' => array_flip($iconCollectionsVC),
+                'condition' => $iconPackDependency
+            ]
+        );
+
+        if (is_array($this->iconCollections) && count($this->iconCollections)) {
+            foreach ($this->iconCollections as $key => $collection) {
+                $control_object->add_control(
+                    $iconCollectionPrefix . $collection->param, [
+                        'label' => esc_html__( 'Icon', 'bridge' ),
+                        'type' => \Elementor\Controls_Manager::SELECT,
+                        'options' => array_flip($collection->getIconsArray()),
+                        'condition' => [
+                            'icon_pack' => $key,
+                        ]
+                    ]
+                );
+            }
+        }
+    }
+
+    public function getElementorIconFromIconPack( $params ){
+        if( ! empty( $params['fe_icon'] ) ){
+            $params['icon'] = $params['fe_icon'];
+        }
+
+        if( ! empty( $params['linea_icon'] ) ){
+            $params['icon'] = $params['linea_icon'];
+        }
+
+        if( ! empty( $params['dripicon'] ) ){
+            $params['icon'] = $params['dripicon'];
+        }
+
+        if( ! empty( $params['kiko'] ) ){
+            $params['icon'] = $params['kiko'];
+        }
+
+        return $params['icon'];
+    }
+
+	public function getSocialElementorParamsArray($control_object, $iconPackDependency = array(), $iconCollectionPrefix = "", $emptyIconPack = false, $exclude = '') {
+
+
+    	if ($emptyIconPack) {
+			$iconCollectionsVC = $this->getIconCollectionsVCEmptyExclude($exclude);
+		} else {
+			$iconCollectionsVC = $this->getIconCollectionsVCExclude($exclude);
+		}
+
+		$icon_pack_args = array(
+			'label' => esc_html__( 'Icon Pack', 'bridge' ),
+			'type' => \Elementor\Controls_Manager::SELECT,
+			'options' => array_flip($iconCollectionsVC)
+		);
+
+		if (!empty($iconPackDependency)) {
+			$icon_pack_args['condition'] = [$iconPackDependency];
+		}
+
+		$control_object->add_control(
+			'icon_pack',
+				$icon_pack_args
+
+		);
+
+		$iconCollections = $this->iconCollections;
+		if(is_array($exclude) && count($exclude)) {
+			foreach ($exclude as $exclude_key) {
+				if  (array_key_exists($exclude_key, $this->iconCollections)) {
+
+					unset($iconCollections[$exclude_key]);
+				}
+			}
+
+		} else {
+			if  (array_key_exists($exclude, $this->iconCollections)) {
+				unset($iconCollections[$exclude]);
+			}
+		}
+
+
+		if (is_array($iconCollections) && count($iconCollections)) {
+			foreach ($iconCollections as $key => $collection) {
+				$control_object->add_control(
+					$iconCollectionPrefix . $collection->param, [
+						'label' => esc_html__( 'Icon', 'bridge' ),
+						'type' => \Elementor\Controls_Manager::SELECT,
+						'options' => array_flip($collection->getSocialIconsArrayVC()),
+						'condition' => [
+							'icon_pack' => $key,
+						]
+					]
 				);
 			}
 		}
@@ -510,7 +645,7 @@ class QodeIconCollections {
     public function enqueueStyles() {
         if(is_array($this->iconCollections) && count($this->iconCollections)) {
             foreach($this->iconCollections as $collection_key => $collection_obj) {
-                wp_enqueue_style('qode_'.$collection_key, $collection_obj->styleUrl);
+                wp_enqueue_style('bridge-qode-'.$collection_key, $collection_obj->styleUrl);
             }
         }
     }
@@ -521,7 +656,7 @@ class QodeIconCollections {
 
         if ($this->hasIconCollection($iconPack)) {
             $iconsObject = $this->getIconCollection($iconPack);
-            print $iconsObject->getSearchIcon($params);
+            print bridge_qode_get_module_part( $iconsObject->getSearchIcon($params) );
         }
 
     }
@@ -529,7 +664,7 @@ class QodeIconCollections {
     public function getSearchClose($iconPack, $params = array()) {
         if ($this->hasIconCollection($iconPack)) {
             $iconsObject = $this->getIconCollection($iconPack);
-            print $iconsObject->getSearchClose($params);
+            print bridge_qode_get_module_part( $iconsObject->getSearchClose($params) );
         }
     }
 
@@ -538,7 +673,7 @@ class QodeIconCollections {
         if ($this->hasIconCollection($iconPack)) {
 
             $iconsObject = $this->getIconCollection($iconPack);
-            print $iconsObject->getSearchIconValue();
+            print bridge_qode_get_module_part( $iconsObject->getSearchIconValue() );
 
         }
 
@@ -549,7 +684,7 @@ class QodeIconCollections {
         if ($this->hasIconCollection($iconPack)) {
 
             $iconsObject = $this->getIconCollection($iconPack);
-            print $iconsObject->getMenuSideIcon();
+            print bridge_qode_get_module_part( $iconsObject->getMenuSideIcon() );
 
         }
 
@@ -560,7 +695,7 @@ class QodeIconCollections {
         if ($this->hasIconCollection($iconPack)){
 
             $iconsObject = $this->getIconCollection($iconPack);
-            print $iconsObject->getBackToTopIcon();
+            print bridge_qode_get_module_part( $iconsObject->getBackToTopIcon() );
 
         }
 
@@ -572,7 +707,7 @@ class QodeIconCollections {
         if($this->hasIconCollection($iconPack)) {
 
             $iconsObject = $this->getIconCollection($iconPack);
-            print $iconsObject->getMobileMenuIcon();
+            print bridge_qode_get_module_part( $iconsObject->getMobileMenuIcon() );
 
         }
 
@@ -587,7 +722,7 @@ class QodeIconCollections {
                 return $iconsObject->getQuoteIcon();
             }
             else{
-                print $iconsObject->getQuoteIcon();
+                print bridge_qode_get_module_part( $iconsObject->getQuoteIcon() );
             }
 
         }
@@ -692,9 +827,6 @@ class QodeIconCollections {
     }
 
     public function renderIconHTML($icon, $iconPack, $iconParams = array()) {
-        echo $this->getIconHTML($icon, $iconPack, $iconParams);
+        echo bridge_qode_get_module_part( $this->getIconHTML($icon, $iconPack, $iconParams) );
     }
 }
-
-global $qodeIconCollections;
-$qodeIconCollections = QodeIconCollections::getInstance();

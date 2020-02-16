@@ -1,6 +1,6 @@
 <?php
-if(!function_exists('qode_get_gradient_left_to_right_styles')) {
-    function qode_get_gradient_left_to_right_styles($string_add = '', $empty_val = false, $custom_val = false) {
+if(!function_exists('bridge_qode_get_gradient_left_to_right_styles')) {
+    function bridge_qode_get_gradient_left_to_right_styles($string_add = '', $empty_val = false, $custom_val = false) {
         $styles = array(
             'qode-type1-gradient-left-to-right'.$string_add => 'Style 1'
         );
@@ -22,8 +22,8 @@ if(!function_exists('qode_get_gradient_left_to_right_styles')) {
     }
 }
 
-if(!function_exists('qode_get_gradient_styles')) {
-    function qode_get_gradient_bottom_to_top_styles($string_add = '', $empty_val = false) {
+if(!function_exists('bridge_qode_get_gradient_bottom_to_top_styles')) {
+    function bridge_qode_get_gradient_bottom_to_top_styles($string_add = '', $empty_val = false) {
         $styles = array(
             'qode-type1-gradient-bottom-to-top'.$string_add => 'Style 1'
         );
@@ -38,8 +38,8 @@ if(!function_exists('qode_get_gradient_styles')) {
     }
 }
 
-if(!function_exists('qode_get_gradient_left_bottom_to_right_top_styles')) {
-    function qode_get_gradient_left_bottom_to_right_top_styles($string_add = '', $empty_val = false) {
+if(!function_exists('bridge_qode_get_gradient_left_bottom_to_right_top_styles')) {
+    function bridge_qode_get_gradient_left_bottom_to_right_top_styles($string_add = '', $empty_val = false) {
         $styles = array(
             'qode-type1-gradient-left-bottom-to-right-top'.$string_add => 'Style 1'
         );

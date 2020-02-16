@@ -41,4 +41,4 @@ $output .= "\n\t".'<div class="'.$css_class.'" data-active-tab="'.$active_tab.'"
 $output .= "\n\t\t\t".wpb_js_remove_wpautop($content);
 $output .= "\n\t".'</div> '.$this->endBlockComment('.wpb_accordion');
 
-echo $output;
+echo bridge_qode_get_module_part( $output );

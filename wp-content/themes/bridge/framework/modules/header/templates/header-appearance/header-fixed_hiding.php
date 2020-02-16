@@ -1,10 +1,10 @@
-<header class="<?php echo $header_classes; ?> page_header">
+<header class="<?php echo esc_attr( $header_classes ); ?> page_header">
 	<div class="header_inner clearfix">
-		<?php echo qode_get_module_template_part('templates/search/search', 'header', '', $params); ?>
+		<?php echo bridge_qode_get_module_template_part('templates/search/search', 'header', '', $params); ?>
 		<div class="header_top_bottom_holder">
-			<?php echo qode_get_module_template_part('templates/header-top/header-top', 'header', '', $params); ?>
+			<?php echo bridge_qode_get_module_template_part('templates/header-top/header-top', 'header', '', $params); ?>
 
-			<div class="header_bottom clearfix" <?php echo $header_color_per_page; ?> >
+			<div class="header_bottom clearfix" <?php echo wp_kses_post( $header_color_per_page ); ?> >
 				<?php if($header_in_grid){ ?>
 				<div class="container">
 					<div class="container_inner clearfix">
@@ -14,9 +14,9 @@
 								<?php if($centered_logo) {
 									dynamic_sidebar( 'header_left_from_logo' );
 								} ?>
-								<?php echo qode_get_module_template_part('templates/mobile-menu/mobile-menu-button', 'header'); ?>
+								<?php echo bridge_qode_get_module_template_part('templates/mobile-menu/mobile-menu-button', 'header'); ?>
 								<?php
-								echo qode_get_logo(array(
+								echo bridge_qode_get_logo(array(
 									'logo_image' => true,
 									'logo_image_light' => true,
 									'logo_image_dark' => true,
@@ -41,9 +41,9 @@
 											dynamic_sidebar('woocommerce_dropdown');
 										} ?>
 										<div class="side_menu_button">
-											<?php echo qode_get_module_template_part('templates/search/search-button', 'header', '', $params); ?>
-											<?php echo qode_get_module_template_part('templates/popup-menu/popup-menu-button', 'header', '', $params); ?>
-											<?php echo qode_get_module_template_part('templates/side-area/side-menu-button-link', 'header', '', $params); ?>
+											<?php echo bridge_qode_get_module_template_part('templates/search/search-button', 'header', '', $params); ?>
+											<?php echo bridge_qode_get_module_template_part('templates/popup-menu/popup-menu-button', 'header', '', $params); ?>
+											<?php echo bridge_qode_get_module_template_part('templates/side-area/side-menu-button-link', 'header', '', $params); ?>
 										</div>
 									</div>
 								</div>
@@ -53,7 +53,7 @@
 								<div class="header_inner_right left_side">
 									<div class="side_menu_button_wrapper">
 										<div class="side_menu_button">
-											<?php echo qode_get_module_template_part('templates/search/search-button', 'header', '', $params); ?>
+											<?php echo bridge_qode_get_module_template_part('templates/search/search-button', 'header', '', $params); ?>
 										</div>
 									</div>
 								</div>
@@ -66,10 +66,10 @@
 									'container_class' => '',
 									'menu_class' => '',
 									'menu_id' => '',
-									'fallback_cb' => 'top_navigation_fallback',
+									'fallback_cb' => 'bridge_qode_top_navigation_fallback',
 									'link_before' => '<span>',
 									'link_after' => '</span>',
-									'walker' => new qode_type1_walker_nav_menu()
+									'walker' => new BridgeQodeType1WalkerNavMenu()
 								));
 								?>
 							</nav>
@@ -83,15 +83,15 @@
 											dynamic_sidebar('woocommerce_dropdown');
 										} ?>
 										<div class="side_menu_button">
-											<?php echo qode_get_module_template_part('templates/search/search-button', 'header', '', $params); ?>
-											<?php echo qode_get_module_template_part('templates/popup-menu/popup-menu-button', 'header', '', $params); ?>
-											<?php echo qode_get_module_template_part('templates/side-area/side-menu-button-link', 'header', '', $params); ?>
+											<?php echo bridge_qode_get_module_template_part('templates/search/search-button', 'header', '', $params); ?>
+											<?php echo bridge_qode_get_module_template_part('templates/popup-menu/popup-menu-button', 'header', '', $params); ?>
+											<?php echo bridge_qode_get_module_template_part('templates/side-area/side-menu-button-link', 'header', '', $params); ?>
 										</div>
 									</div>
 								</div>
 							<?php } ?>
 							<?php if($header_bottom_appearance == "fixed_hiding") { ?> </div> <?php } //only for fixed with hiding menu ?>
-							<?php echo qode_get_module_template_part('templates/mobile-menu/mobile-menu', 'header', '', $params); ?>
+							<?php echo bridge_qode_get_module_template_part('templates/mobile-menu/mobile-menu', 'header', '', $params); ?>
 							<?php if($header_in_grid){ ?>
 							<?php if($overlapping_content) {?></div><?php } ?>
 						</div>

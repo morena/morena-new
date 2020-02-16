@@ -13,7 +13,7 @@
  * @see 	    https://docs.woocommerce.com/document/template-structure/
  * @author 		WooThemes
  * @package 	WooCommerce/Templates
- * @version     3.0.0
+ * @version     3.9.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -22,17 +22,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /*** Our code modification inside Woo template - begin ***/
 $title_tag = 'h4';
-$title_tag_options = qode_options()->getOptionValue('woo_product_single_related_post_tag');
+$title_tag_options = bridge_qode_options()->getOptionValue('woo_product_single_related_post_tag');
 if($title_tag_options != '') {
 	$title_tag = $title_tag_options;
 }
+
+$heading = apply_filters( 'woocommerce_product_related_products_heading', esc_html__( 'Related products', 'bridge' ) );
 
 if ( version_compare( WOOCOMMERCE_VERSION, '3.0' ) >= 0 ) {
 	if ( $related_products ) : ?>
 		
 		<div class="related products">
 		
-		<<?php esc_attr_e($title_tag); ?> class="qode-related-upsells-title"><?php esc_html_e( 'Related products', 'woocommerce' ); ?></<?php esc_attr_e($title_tag); ?>>
+		<<?php echo esc_attr($title_tag); ?> class="qode-related-upsells-title"><?php echo esc_html( $heading ); ?></<?php echo esc_attr($title_tag); ?>>
 		
 		<?php woocommerce_product_loop_start(); ?>
 		
@@ -83,7 +85,7 @@ if ( version_compare( WOOCOMMERCE_VERSION, '3.0' ) >= 0 ) {
 		
 		<div class="related products">
 		
-			<<?php esc_attr_e($title_tag); ?> class="qode-related-upsells-title"><?php esc_html_e( 'Related Products', 'woocommerce' ); ?></<?php esc_attr_e($title_tag); ?>>
+			<<?php echo esc_attr($title_tag); ?> class="qode-related-upsells-title"><?php echo esc_html( $heading ); ?></<?php echo esc_attr($title_tag); ?>>
 			
 			<?php woocommerce_product_loop_start(); ?>
 			

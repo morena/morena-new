@@ -3,7 +3,7 @@
    Class: QodeFramework
    A class that initializes Qode Framework
 */
-class QodeFramework {
+class BridgeQodeFramework {
 
     private static $instance;
     public $qodeOptions;
@@ -11,27 +11,25 @@ class QodeFramework {
     public $qodeTaxonomyOptions;
 
     private function __construct() {
-        $this->qodeOptions = QodeOptions::get_instance();
-        $this->qodeMetaBoxes = QodeMetaBoxes::get_instance();
-        $this->qodeTaxonomyOptions = QodeTaxonomyOptions::get_instance();
+        $this->qodeOptions = BridgeQodeOptions::get_instance();
+        $this->qodeMetaBoxes = BridgeQodeMetaBoxes::get_instance();
+        $this->qodeTaxonomyOptions = BridgeQodeTaxonomyOptions::get_instance();
     }
-    
-		public static function get_instance() {
-		
-			if ( null == self::$instance ) {
-				self::$instance = new self;
-			}
-		
-			return self::$instance;
-		
-		}
+
+    public static function get_instance() {
+        if ( ! isset( self::$instance ) && ! ( self::$instance instanceof self ) ) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
 }
 
 /*
    Class: QodeOptions
    A class that initializes Qode Options
 */
-class QodeOptions {
+class BridgeQodeOptions {
 
     private static $instance;
     public $adminPages;
@@ -42,16 +40,14 @@ class QodeOptions {
         $this->adminPages = array();
         $this->options = array();
     }
-    
-		public static function get_instance() {
-		
-			if ( null == self::$instance ) {
-				self::$instance = new self;
-			}
-		
-			return self::$instance;
-		
-		}
+
+    public static function get_instance() {
+        if ( ! isset( self::$instance ) && ! ( self::$instance instanceof self ) ) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
 
     public function addAdminPage($key, $page) {
         $this->adminPages[$key] = $page;
@@ -98,10 +94,10 @@ class QodeOptions {
     }
 
     public function getOptionValue($key) {
-        global $qode_options_proya;
+        global $bridge_qode_options;
 
-        if(is_array($qode_options_proya) && array_key_exists($key, $qode_options_proya)) {
-            return $qode_options_proya[$key];
+        if(is_array($bridge_qode_options) && array_key_exists($key, $bridge_qode_options)) {
+            return $bridge_qode_options[$key];
         } elseif(array_key_exists($key, $this->options)) {
             return $this->getOption($key);
         }
@@ -114,7 +110,7 @@ class QodeOptions {
    Class: QodeAdminPage
    A class that initializes Qode Admin Page
 */
-class QodeAdminPage implements iLayoutNode {
+class BridgeQodeAdminPage implements iBridgeQodeLayoutNode {
 
     public $layout;
 		private $factory;
@@ -123,7 +119,7 @@ class QodeAdminPage implements iLayoutNode {
 
     function __construct($slug = "", $title = "", $icon = "") {
         $this->layout = array();
-        $this->factory = new QodeFieldFactory();
+        $this->factory = new BridgeQodeFieldFactory();
         $this->slug = $slug;
         $this->title = $title;
         $this->icon = $icon;
@@ -147,7 +143,7 @@ class QodeAdminPage implements iLayoutNode {
         }
     }
 
-    public function renderChild(iRender $child) {
+    public function renderChild(iBridgeQodeRender $child) {
         $child->render($this->factory);
     }
 }
@@ -156,7 +152,7 @@ class QodeAdminPage implements iLayoutNode {
    Class: QodeMetaBoxes
    A class that initializes Qode Meta Boxes
 */
-class QodeMetaBoxes {
+class BridgeQodeMetaBoxes {
 
     private static $instance;
     public $metaBoxes;
@@ -168,16 +164,14 @@ class QodeMetaBoxes {
         $this->options = array();
 		$this->optionsByType = array();
     }
-    
-		public static function get_instance() {
-		
-			if ( null == self::$instance ) {
-				self::$instance = new self;
-			}
-		
-			return self::$instance;
-		
-		}
+
+    public static function get_instance() {
+        if ( ! isset( self::$instance ) && ! ( self::$instance instanceof self ) ) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
 
     public function addMetaBox($key, $box) {
         $this->metaBoxes[$key] = $box;
@@ -233,7 +227,7 @@ class QodeMetaBoxes {
    Class: QodeMetaBox
    A class that initializes Qode Meta Box
 */
-class QodeMetaBox implements iLayoutNode {
+class BridgeQodeMetaBox implements iBridgeQodeLayoutNode {
 
     public $layout;
 	private $factory;
@@ -243,11 +237,11 @@ class QodeMetaBox implements iLayoutNode {
 	public $hidden_values = array();
 	public $name;
 
-    function __construct($scope="", $title="",$hidden_property="", $hidden_values = array(), $name = '') {
+    function __construct($scope="", $title_meta_box="",$hidden_property="", $hidden_values = array(), $name = '') {
         $this->layout = array();
-		$this->factory = new QodeFieldFactory();
+		$this->factory = new BridgeQodeFieldFactory();
 		$this->scope = $scope;
-		$this->title = $title;
+		$this->title = $title_meta_box;
 		$this->hidden_property = $hidden_property;
 		$this->hidden_values = $hidden_values;
 		$this->name            = $name;
@@ -271,7 +265,7 @@ class QodeMetaBox implements iLayoutNode {
         }
     }
 
-    public function renderChild(iRender $child) {
+    public function renderChild(iBridgeQodeRender $child) {
         $child->render($this->factory);
     }
 }
@@ -280,7 +274,7 @@ class QodeMetaBox implements iLayoutNode {
    Class: QodeTaxonomyOptions
    A class that initializes Qode Taxonomy Options
 */
-class QodeTaxonomyOptions {
+class BridgeQodeTaxonomyOptions {
 
 	private static $instance;
 	public $taxonomyOptions;
@@ -289,15 +283,13 @@ class QodeTaxonomyOptions {
 		$this->taxonomyOptions = array();
 	}
 
-	public static function get_instance() {
+    public static function get_instance() {
+        if ( ! isset( self::$instance ) && ! ( self::$instance instanceof self ) ) {
+            self::$instance = new self();
+        }
 
-		if ( null == self::$instance ) {
-			self::$instance = new self;
-		}
-
-		return self::$instance;
-
-	}
+        return self::$instance;
+    }
 
 	public function addTaxonomyOptions($key, $options) {
 		$this->taxonomyOptions[$key] = $options;
@@ -313,14 +305,14 @@ class QodeTaxonomyOptions {
    Class: QodeTaxonomyOption
    A class that initializes Qode Taxonomy Option
 */
-class QodeTaxonomyOption implements iLayoutNode{
+class BridgeQodeTaxonomyOption implements iBridgeQodeLayoutNode{
 	public $layout;
 	private $factory;
 	public $scope;
 
 	function __construct($scope="") {
 		$this->layout = array();
-		$this->factory = new QodeTaxonomyFieldFactory();
+		$this->factory = new BridgeQodeTaxonomyFieldFactory();
 		$this->scope = $scope;
 	}
 
@@ -342,10 +334,17 @@ class QodeTaxonomyOption implements iLayoutNode{
 		}
 	}
 
-	public function renderChild(iRender $child) {
+	public function renderChild(iBridgeQodeRender $child) {
 		$child->render($this->factory);
 	}
 }
 
-global $qodeFramework;
-$qodeFramework = QodeFramework::get_instance();
+if ( ! function_exists( 'bridge_qode_init_framework_variable' ) ) {
+    function bridge_qode_init_framework_variable() {
+        global $bridge_qode_framework;
+
+        $bridge_qode_framework = BridgeQodeFramework::get_instance();
+    }
+
+    add_action( 'bridge_qode_action_before_options_map', 'bridge_qode_init_framework_variable' );
+}

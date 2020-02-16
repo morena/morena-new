@@ -1,5 +1,6 @@
 <?php
 $output = $el_class = $css = $el_id = $after_wrapper_open = $before_wrapper_close = '';
+
 extract(shortcode_atts(array(
 	'el_class' => '',
 	'row_type' => 'row',
@@ -229,7 +230,7 @@ if($row_type == 'row') {
 							$output .='<object width="320" height="240" type="application/x-shockwave-flash" data="'.get_template_directory_uri().'/js/flashmediaelement.swf">
 										<param name="movie" value="'.get_template_directory_uri().'/js/flashmediaelement.swf" />
 										<param name="flashvars" value="controls=true&file='.$video_mp4.'" />
-										<img itemprop="image" src="'.$v_image.'" width="1920" height="800" title="No video playback capabilities" alt="Video thumb" />
+										<img itemprop="image" src="'.$v_image.'" width="1920" height="800" title="' . esc_html__("No video playback capabilities", "bridge") . '" alt="' . esc_html__("Video thumb", "bridge") . '" />
 								</object>
 						</video>
 						</div>';
@@ -250,7 +251,7 @@ if($row_type == 'row') {
 										 $output .='<object width="320" height="240" type="application/x-shockwave-flash" data="'.get_template_directory_uri().'/js/flashmediaelement.swf">
 													<param name="movie" value="'.get_template_directory_uri().'/js/flashmediaelement.swf" />
 													<param name="flashvars" value="controls=true&file='.$video_mp4.'" />
-													<img itemprop="image" src="'.$v_image.'" width="1920" height="800" title="No video playback capabilities" alt="Video thumb" />
+													<img itemprop="image" src="'.$v_image.'" width="1920" height="800" title="' . esc_html__("No video playback capabilities", "bridge") . '" alt="' . esc_html__("Video thumb", "bridge") . '" />
 											</object>
 									</video>		
 							</div>';
@@ -360,4 +361,4 @@ if($row_type == 'row') {
 }else if($row_type == 'content_menu'){
 	$output .= '</nav>';
 }
-echo $output;
+echo bridge_qode_get_module_part( $output );

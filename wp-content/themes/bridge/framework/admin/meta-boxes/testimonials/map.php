@@ -2,24 +2,24 @@
 
 //Testimonials
 
-$qodeTestimonials = new QodeMetaBox("testimonials", "Qode Testimonials");
-$qodeFramework->qodeMetaBoxes->addMetaBox("testimonials",$qodeTestimonials);
+$qodeTestimonials = new BridgeQodeMetaBox("testimonials", esc_html__('Qode Testimonials', 'bridge'));
+bridge_qode_framework()->qodeMetaBoxes->addMetaBox("testimonials",$qodeTestimonials);
 
-	$qode_testimonial_author = new QodeMetaField("text","qode_testimonial-author","","Author","Enter the author name");
+	$qode_testimonial_author = new BridgeQodeMetaField("text","qode_testimonial-author","",esc_html__('Author', 'bridge'),esc_html__('Enter the author name', 'bridge'));
 	$qodeTestimonials->addChild("qode_testimonial-author",$qode_testimonial_author);
 
-	$qode_testimonial_text = new QodeMetaField("textarea","qode_testimonial-text","","Text","Enter the testimonial text");
+	$qode_testimonial_text = new BridgeQodeMetaField("textarea","qode_testimonial-text","",esc_html__('Text', 'bridge'), esc_html__('Enter the testimonial text', 'bridge'));
 	$qodeTestimonials->addChild("qode_testimonial-text",$qode_testimonial_text);
 
-	$qode_testimonial_website = new QodeMetaField("text","qode_testimonial_website","","Website","Enter full URL of the author's website");
+	$qode_testimonial_website = new BridgeQodeMetaField("text","qode_testimonial_website","",esc_html__('Website', 'bridge'),esc_html__('Enter full URL of the author\'s website', 'bridge'));
 	$qodeTestimonials->addChild("qode_testimonial_website",$qode_testimonial_website);
 
-	$qode_testimonial_rating = new QodeMetaField("select","qode_testimonial_rating","","Rating","Choose the rating for this testimonial",array( 
+	$qode_testimonial_rating = new BridgeQodeMetaField("select","qode_testimonial_rating","",esc_html__('Rating', 'bridge'),esc_html__('Choose the rating for this testimonial', 'bridge') ,array(
 		"" => "",
-	   	"1" => "1 out of 5",
-	   	"2" => "2 out of 5",
-	   	"3" => "3 out of 5",
-	   	"4" => "4 out of 5",
-	   	"5" => "5 out of 5"
+	   	"1" => esc_html__('1 out of 5', 'bridge'),
+	   	"2" => esc_html__('2 out of 5', 'bridge'),
+	   	"3" => esc_html__('3 out of 5', 'bridge'),
+	   	"4" => esc_html__('4 out of 5', 'bridge'),
+	   	"5" => esc_html__('5 out of 5', 'bridge')
 	 ));
 	$qodeTestimonials->addChild("qode_testimonial_rating",$qode_testimonial_rating);

@@ -11,30 +11,26 @@
  * the readme will list any important changes.
  *
  * @see     https://docs.woocommerce.com/document/template-structure/
- * @author  WooThemes
  * @package WooCommerce/Templates
- * @version 3.3.0
+ * @version 3.6.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-?>
+do_action( 'woocommerce_before_customer_login_form' ); ?>
 
-<?php wc_print_notices(); ?>
+<?php if ( 'yes' === get_option( 'woocommerce_enable_myaccount_registration' ) ) : ?>
 
-<?php do_action( 'woocommerce_before_customer_login_form' ); ?>
 
-<?php if ( get_option( 'woocommerce_enable_myaccount_registration' ) === 'yes' ) : ?>
-
-<div class="u-columns col2-set" id="customer_login">
+	<div class="u-columns col2-set" id="customer_login">
 	
 	<div class="u-column1 col-1">
 
 <?php endif; ?>
 	
-		<h2><?php _e( 'Login', 'woocommerce' ); ?></h2>
+		<h2><?php esc_html_e( 'Log In', 'bridge' ); ?></h2>
 		
 		<form class="woocommerce-form woocommerce-form-login login" method="post">
 
@@ -43,21 +39,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php /*** Our code modification inside Woo template - begin ***/ ?>
 			
 			<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-				<input type="text" class="woocommerce-Input woocommerce-Input--text input-text placeholder" placeholder="<?php _e('Username or email', 'woocommerce'); ?>" name="username" id="username" value="<?php if ( ! empty( $_POST['username'] ) ) echo esc_attr( $_POST['username'] ); ?>" />
+				<input type="text" class="woocommerce-Input woocommerce-Input--text input-text placeholder" placeholder="<?php esc_html_e('Username or email', 'bridge'); ?>" name="username" id="username" value="<?php if ( ! empty( $_POST['username'] ) ) echo esc_attr( wp_unslash($_POST['username']) ); ?>" /><?php // @codingStandardsIgnoreLine ?>
 			</p>
 			<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-				<input class="woocommerce-Input woocommerce-Input--text input-text placeholder" placeholder="<?php _e('Password', 'woocommerce'); ?>" type="password" name="password" id="password" />
+				<input class="woocommerce-Input woocommerce-Input--text input-text placeholder" placeholder="<?php esc_html_e('Password', 'bridge'); ?>" type="password" name="password" id="password" />
 			</p>
 			
 			<?php do_action( 'woocommerce_login_form' ); ?>
 			
 			<p class="form-row">
 				<?php wp_nonce_field( 'woocommerce-login', 'woocommerce-login-nonce' ); ?>
-				<input type="submit" class="woocommerce-Button button" name="login" value="<?php esc_attr_e( 'Login', 'woocommerce' ); ?>" />
-				<a class="lost_password woo-lost_password2" href="<?php echo esc_url( wp_lostpassword_url() ); ?>"><?php _e( 'Lost your password?', 'woocommerce' ); ?></a>
 				<label class="woocommerce-form__label woocommerce-form__label-for-checkbox inline woo-my-account-rememberme">
-					<input class="woocommerce-form__input woocommerce-form__input-checkbox" name="rememberme" type="checkbox" id="rememberme" value="forever" /> <span><?php _e( 'Remember me', 'woocommerce' ); ?></span>
+					<input class="woocommerce-form__input woocommerce-form__input-checkbox" name="rememberme" type="checkbox" id="rememberme" value="forever" /> <span><?php esc_html_e( 'Remember me', 'bridge' ); ?></span>
 				</label>
+				<input type="submit" class="woocommerce-Button button" name="login" value="<?php esc_attr_e( 'Log In', 'bridge' ); ?>" />
+				<a class="lost_password woo-lost_password2" href="<?php echo esc_url( wp_lostpassword_url() ); ?>"><?php esc_html_e( 'Lost your password?', 'bridge' ); ?></a>
+
 			</p>
 			
 			<?php /*** Our code modification inside Woo template - end ***/ ?>
@@ -66,15 +63,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	
 		</form>
 
-<?php if ( get_option( 'woocommerce_enable_myaccount_registration' ) === 'yes' ) : ?>
+<?php if ( 'yes' === get_option( 'woocommerce_enable_myaccount_registration' ) ) : ?>
 
 	</div>
 
 	<div class="u-column2 col-2">
 
-		<h2><?php _e( 'Register', 'woocommerce' ); ?></h2>
+		<h2><?php esc_html_e( 'Register', 'bridge' ); ?></h2>
 
-		<form method="post" class="register">
+		<form method="post" class="woocommerce-form woocommerce-form-register register" <?php do_action( 'woocommerce_register_form_tag' ); ?>>
 
 			<?php do_action( 'woocommerce_register_form_start' ); ?>
 			
@@ -83,20 +80,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php if ( 'no' === get_option( 'woocommerce_registration_generate_username' ) ) : ?>
 
 				<p class="woocommerce-FormRow woocommerce-FormRow--wide form-row form-row-wide">
-					<input type="text" class="woocommerce-Input woocommerce-Input--text input-text placeholder" placeholder="<?php _e('Username', 'woocommerce'); ?>" name="username" id="reg_username" value="<?php if ( ! empty( $_POST['username'] ) ) echo esc_attr( $_POST['username'] ); ?>" />
+					<input type="text" class="woocommerce-Input woocommerce-Input--text input-text placeholder" placeholder="<?php esc_html_e('Username', 'bridge'); ?>" name="username" id="reg_username" value="<?php if ( ! empty( $_POST['username'] ) ) echo esc_attr( wp_unslash($_POST['username']) ); ?>" /><?php // @codingStandardsIgnoreLine ?>
 				</p>
 
 			<?php endif; ?>
 
 			<p class="woocommerce-FormRow woocommerce-FormRow--wide form-row form-row-wide">
-				<input type="email" class="woocommerce-Input woocommerce-Input--text input-text placeholder" placeholder="<?php _e('Email', 'woocommerce'); ?>" name="email" id="reg_email" value="<?php if ( ! empty( $_POST['email'] ) ) echo esc_attr( $_POST['email'] ); ?>" />
+				<input type="email" class="woocommerce-Input woocommerce-Input--text input-text placeholder" placeholder="<?php esc_html_e('Email', 'bridge'); ?>" name="email" id="reg_email" value="<?php if ( ! empty( $_POST['email'] ) ) echo esc_attr( wp_unslash($_POST['email']) ); ?>" /><?php // @codingStandardsIgnoreLine ?>
 			</p>
 
 			<?php if ( 'no' === get_option( 'woocommerce_registration_generate_password' ) ) : ?>
 
 				<p class="woocommerce-FormRow woocommerce-FormRow--wide form-row form-row-wide">
-					<input type="password" class="woocommerce-Input woocommerce-Input--text input-text placeholder" placeholder="<?php _e('Password', 'woocommerce'); ?>" name="password" id="reg_password" />
+					<input type="password" class="woocommerce-Input woocommerce-Input--text input-text placeholder" placeholder="<?php esc_html_e('Password', 'bridge'); ?>" name="password" id="reg_password" />
 				</p>
+			<?php else : ?>
+
+				<p><?php esc_html_e( 'A password will be sent to your email address.', 'bridge' ); ?></p>
 
 			<?php endif; ?>
 			
@@ -106,7 +106,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 			<p class="woocommerce-FormRow form-row">
 				<?php wp_nonce_field( 'woocommerce-register', 'woocommerce-register-nonce' ); ?>
-				<input type="submit" class="woocommerce-Button button" name="register" value="<?php esc_attr_e( 'Register', 'woocommerce' ); ?>" />
+				<input type="submit" class="woocommerce-Button button" name="register" value="<?php esc_attr_e( 'Register', 'bridge' ); ?>" />
 			</p>
 
 			<?php do_action( 'woocommerce_register_form_end' ); ?>

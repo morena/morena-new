@@ -55,5 +55,5 @@ $html .= do_shortcode($content);
 $html .= '</div>';
 $html .= '</div>';
 
-echo $html;
+echo bridge_qode_get_module_part( $html );
 

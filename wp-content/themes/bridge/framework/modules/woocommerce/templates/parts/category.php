@@ -1,7 +1,7 @@
 <?php
 
 if($display_category === 'yes') {
-	$product = qode_return_woocommerce_global_variable();
+	$product = bridge_qode_return_woocommerce_global_variable();
 
 	if ( version_compare( WOOCOMMERCE_VERSION, '3.0' ) >= 0 ) {
 		$product_categories = wc_get_product_category_list( $product->get_id(), ', ' );
@@ -10,6 +10,6 @@ if($display_category === 'yes') {
 	}
 
 	if (!empty($product_categories)) { ?>
-		<p class="qode-<?php echo esc_attr($class_name); ?>-category"><?php print $product_categories; ?></p>
+		<p class="qode-<?php echo esc_attr($class_name); ?>-category"><?php print bridge_qode_get_module_part( $product_categories ); ?></p>
 	<?php } ?>
 <?php } ?>

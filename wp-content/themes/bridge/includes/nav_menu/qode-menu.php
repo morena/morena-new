@@ -1,74 +1,76 @@
 <?php
+if(!function_exists('bridge_qode_add_custom_nav_fields')) {
 
-// add custom menu fields to menu
-add_filter( 'wp_setup_nav_menu_item', 'qode_add_custom_nav_fields' );
+	// add custom menu fields to menu
+	function bridge_qode_add_custom_nav_fields($menu_item) {
+		$menu_item->anchor = get_post_meta($menu_item->ID, '_menu_item_anchor', true);
+		$menu_item->nolink = get_post_meta($menu_item->ID, '_menu_item_nolink', true);
+		$menu_item->hide = get_post_meta($menu_item->ID, '_menu_item_hide', true);
+		$menu_item->type_menu = get_post_meta($menu_item->ID, '_menu_item_type_menu', true);
+		$menu_item->icon = get_post_meta($menu_item->ID, '_menu_item_icon', true);
+		$menu_item->icon_pack = get_post_meta($menu_item->ID, '_menu_item_icon_pack', true);
+		$menu_item->sidebar = get_post_meta($menu_item->ID, '_menu_item_sidebar', true);
+		$menu_item->wide_position = get_post_meta($menu_item->ID, '_menu_item_wide_position', true);
+		$menu_item->show_widget_area_in_popup = get_post_meta($menu_item->ID, '_menu_item_show_widget_area_in_popup', true);
+		$menu_item->featured_icon = get_post_meta($menu_item->ID, '_menu_item_featured_icon', true);
+		return $menu_item;
 
-// save menu custom fields
-add_action( 'wp_update_nav_menu_item', 'qode_update_custom_nav_fields', 10, 3 );
+	}
 
-// edit menu walker
-add_filter( 'wp_edit_nav_menu_walker', 'qode_edit_walker', 10, 2 );
-
-
-function qode_add_custom_nav_fields( $menu_item ) {
-	$menu_item->anchor = get_post_meta( $menu_item->ID, '_menu_item_anchor', true );
-	$menu_item->nolink = get_post_meta( $menu_item->ID, '_menu_item_nolink', true );
-	$menu_item->hide = get_post_meta( $menu_item->ID, '_menu_item_hide', true );
-	$menu_item->type_menu = get_post_meta( $menu_item->ID, '_menu_item_type_menu', true );
-	$menu_item->icon = get_post_meta( $menu_item->ID, '_menu_item_icon', true );
-    $menu_item->icon_pack = get_post_meta( $menu_item->ID, '_menu_item_icon_pack', true );
-	$menu_item->sidebar = get_post_meta( $menu_item->ID, '_menu_item_sidebar', true );
-	$menu_item->wide_position = get_post_meta( $menu_item->ID, '_menu_item_wide_position', true );
-    $menu_item->show_widget_area_in_popup = get_post_meta( $menu_item->ID, '_menu_item_show_widget_area_in_popup', true );
-	$menu_item->featured_icon = get_post_meta( $menu_item->ID, '_menu_item_featured_icon', true );
-	return $menu_item;
-   
+	add_filter( 'wp_setup_nav_menu_item', 'bridge_qode_add_custom_nav_fields' );
 }
 
-/**
- * Save menu custom fields
- *
- * @access      public
- * @since       1.0 
- * @return      void
-*/
-function qode_update_custom_nav_fields( $menu_id, $menu_item_db_id, $args ) {
-		
-    $check = array('anchor', 'nolink', 'hide', 'type_menu', 'icon', 'icon_pack', 'sidebar', 'wide_position', 'show_widget_area_in_popup', 'featured_icon');
-    if(isset($_POST['qode_menu_options'])) {
-        parse_str(urldecode($_POST['qode_menu_options']), $parse_array);
+if(!function_exists('bridge_qode_update_custom_nav_fields')) {
+	/**
+	 * Save menu custom fields
+	 *
+	 * @access      public
+	 * @since       1.0
+	 * @return      void
+	*/
+	function bridge_qode_update_custom_nav_fields($menu_id, $menu_item_db_id, $args ) {
 
-        foreach ($check as $key) {
-            if(!isset($parse_array['menu_item_'.$key.'_'.$menu_item_db_id])) {
-                $parse_array['menu_item_'.$key.'_'.$menu_item_db_id] = "";
-            }
+		$check = array('anchor', 'nolink', 'hide', 'type_menu', 'icon', 'icon_pack', 'sidebar', 'wide_position', 'show_widget_area_in_popup', 'featured_icon');
+		if(isset($_POST['qode_menu_options'])) {
+			parse_str(urldecode($_POST['qode_menu_options']), $parse_array);
 
-            $value = $parse_array['menu_item_'.$key.'_'.$menu_item_db_id];
-            update_post_meta( $menu_item_db_id, '_menu_item_'.$key, $value );
-        }
-    }
+			foreach ($check as $key) {
+				if(!isset($parse_array['menu_item_'.$key.'_'.$menu_item_db_id])) {
+					$parse_array['menu_item_'.$key.'_'.$menu_item_db_id] = "";
+				}
+
+				$value = $parse_array['menu_item_'.$key.'_'.$menu_item_db_id];
+				update_post_meta( $menu_item_db_id, '_menu_item_'.$key, $value );
+			}
+		}
+	}
+
+	add_action( 'wp_update_nav_menu_item', 'bridge_qode_update_custom_nav_fields', 10, 3 );
+
 }
+if(!function_exists('bridge_qode_edit_walker')) {
+	/**
+	 * Define new Walker edit
+	 *
+	 * @access      public
+	 * @since       1.0
+	 * @return      void
+	 */
+	function bridge_qode_edit_walker($walker, $menu_id) {
 
-/**
- * Define new Walker edit
- *
- * @access      public
- * @since       1.0 
- * @return      void
-*/
-function qode_edit_walker($walker,$menu_id) {
+		return 'Bridge_Qode_Walker_Nav_Menu_Edit_Custom';
 
-	return 'Walker_Nav_Menu_Edit_Custom';
-		
+	}
+
+	add_filter( 'wp_edit_nav_menu_walker', 'bridge_qode_edit_walker', 10, 2 );
 }
-
-include_once('edit_custom_walker.php');
+include_once( QODE_ROOT_DIR . '/includes/nav_menu/edit_custom_walker.php');
 
 
 /* Custom WP_NAV_MENU function for top navigation */
 
-if (!class_exists('qode_type1_walker_nav_menu')) {
-	class qode_type1_walker_nav_menu extends Walker_Nav_Menu {
+if (!class_exists('BridgeQodeType1WalkerNavMenu')) {
+	class BridgeQodeType1WalkerNavMenu extends Walker_Nav_Menu {
 		
 	// add classes to ul sub-menus
 		function display_element( $element, &$children_elements, $max_depth, $depth=0, $args, &$output )
@@ -107,7 +109,7 @@ if (!class_exists('qode_type1_walker_nav_menu')) {
 		// add main/sub classes to li's and links
 		function start_el( &$output, $item, $depth = 0, $args = array(), $id = 0 ) {
 			global $wp_query;
-			global $qode_options_proya;
+			global $bridge_qode_options;
 			$sub = "";
 			$indent = ( $depth > 0 ? str_repeat( "\t", $depth ) : '' ); // code indent
 			if($depth==0 && $args->has_children) : 
@@ -124,10 +126,10 @@ if (!class_exists('qode_type1_walker_nav_menu')) {
 			
 			$wide_background = '';
 			$wide_menu = '';
-			if(isset($qode_options_proya['enable_wide_manu_background']) && $qode_options_proya['enable_wide_manu_background'] == "yes" ){
+			if(isset($bridge_qode_options['enable_wide_manu_background']) && $bridge_qode_options['enable_wide_manu_background'] == "yes" ){
 				$wide_background = 'true';
 
-				if(qode_options()->getOptionValue('enable_full_width_wide_menu') == "yes"){
+				if(bridge_qode_options()->getOptionValue('enable_full_width_wide_menu') == "yes"){
 					$wide_menu = 'true';
 				}
 			}
@@ -236,7 +238,7 @@ if (!class_exists('qode_type1_walker_nav_menu')) {
 				$item_output .= '<i class="menu_icon '.$icon.'"></i>';
 				$item_output .= '<span>'.apply_filters( 'the_title', $item->title, $item->ID );
 
-                if($depth==0 && isset($qode_options_proya['menu_underline_dash']) && $qode_options_proya['menu_underline_dash'] == "yes"){
+                if($depth==0 && isset($bridge_qode_options['menu_underline_dash']) && $bridge_qode_options['menu_underline_dash'] == "yes"){
                     $item_output .= '<span class="underline_dash"></span>';
                 }
 
@@ -277,8 +279,8 @@ if (!class_exists('qode_type1_walker_nav_menu')) {
 
 /* Custom WP_NAV_MENU function for mobile navigation */
 
-if (!class_exists('qode_type2_walker_nav_menu')) {
-	class qode_type2_walker_nav_menu extends Walker_Nav_Menu {
+if (!class_exists('BridgeQodeType2WalkerNavMenu')) {
+	class BridgeQodeType2WalkerNavMenu extends Walker_Nav_Menu {
 		
 	// add classes to ul sub-menus
 		function display_element( $element, &$children_elements, $max_depth, $depth=0, $args, &$output )
@@ -306,7 +308,7 @@ if (!class_exists('qode_type2_walker_nav_menu')) {
 		// add main/sub classes to li's and links
 		 function start_el( &$output, $item, $depth = 0, $args = array(), $id = 0 ) {
 			global $wp_query;
-			global $qode_options_proya;
+			global $bridge_qode_options;
 			$sub = "";
 			$indent = ( $depth > 0 ? str_repeat( "\t", $depth ) : '' ); // code indent
 			if($depth >=0 && $args->has_children) : 
@@ -377,8 +379,8 @@ if (!class_exists('qode_type2_walker_nav_menu')) {
 
 /* Custom WP_NAV_MENU function for popup navigation */
 
-if (!class_exists('qode_type3_walker_nav_menu')) {
-    class qode_type3_walker_nav_menu extends Walker_Nav_Menu {
+if (!class_exists('BridgeQodeType3WalkerNavMenu')) {
+    class BridgeQodeType3WalkerNavMenu extends Walker_Nav_Menu {
 
         // add classes to ul sub-menus
         function display_element( $element, &$children_elements, $max_depth, $depth=0, $args, &$output ){
@@ -470,8 +472,8 @@ if (!class_exists('qode_type3_walker_nav_menu')) {
 
 /* Custom WP_NAV_MENU function for left/right navigation */
 
-if (!class_exists('qode_type4_walker_nav_menu')) {
-    class qode_type4_walker_nav_menu extends Walker_Nav_Menu {
+if (!class_exists('BridgeQodeType4WalkerNavMenu')) {
+    class BridgeQodeType4WalkerNavMenu extends Walker_Nav_Menu {
 
         // add classes to ul sub-menus
         function display_element( $element, &$children_elements, $max_depth, $depth=0, $args, &$output )
@@ -499,7 +501,7 @@ if (!class_exists('qode_type4_walker_nav_menu')) {
         // add main/sub classes to li's and links
         function start_el( &$output, $item, $depth = 0, $args = array(), $id = 0 ) {
             global $wp_query;
-            global $qode_options_proya;
+            global $bridge_qode_options;
             $sub = "";
             $indent = ( $depth > 0 ? str_repeat( "\t", $depth ) : '' ); // code indent
             if($depth >=0 && $args->has_children) :

@@ -21,17 +21,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 global $product;
-global $qode_options_proya;
+$bridge_qode_options = bridge_qode_return_global_options();
 
 $button_classes = ' qbutton add-to-cart-button';
-if (isset($qode_options_proya['woo_products_add_to_cart_hover_type']) && $qode_options_proya['woo_products_add_to_cart_hover_type'] !== ''){
+if (isset($bridge_qode_options['woo_products_add_to_cart_hover_type']) && $bridge_qode_options['woo_products_add_to_cart_hover_type'] !== ''){
 	$button_classes .= ' enlarge';
 }
 
 if ( ! $product->is_in_stock() ) : ?>
 	<span class="onsale out-of-stock-button">
         <span class="out-of-stock-button-inner">
-            <?php echo apply_filters( 'out_of_stock_add_to_cart_text', __( 'Out of stock', 'woocommerce' ) ); ?>
+            <?php echo apply_filters( 'out_of_stock_add_to_cart_text', esc_html__( 'Out of stock', 'bridge' ) ); ?>
         </span>
     </span>
 <?php else :

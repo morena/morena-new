@@ -203,7 +203,8 @@
   .steps_holder_inner,
   .carousel-inner .slider_content_outer,
   nav.content_menu,
-  .paspartu_enabled.vertical_menu_enabled .container_inner {
+  .paspartu_enabled.vertical_menu_enabled .container_inner,
+  .paspartu_enabled div.grid_section .section_inner {
     width: 768px;
   }
   .full_width .projects_holder_outer.v6,
@@ -595,7 +596,8 @@
   .full_width .parallax_content,
   .steps_holder_inner,
   .carousel-inner .slider_content_outer,
-  nav.content_menu {
+  nav.content_menu,
+  .paspartu_enabled div.grid_section .section_inner {
     width: 600px;
   }
   .projects_holder.v6 .mix,

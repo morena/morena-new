@@ -1,6 +1,6 @@
 <?php
 
-class QodeIconsFontElegant implements iIconCollection {
+class BridgeQodeIconsFontElegant implements iIconCollection {
 
 	public $icons;
 	public $title;

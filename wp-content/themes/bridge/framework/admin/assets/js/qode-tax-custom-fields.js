@@ -58,17 +58,27 @@
             var $this = $(this);
             var parent = $this.closest('.form-field');
             var image = parent.find('.qode-tax-custom-media-url');
+            var editTax = $this.parents('#edittag');
+            var addTag = $this.parents('#addtag');
+            var wpNonce;
 
             /** Make sure the user didn't hit the button by accident and they really mean to delete the image **/
             if( image.val() !== '' && confirm( 'Are you sure you want to delete this file?' ) ) {
+            	if(editTax.length){
+		            wpNonce = editTax.find('#_wpnonce').val();
+	            } else if(addTag.length) {
+		            wpNonce = addTag.find('#_wpnonce_add-tag').val();
+	            }
+
                 var result = $.ajax({
                     url: '/wp-admin/admin-ajax.php',
                     type: 'GET',
                     data: {
-                        action: 'qode_tax_del_image',
+                        action: 'bridge_qode_tax_del_image',
                         term_id: $this.data('termid'),
                         taxonomy: $this.data('taxonomy'),
-                        field_name: image.attr('name')
+                        field_name: image.attr('name'),
+	                    delete_tax_nonce: wpNonce
                     },
                     dataType: 'text'
                 });

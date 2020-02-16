@@ -1,6 +1,6 @@
 <?php
 
-class QodeIconsFontDripicons implements iIconCollection
+class BridgeQodeIconsFontDripicons implements iIconCollection
 {
 
     public $icons;

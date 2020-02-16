@@ -24,7 +24,7 @@ global $product;
 
 /*** Our code modification inside Woo template - begin ***/
 $title_tag = 'h4';
-$title_tag_options = qode_options()->getOptionValue('woo_product_single_related_post_tag');
+$title_tag_options = bridge_qode_options()->getOptionValue('woo_product_single_related_post_tag');
 if($title_tag_options != '') {
 	$title_tag = $title_tag_options;
 }
@@ -34,7 +34,7 @@ if ( version_compare( WOOCOMMERCE_VERSION, '3.0' ) >= 0 ) {
 		
 		<div class="up-sells upsells products">
 		
-			<<?php esc_attr_e($title_tag); ?> class="qode-related-upsells-title"><?php esc_html_e( 'You may also like&hellip;', 'woocommerce' ) ?></<?php esc_attr_e($title_tag); ?>>
+			<<?php echo esc_attr($title_tag); ?> class="qode-related-upsells-title"><?php esc_html_e( 'You may also like&hellip;', 'bridge' ) ?></<?php echo esc_attr($title_tag); ?>>
 			
 			<?php woocommerce_product_loop_start(); ?>
 			
@@ -82,7 +82,7 @@ if ( version_compare( WOOCOMMERCE_VERSION, '3.0' ) >= 0 ) {
 		
 		<div class="up-sells upsells products">
 		
-			<<?php esc_attr_e($title_tag); ?> class="qode-related-upsells-title"><?php esc_html_e( 'You may also like&hellip;', 'woocommerce' ) ?></<?php esc_attr_e($title_tag); ?>>
+			<<?php echo esc_attr($title_tag); ?> class="qode-related-upsells-title"><?php esc_html_e( 'You may also like&hellip;', 'bridge' ) ?></<?php echo esc_attr($title_tag); ?>>
 			
 			<?php woocommerce_product_loop_start(); ?>
 			

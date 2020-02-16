@@ -7,7 +7,7 @@
             $array_id = explode(",", $ids[1]);
 
             foreach($array_id as $img_id){ ?>
-                <li><a itemprop="url" target="_self" href="<?php the_permalink(); ?>"><?php echo qode_generate_thumbnail($img_id,null,$thumb_width,$thumb_height); ?></a></li>
+                <li><a itemprop="url" target="_self" href="<?php the_permalink(); ?>"><?php echo bridge_qode_generate_thumbnail($img_id,null,$thumb_width,$thumb_height); ?></a></li>
             <?php } ?>
         </ul>
     </div>

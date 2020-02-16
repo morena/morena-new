@@ -23,25 +23,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 $customer_id = get_current_user_id();
 
 if ( ! wc_ship_to_billing_address_only() && wc_shipping_enabled() ) {
-	$page_title = apply_filters( 'woocommerce_my_account_my_address_title', __( 'My Addresses', 'qode' ) );
+	$page_title = apply_filters( 'woocommerce_my_account_my_address_title', esc_html__( 'My Addresses', 'bridge' ) );
 	$get_addresses    = apply_filters( 'woocommerce_my_account_get_addresses', array(
-		'billing' => __( 'Billing address', 'woocommerce' ),
-		'shipping' => __( 'Shipping address', 'woocommerce' )
+		'billing' => esc_html__( 'Billing address', 'bridge' ),
+		'shipping' => esc_html__( 'Shipping address', 'bridge' )
 	), $customer_id );
 } else {
-	$page_title = apply_filters( 'woocommerce_my_account_my_address_title', __( 'My Address', 'qode' ) );
+	$page_title = apply_filters( 'woocommerce_my_account_my_address_title', esc_html__( 'My Address', 'bridge' ) );
 	$get_addresses    = apply_filters( 'woocommerce_my_account_get_addresses', array(
-		'billing' => __( 'Billing address', 'woocommerce' )
+		'billing' => esc_html__( 'Billing address', 'bridge' )
 	), $customer_id );
 }
 $oldcol = 1;
 $col    = 1;
 ?>
 
-<h2><?php echo $page_title; ?></h2>
+<h2><?php echo esc_html($page_title); ?></h2>
 
 <p>
-	<?php echo apply_filters( 'woocommerce_my_account_my_address_description', __( 'The following addresses will be used on the checkout page by default.', 'woocommerce' ) ); ?>
+	<?php echo apply_filters( 'woocommerce_my_account_my_address_description', esc_html__( 'The following addresses will be used on the checkout page by default.', 'bridge' ) ); ?>
 </p>
 
 <?php if ( ! wc_ship_to_billing_address_only() && wc_shipping_enabled() ) echo '<div class="u-columns woocommerce-Addresses col2-set addresses">'; ?>
@@ -50,8 +50,8 @@ $col    = 1;
 	
 	<div class="u-column<?php echo ( ( $col = $col * -1 ) < 0 ) ? 1 : 2; ?> col-<?php echo ( ( $oldcol = $oldcol * -1 ) < 0 ) ? 1 : 2; ?> woocommerce-Address address">
 		<header class="woocommerce-Address-title title">
-			<h3><?php echo $title; ?></h3>
-			<a href="<?php echo esc_url( wc_get_endpoint_url( 'edit-address', $name ) ); ?>" class="edit button"><?php _e( 'Edit', 'woocommerce' ); ?></a>
+			<h3><?php echo esc_html($title); ?></h3>
+			<a href="<?php echo esc_url( wc_get_endpoint_url( 'edit-address', $name ) ); ?>" class="edit button"><?php esc_html_e( 'Edit', 'bridge' ); ?></a>
 		</header>
 		<address>
 			<?php
@@ -69,10 +69,12 @@ $col    = 1;
 				
 				$formatted_address = WC()->countries->get_formatted_address( $address );
 				
-				if ( ! $formatted_address )
-					_e( 'You have not set up this type of address yet.', 'woocommerce' );
-				else
-					echo $formatted_address;
+				if ( ! $formatted_address ) {
+                    esc_html_e('You have not set up this type of address yet.', 'bridge');
+                } else{
+				    echo implode('<br/>', $address);
+                }
+
 			?>
 		</address>
 	</div>
