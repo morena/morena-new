@@ -42,3 +42,6 @@ function remove_woocommerce_product_tabs( $tabs ) {
  */
 remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_excerpt', 20 );
 add_action( 'woocommerce_single_product_summary', 'the_content', 20 );
+
+// Disabling Gutenberg
+add_filter('use_block_editor_for_post', '__return_false', 10);
