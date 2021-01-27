@@ -189,6 +189,93 @@
 }*/
 /* line 150, scss/qodef-options.scss */
 
+/* Options Repeater Field Style - Begin */
+
+.qodef-options-page .qodef-page-content-wrapper .qodef-page-content div.qodef-page-form .qodef-repeater-wrapper {
+     padding: 35px 20px 15px 0;
+     border-bottom: 1px solid #ececec;
+}
+
+.qodef-options-page .qodef-page-content-wrapper .qodef-page-content div.qodef-page-form .qodef-repeater-wrapper > h4{
+    margin-bottom: 0;
+}
+
+.qodef-options-page .qodef-page-content-wrapper .qodef-page-content div.qodef-page-form .qodef-repeater-wrapper > p{
+    font-style: italic;
+    color: #a2a9af;
+    margin-top: 0;
+    margin-bottom: 20px;
+    max-width: 42%;
+}
+
+@media only screen and (max-width: 1024px){
+    .qodef-options-page .qodef-page-content-wrapper .qodef-page-content div.qodef-page-form .qodef-repeater-wrapper > p {
+        max-width: 100%;
+    }
+}
+
+.qodef-options-page .qodef-page-content-wrapper .qodef-page-content div.qodef-page-form .qodef-repeater-wrapper .qodef-repeater-fields-holder{
+    padding-bottom: 0;
+}
+
+.qodef-options-page .qodef-page-content-wrapper .qodef-page-content div.qodef-page-form .qodef-repeater-wrapper .qodef-repeater-fields-holder:last-of-type{
+    padding-bottom: 40px;
+}
+
+.qodef-options-page .qodef-page-content-wrapper .qodef-page-content div.qodef-page-form .qodef-repeater-wrapper .qodef-repeater-fields-holder .qodef-repeater-sort{
+    border: 1px solid #ececec;
+    border-bottom: none;
+}
+
+.qodef-options-page .qodef-page-content-wrapper .qodef-page-content div.qodef-page-form .qodef-repeater-wrapper .qodef-repeater-fields-holder:last-of-type .qodef-repeater-sort{
+    border-bottom: 1px solid #ececec;
+}
+
+.qodef-options-page .qodef-page-content-wrapper .qodef-page-content div.qodef-page-form .qodef-repeater-wrapper .qodef-repeater-fields-holder .qodef-repeater-fields{
+    border-right: 1px solid #ececec;
+    border-top: 1px solid #ececec;
+    padding-bottom: 10px;
+}
+
+.qodef-options-page .qodef-page-content-wrapper .qodef-page-content div.qodef-page-form .qodef-repeater-wrapper .qodef-repeater-fields-holder:last-of-type .qodef-repeater-fields{
+    border-bottom: 1px solid #ececec;
+}
+
+.qodef-options-page .qodef-page-content-wrapper .qodef-page-content div.qodef-page-form .qodef-repeater-wrapper .qodef-repeater-fields-holder .qodef-repeater-fields .qodef-repeater-field-row.col-xs-3 .qodef-field-desc,
+.qodef-options-page .qodef-page-content-wrapper .qodef-page-content div.qodef-page-form .qodef-repeater-wrapper .qodef-repeater-fields-holder .qodef-repeater-fields .qodef-repeater-field-row.col-xs-3 .qodef-section-content{
+    display: block;
+    width: 100%;
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.qodef-options-page .qodef-page-content-wrapper .qodef-page-content div.qodef-page-form .qodef-repeater-wrapper .qodef-repeater-fields-holder .qodef-repeater-fields .qodef-repeater-field-row.col-xs-3 .qodef-field-desc{
+    padding-bottom: 0;
+}
+
+.qodef-options-page .qodef-page-content-wrapper .qodef-page-content div.qodef-page-form .qodef-repeater-wrapper .qodef-repeater-fields-holder .qodef-repeater-fields .qodef-repeater-field-row.col-xs-3 .qodef-field-desc h4{
+    font-style: italic;
+    font-weight: 400;
+}
+
+.qodef-options-page .qodef-page-content-wrapper .qodef-page-content div.qodef-page-form .qodef-repeater-wrapper .qodef-repeater-fields-holder .qodef-repeater-fields .qodef-repeater-field-row.col-xs-3 .qodef-section-content{
+    padding: 10px 0;
+}
+
+.qodef-options-page .qodef-page-content-wrapper .qodef-page-content div.qodef-page-form .qodef-repeater-wrapper .qodef-repeater-fields-holder .qodef-repeater-fields .qodef-repeater-field-row.col-xs-3 .qodef-section-content .container-fluid{
+    padding: 0;
+}
+
+/* Options Repeater Field Style - End */
+
+/* Options Checkbox Group Style - Start */
+
+.qodef-options-page .qodef-page-content-wrapper .qodef-page-content div.qodef-page-form .qodef-page-form-section .qodef-section-content .qodef-checkbox-group-holder label{
+    font-weight: 400;
+}
+
+/* Options Checkbox Group Style - End */
+
 .qodef-options-page .qodef-page-content-wrapper .qodef-page-content .form-buttom-section-holder {
   display: table;
 }

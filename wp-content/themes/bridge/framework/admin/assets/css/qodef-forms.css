@@ -268,3 +268,48 @@
 	padding: 15px 20px 15px 20px;
 }
 /* Repeater global style -  end */
+
+/*Course Repeater*/
+
+.qodef-course-section .qodef-repeater-fields-row-inner{
+    display: table;
+    width: 100%;
+    vertical-align: middle;
+    height: 100%;
+    table-layout: fixed;
+}
+
+.qodef-course-section .qodef-repeater-sort{
+    border-top: 1px solid #efefef;
+    font-size: 20px;
+    display: table-cell;
+    width: 10%;
+    height: 100%;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.qodef-course-section .qodef-repeater-field-item{
+    display: table-cell;
+    width: 80%;
+    height: 100%;
+    vertical-align: middle;
+    background: #f6f6f6;
+}
+
+.qodef-course-section .qodef-page-form-section{
+    border-top: 1px solid #efefef;
+    display: table;
+    width: 100%;
+}
+
+.qodef-course-section .qodef-repeater-remove {
+    border-top: 1px solid #efefef;
+    font-size: 20px;
+    display: table-cell;
+    width: 10%;
+    height: 100%;
+    vertical-align: middle;
+    text-align: center;
+    position: relative;
+}

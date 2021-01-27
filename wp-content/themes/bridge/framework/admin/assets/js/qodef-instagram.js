@@ -5,14 +5,16 @@
 
     function qodefDisconnectFromInstagram() {
         if($('.qodef-disconnect-from-instagram').length) {
-            $('.qodef-disconnect-from-instagram').click(function(e) {
+            $('.qodef-disconnect-from-instagram').on('click', function(e) {
                 e.preventDefault();
+	            var instagramDisconnectNonce = $('input[name="bridge_qode_disconnect_from_instagram"]').val();
 
                 //@TODO get this from data attr
                 var button = $(this);
 	            button.text('Disconnecting...');
                 var data = {
-                    action: 'qode_disconnect_from_instagram'
+                    action: 'bridge_qode_disconnect_from_instagram',
+	                bridge_qode_disconnect_from_instagram: instagramDisconnectNonce
                 }
 
                 $.ajax({

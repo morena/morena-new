@@ -11,24 +11,28 @@
  * the readme will list any important changes.
  *
  * @see     https://docs.woocommerce.com/document/template-structure/
- * @author  WooThemes
  * @package WooCommerce/Templates
- * @version 3.0.0
+ * @version 3.6.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
-}
+defined( 'ABSPATH' ) || exit;
 
-global $product, $qode_options_proya;
+global $product;
 
 // Ensure visibility
 if ( empty( $product ) || ! $product->is_visible() ) {
 	return;
 }
-?>
-<li <?php post_class(); ?>>
 
+$bridge_qode_options = bridge_qode_return_global_options();
+?>
+
+<?php if ( version_compare( WOOCOMMERCE_VERSION, '3.4' ) >= 0 ) { ?>
+	<li <?php wc_product_class( '', $product ); ?>>
+<?php }
+else { ?>
+    <li <?php post_class(); ?>>
+<?php } ?>
 	<?php do_action( 'woocommerce_before_shop_loop_item' ); ?>
 	
     <div class="top-product-section">
@@ -47,22 +51,22 @@ if ( empty( $product ) || ! $product->is_visible() ) {
             </span>
         </a>
 
-		<?php do_action('qode_woocommerce_after_product_image'); ?>
+		<?php do_action('bridge_qode_action_woocommerce_after_product_image'); ?>
 
     </div>
-    <?php if(isset($qode_options_proya['woo_products_show_categories']) && $qode_options_proya['woo_products_show_categories'] == 'yes') {
+    <?php if(isset($bridge_qode_options['woo_products_show_categories']) && $bridge_qode_options['woo_products_show_categories'] == 'yes') {
      
 	    // WooCommerce plugin changed hooks in 3.0 version and because of that we have this condition
 	    if ( version_compare( WOOCOMMERCE_VERSION, '3.0' ) >= 0 ) {
 		    echo wc_get_product_category_list( $product->get_id(), ', ','<div class="product-categories">','</div>' );
 	    } else {
-		    echo $product->get_categories(', ','<div class="product-categories">','</div>');
+		    echo bridge_qode_get_module_part( $product->get_categories(', ','<div class="product-categories">','</div>') );
 	    }
     } ?>
     <a itemprop="url" href="<?php the_permalink(); ?>" class="product-category product-info">
         <h6 itemprop="name"><?php the_title(); ?></h6>
 
-        <?php if(isset($qode_options_proya['woo_products_show_title_sep']) && $qode_options_proya['woo_products_show_title_sep'] == 'yes') { ?>
+        <?php if(isset($bridge_qode_options['woo_products_show_title_sep']) && $bridge_qode_options['woo_products_show_title_sep'] == 'yes') { ?>
             <div class="separator after-title-spearator small center"></div>
         <?php } ?>
 

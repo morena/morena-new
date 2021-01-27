@@ -1,5 +1,7 @@
 <?php
 /**
+ * WPSEO plugin file.
+ *
  * @package WPSEO\Admin
  */
 
@@ -17,39 +19,41 @@ class WPSEO_Add_Keyword_Modal {
 	 * @return array Translated text strings for the Add Keyword modal.
 	 */
 	public function get_translations() {
-		return array(
-			'title'   => __( 'Want to add more than one keyword?', 'wordpress-seo' ),
-			'intro'   => sprintf(
-				/* translators: %1$s expands to a 'Yoast SEO Premium' text linked to the yoast.com website. */
-				__( 'Great news: you can, with %1$s!', 'wordpress-seo' ),
+		return [
+			'title'                    => __( 'Would you like to add more than one keyphrase?', 'wordpress-seo' ),
+			'intro'                    => sprintf(
+				/* translators: %s expands to a 'Yoast SEO Premium' text linked to the yoast.com website. */
+				__( 'Great news: you can, with %s!', 'wordpress-seo' ),
 				'{{link}}Yoast SEO Premium{{/link}}'
 			),
-			'link'    => WPSEO_Shortlinker::get( 'https://yoa.st/pe-premium-page' ),
-			'other'   => sprintf(
+			'link'                     => WPSEO_Shortlinker::get( 'https://yoa.st/pe-premium-page' ),
+			'other'                    => sprintf(
 				/* translators: %s expands to 'Yoast SEO Premium'. */
-				__( 'Other benefits of %s for you:', 'wordpress-seo' ), 'Yoast SEO Premium'
+				__( 'Other benefits of %s for you:', 'wordpress-seo' ),
+				'Yoast SEO Premium'
 			),
-			'buylink' => WPSEO_Shortlinker::get( 'https://yoa.st/add-keywords-popup' ),
-			'buy'     => sprintf(
+			'buylink'                  => WPSEO_Shortlinker::get( 'https://yoa.st/add-keywords-popup' ),
+			'buy'                      => sprintf(
 				/* translators: %s expands to 'Yoast SEO Premium'. */
-				__( 'Get %s now!', 'wordpress-seo' ), 'Yoast SEO Premium'
+				__( 'Get %s', 'wordpress-seo' ),
+				'Yoast SEO Premium'
 			),
-			'small'   => __( '1 year free updates and upgrades included!', 'wordpress-seo' ),
+			'small'                    => __( '1 year free support and updates included!', 'wordpress-seo' ),
 			'a11yNotice.opensInNewTab' => __( '(Opens in a new browser tab)', 'wordpress-seo' ),
-		);
+		];
 	}
 
 	/**
-	 * Pass tanslations to JS for the Add Keyword modal component.
+	 * Passes translations to JS for the Add Keyword modal component.
 	 *
 	 * @return array Translated text strings for the Add Keyword modal component.
 	 */
 	public function get_translations_for_js() {
 		$translations = $this->get_translations();
-		return array(
-			'locale' => WPSEO_Utils::get_user_locale(),
-			'intl' => $translations,
-		);
+		return [
+			'locale' => WPSEO_Language_Utils::get_user_locale(),
+			'intl'   => $translations,
+		];
 	}
 
 	/**

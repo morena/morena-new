@@ -1,6 +1,16 @@
 <?php
 
-class QodeIconsFontAwesome implements iIconCollection {
+if( ! function_exists('bridge_qode_include_font_awesome_icon_pack') ){
+    function bridge_qode_include_font_awesome_icon_pack( $icon_packs ){
+        $icon_packs['font_awesome'] = esc_html__('Font Awesome', 'bridge');
+
+        return $icon_packs;
+    }
+
+    add_filter('bridge_qode_filter_icon_packs', 'bridge_qode_include_font_awesome_icon_pack');
+}
+
+class BridgeQodeIconsFontAwesome implements iIconCollection {
 
 	public $icons;
 	public $title;

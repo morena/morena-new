@@ -4,11 +4,11 @@
         <div class="qode_print">
             <a href="#" onClick="window.print();return false;" class="qode_print_page">
                 <span class="icon-basic-printer qode_icon_printer"></span>
-                <span class="eltd-printer-title"><?php esc_html_e("Print page", "qode") ?></span>
+                <span class="eltd-printer-title"><?php esc_html_e("Print page", "bridge") ?></span>
             </a>
         </div>
         <?php if($qode_like == "on") { ?>
-            <div class="qode_like"><?php if( function_exists('qode_like') ) qode_like(); ?></div>
+            <div class="qode_like"><?php if( function_exists('bridge_core_like') ) bridge_core_like(); ?></div>
         <?php } ?>
     </div>
 <?php } ?>

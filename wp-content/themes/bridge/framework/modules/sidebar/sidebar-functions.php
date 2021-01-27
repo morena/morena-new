@@ -1,13 +1,13 @@
 <?php
-if(!function_exists('qode_sidebar_layout')) {
-	function qode_sidebar_layout() {
+if(!function_exists('bridge_qode_sidebar_layout')) {
+	function bridge_qode_sidebar_layout() {
 
-		$id = qode_get_page_id();
+		$id = bridge_qode_get_page_id();
 		$sidebar_layout						= '';
 		$sidebar_layout_meta				= get_post_meta($id, "qode_show-sidebar", true);
-		$archive_sidebar_layout				= qode_options()->getOptionValue( 'category_blog_sidebar' );
-		$single_sidebar_layout				= qode_options()->getOptionValue( 'blog_single_sidebar' );
-		$portfolio_single_sidebar_layout	= qode_options()->getOptionValue( 'portfolio_single_sidebar' );
+		$archive_sidebar_layout				= bridge_qode_options()->getOptionValue( 'category_blog_sidebar' );
+		$single_sidebar_layout				= bridge_qode_options()->getOptionValue( 'blog_single_sidebar' );
+		$portfolio_single_sidebar_layout	= bridge_qode_options()->getOptionValue( 'portfolio_single_sidebar' );
 
 		if ( ! empty( $sidebar_layout_meta ) && $sidebar_layout_meta != 'default') {
 			$sidebar_layout = $sidebar_layout_meta;
@@ -20,7 +20,7 @@ if(!function_exists('qode_sidebar_layout')) {
 			$sidebar_layout = $single_sidebar_layout;
 		}
 
-		if ( ( is_archive() || ( is_home() && is_front_page() ) ) && ! qode_is_woocommerce_page() && ! empty( $archive_sidebar_layout ) ) {
+		if ( ( is_archive() || ( is_home() && is_front_page() ) ) && ! bridge_qode_is_woocommerce_page() && ! empty( $archive_sidebar_layout ) ) {
 			$sidebar_layout = $archive_sidebar_layout;
 		}
 
@@ -43,12 +43,12 @@ if(!function_exists('qode_sidebar_layout')) {
 			endswitch;
 
 
-		return apply_filters( 'qode_sidebar_layout', $sidebar_layout_value );
+		return apply_filters( 'bridge_qode_filter_sidebar_layout', $sidebar_layout_value );
 	}
 }
-if(!function_exists('qode_get_content_sidebar_class')) {
-	function qode_get_content_sidebar_class() {
-		$sidebar_layout = qode_sidebar_layout();
+if(!function_exists('bridge_qode_get_content_sidebar_class')) {
+	function bridge_qode_get_content_sidebar_class() {
+		$sidebar_layout = bridge_qode_sidebar_layout();
 		$content_class  = array( 'qode-page-content-holder' );
 
 		switch ( $sidebar_layout ) {
@@ -78,12 +78,12 @@ if(!function_exists('qode_get_content_sidebar_class')) {
 				break;
 		}
 
-		return qode_get_class_attribute( $content_class );
+		return bridge_qode_get_class_attribute( $content_class );
 	}
 }
-if(!function_exists('qode_get_sidebar_holder_class')) {
-	function qode_get_sidebar_holder_class() {
-		$sidebar_layout = qode_sidebar_layout();
+if(!function_exists('bridge_qode_get_sidebar_holder_class')) {
+	function bridge_qode_get_sidebar_holder_class() {
+		$sidebar_layout = bridge_qode_sidebar_layout();
 		$sidebar_class  = array( 'qode-sidebar-holder' );
 
 		switch ( $sidebar_layout ) {
@@ -109,6 +109,6 @@ if(!function_exists('qode_get_sidebar_holder_class')) {
 				$sidebar_class[] = 'qode-grid-col-pull-10';
 		}
 
-		return qode_get_class_attribute( $sidebar_class );
+		return bridge_qode_get_class_attribute( $sidebar_class );
 	}
 }

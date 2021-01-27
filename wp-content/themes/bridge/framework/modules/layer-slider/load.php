@@ -1,5 +1,5 @@
 <?php
 
-if (qode_layer_slider_installed()) {
+if (bridge_qode_layer_slider_installed()) {
 	include_once QODE_FRAMEWORK_MODULES_ROOT_DIR.'/layer-slider/layer-slider-config.php';
 }

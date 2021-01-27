@@ -1,19 +1,19 @@
-<header class="<?php echo $header_classes; ?> page_header">
+<header class="<?php echo esc_attr( $header_classes ); ?> page_header">
 	<div class="header_inner clearfix">
-		<?php echo qode_get_module_template_part('templates/search/search', 'header', '', $params); ?>
+		<?php echo bridge_qode_get_module_template_part('templates/search/search', 'header', '', $params); ?>
 		<div class="header_top_bottom_holder">
-			<?php echo qode_get_module_template_part('templates/header-top/header-top', 'header', '', $params); ?>
+			<?php echo bridge_qode_get_module_template_part('templates/header-top/header-top', 'header', '', $params); ?>
 
-			<div class="header_bottom clearfix" <?php echo $header_color_per_page; ?> >
+			<div class="header_bottom clearfix" <?php echo wp_kses_post( $header_color_per_page ); ?> >
 				<?php if($header_in_grid){ ?>
 				<div class="container">
 					<div class="container_inner clearfix">
 						<?php if($overlapping_content) {?><div class="overlapping_content_margin"><?php } ?>
 							<?php } ?>
 							<div class="header_inner_left">
-								<?php echo qode_get_module_template_part('templates/mobile-menu/mobile-menu-button', 'header'); ?>
+								<?php echo bridge_qode_get_module_template_part('templates/mobile-menu/mobile-menu-button', 'header'); ?>
 								<?php
-								echo qode_get_logo(array(
+								echo bridge_qode_get_logo(array(
 									'logo_image' => true,
 									'logo_image_light' => true,
 									'logo_image_dark' => true,
@@ -43,10 +43,10 @@
 													'container_class' => '',
 													'menu_class' => 'clearfix',
 													'menu_id' => '',
-													'fallback_cb' => 'top_navigation_fallback',
+													'fallback_cb' => 'bridge_qode_top_navigation_fallback',
 													'link_before' => '<span>',
 													'link_after' => '</span>',
-													'walker' => new qode_type1_walker_nav_menu()
+													'walker' => new BridgeQodeType1WalkerNavMenu()
 												));
 												?>
 											</nav>
@@ -59,16 +59,16 @@
 														dynamic_sidebar('woocommerce_dropdown');
 													} ?>
 													<div class="side_menu_button">
-														<?php echo qode_get_module_template_part('templates/search/search-button', 'header', '', $params); ?>
-														<?php echo qode_get_module_template_part('templates/popup-menu/popup-menu-button', 'header', '', $params); ?>
-														<?php echo qode_get_module_template_part('templates/side-area/side-menu-button-link', 'header', '', $params); ?>
+														<?php echo bridge_qode_get_module_template_part('templates/search/search-button', 'header', '', $params); ?>
+														<?php echo bridge_qode_get_module_template_part('templates/popup-menu/popup-menu-button', 'header', '', $params); ?>
+														<?php echo bridge_qode_get_module_template_part('templates/side-area/side-menu-button-link', 'header', '', $params); ?>
 													</div>
 												</div>
 											</div>
 										</div>
 									</div>
 								</div>
-								<?php echo qode_get_module_template_part('templates/mobile-menu/mobile-menu', 'header', '', $params); ?>
+								<?php echo bridge_qode_get_module_template_part('templates/mobile-menu/mobile-menu', 'header', '', $params); ?>
 								<?php if($header_in_grid){ ?>
 								<?php if($overlapping_content) {?></div><?php } ?>
 						</div>

@@ -15,10 +15,10 @@ if(!empty($line_color)) {
 	$styles[] = "border-color: ".$line_color.";";
 }
 
-$html = '<ul class="q_circles_holder '.$columns.' '.$circle_line.'" '. qode_get_inline_style(implode(';',$styles)) .'>';
+$html = '<ul class="q_circles_holder '.$columns.' '.$circle_line.'" '. bridge_qode_get_inline_style(implode(';',$styles)) .'>';
 
 $html .= do_shortcode($content);
 
 $html .= '</ul>';
 
-echo $html;
+echo bridge_qode_get_module_part( $html );

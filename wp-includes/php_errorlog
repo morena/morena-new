@@ -1,0 +1,36 @@
+[13-Mar-2020 11:43:46 CST6CDT] PHP Fatal error:  Uncaught Error: Call to undefined function _deprecated_file() in /home/kodes968/public_html/morenafiore.com/wp-includes/rss.php:19
+Stack trace:
+#0 {main}
+  thrown in /home/kodes968/public_html/morenafiore.com/wp-includes/rss.php on line 19
+[21-Apr-2020 08:28:56 CST6CDT] PHP Fatal error:  Uncaught Error: Call to undefined function _deprecated_file() in /home/kodes968/public_html/morenafiore.com/wp-includes/rss.php:19
+Stack trace:
+#0 {main}
+  thrown in /home/kodes968/public_html/morenafiore.com/wp-includes/rss.php on line 19
+[30-Apr-2020 13:57:02 CST6CDT] PHP Fatal error:  Uncaught Error: Call to undefined function _deprecated_file() in /home/kodes968/public_html/morenafiore.com/wp-includes/rss.php:19
+Stack trace:
+#0 {main}
+  thrown in /home/kodes968/public_html/morenafiore.com/wp-includes/rss.php on line 19
+[23-Jun-2020 20:23:33 CST6CDT] PHP Fatal error:  Uncaught Error: Call to undefined function _deprecated_file() in /home/kodes968/public_html/morenafiore.com/wp-includes/rss.php:19
+Stack trace:
+#0 {main}
+  thrown in /home/kodes968/public_html/morenafiore.com/wp-includes/rss.php on line 19
+[03-Sep-2020 23:32:16 CST6CDT] PHP Fatal error:  Uncaught Error: Call to undefined function feed_content_type() in /home/kodes968/public_html/morenafiore.com/wp-includes/feed-atom-comments.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/kodes968/public_html/morenafiore.com/wp-includes/feed-atom-comments.php on line 8
+[03-Sep-2020 23:32:25 CST6CDT] PHP Fatal error:  Uncaught Error: Call to undefined function feed_content_type() in /home/kodes968/public_html/morenafiore.com/wp-includes/feed-atom-comments.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/kodes968/public_html/morenafiore.com/wp-includes/feed-atom-comments.php on line 8
+[03-Sep-2020 23:32:32 CST6CDT] PHP Fatal error:  Uncaught Error: Call to undefined function feed_content_type() in /home/kodes968/public_html/morenafiore.com/wp-includes/feed-atom-comments.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/kodes968/public_html/morenafiore.com/wp-includes/feed-atom-comments.php on line 8
+[04-Sep-2020 01:31:02 CST6CDT] PHP Fatal error:  Uncaught Error: Class 'IXR_Server' not found in /home/kodes968/public_html/morenafiore.com/wp-includes/class-wp-xmlrpc-server.php:23
+Stack trace:
+#0 {main}
+  thrown in /home/kodes968/public_html/morenafiore.com/wp-includes/class-wp-xmlrpc-server.php on line 23
+[02-Jan-2021 09:38:03 CST6CDT] PHP Fatal error:  Uncaught Error: Call to undefined function _deprecated_file() in /home/kodes968/public_html/morenafiore.com/wp-includes/rss-functions.php:9
+Stack trace:
+#0 {main}
+  thrown in /home/kodes968/public_html/morenafiore.com/wp-includes/rss-functions.php on line 9

@@ -1,6 +1,16 @@
 <?php
 
-class QodeIconsFontElegant implements iIconCollection {
+if( ! function_exists('bridge_qode_include_font_elegant_icon_pack') ){
+    function bridge_qode_include_font_elegant_icon_pack( $icon_packs ){
+        $icon_packs['font_elegant'] = esc_html__('Font Elegant', 'bridge');
+
+        return $icon_packs;
+    }
+
+    add_filter('bridge_qode_filter_icon_packs', 'bridge_qode_include_font_elegant_icon_pack');
+}
+
+class BridgeQodeIconsFontElegant implements iIconCollection {
 
 	public $icons;
 	public $title;

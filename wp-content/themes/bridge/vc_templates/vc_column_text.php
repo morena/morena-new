@@ -1,6 +1,6 @@
 <?php
 
-if(version_compare(qode_get_vc_version(), '4.5.9') >= 0) {
+if(version_compare(bridge_qode_get_vc_version(), '4.5.9') >= 0) {
 	/**
 	 * Shortcode attributes
 	 * @var $atts
@@ -31,7 +31,7 @@ if(version_compare(qode_get_vc_version(), '4.5.9') >= 0) {
 	$output .= "\n\t\t" . '</div> ' . $this->endBlockComment( '.wpb_wrapper' );
 	$output .= "\n\t" . '</div> ' . $this->endBlockComment( $this->getShortcode() );
 	
-	echo $output;
+	echo bridge_qode_get_module_part( $output );
 
 } else {
 
@@ -53,5 +53,5 @@ if(version_compare(qode_get_vc_version(), '4.5.9') >= 0) {
 	$output .= "\n\t\t" . '</div> ' . $this->endBlockComment( '.wpb_wrapper' );
 	$output .= "\n\t" . '</div> ' . $this->endBlockComment( '.wpb_text_column' );
 	
-	echo $output;	
+	echo bridge_qode_get_module_part( $output );
 }

@@ -471,6 +471,10 @@ body .ui-tooltip { border-width: 2px; }
 	font-size: 13px;
 }
 
+.inline.hidden{
+	display: none;
+}
+
 .hidden_slide,
 .hidden_parallax,
 .hidden_portfolio,
@@ -527,6 +531,11 @@ option.parallax{
 	position: relative;
 	display: inline-block;
 	width: 100%;
+}
+
+/*Temp fix for rev slider dropdown for creating new slides */
+#add_slide_toolbar_wrap .add_slide{
+	display: block;
 }
 
 input[type="text"].slide_image,
@@ -624,11 +633,6 @@ z-index: 100;
 	margin-bottom:10px;
     background: #DFDFDF;
 
-}
-small{
-	display:block;
-	width:350px;
-	float:left;
 }
 #td_icon_0, #td_icon_1, #td_icon_2, #td_icon_3 {
     display:inline;
@@ -861,4 +865,41 @@ input[type="checkbox"], input[type="radio"]{
 	padding: 4px;
 	background-color: #fff;
 	border: 1px solid #ddd;
+}
+
+.qode-widget-color-picker .wp-picker-container .wp-color-result.button{
+	height: 24px;
+	margin: 0 6px 6px 0;
+	padding: 0 0 0 30px;
+	font-size: 11px;
+}
+
+.qode-widget-color-picker .wp-picker-container .wp-color-result-text{
+	background: #f7f7f7;
+	border-radius: 0 2px 2px 0;
+	border-left: 1px solid #ccc;
+	color: #555;
+	display: block;
+	line-height: 2;
+	padding: 0 6px;
+	text-align: center;
+}
+
+.qode-widget-color-picker .wp-picker-container .wp-picker-open+.wp-picker-input-wrap,
+.qode-widget-color-picker .wp-picker-input-wrap label{
+	display: inline-block;
+	vertical-align: top;
+}
+
+.qode-widget-color-picker .wp-picker-container input[type=text].wp-color-picker{
+	width: 65px;
+	font-size: 12px;
+	font-family: monospace;
+	line-height: 1.4;
+	margin: 0;
+	vertical-align: top;
+}
+
+.qode-widget-color-picker .wp-picker-input-wrap .button{
+	margin-left: 6px;
 }

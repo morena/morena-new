@@ -1,6 +1,16 @@
 <?php
 
-class QodeIconsFontLinea implements iIconCollection {
+if( ! function_exists('bridge_qode_include_lineaicons_icon_pack') ){
+    function bridge_qode_include_lineaicons_icon_pack( $icon_packs ){
+        $icon_packs['linea_icons'] = esc_html__('Linea Icons', 'bridge');
+
+        return $icon_packs;
+    }
+
+    add_filter('bridge_qode_filter_icon_packs', 'bridge_qode_include_lineaicons_icon_pack');
+}
+
+class BridgeQodeIconsFontLinea implements iIconCollection {
 
 	public $icons;
 	public $title;

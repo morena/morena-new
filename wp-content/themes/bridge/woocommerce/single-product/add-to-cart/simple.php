@@ -10,14 +10,12 @@
  * happen. When this occurs the version of the template file will be bumped and
  * the readme will list any important changes.
  *
- * @see 	    https://docs.woocommerce.com/document/template-structure/
- * @author 		WooThemes
- * @package 	WooCommerce/Templates
- * @version     3.0.0
+ * @see https://docs.woocommerce.com/document/template-structure/
+ * @package WooCommerce/Templates
+ * @version 3.4.0
  */
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+
+defined( 'ABSPATH' ) || exit;
 
 global $product;
 
@@ -27,11 +25,11 @@ if ( ! $product->is_purchasable() ) {
 
 /*** Our code modification inside Woo template - begin ***/
 
-global $qode_options_proya;
+$bridge_qode_options = bridge_qode_return_global_options();
 
 $button_classes = 'single_add_to_cart_button qbutton button alt';
-if (isset($qode_options_proya['woo_products_add_to_cart_hover_type']) && $qode_options_proya['woo_products_add_to_cart_hover_type'] !== ''){
-	$button_classes .= ' '.$qode_options_proya['woo_products_add_to_cart_hover_type'];
+if (isset($bridge_qode_options['woo_products_add_to_cart_hover_type']) && $bridge_qode_options['woo_products_add_to_cart_hover_type'] !== ''){
+	$button_classes .= ' '.$bridge_qode_options['woo_products_add_to_cart_hover_type'];
 }
 
 /*** Our code modification inside Woo template - end ***/
@@ -41,8 +39,8 @@ echo wc_get_stock_html( $product );
 if ( $product->is_in_stock() ) : ?>
 	
 	<?php do_action( 'woocommerce_before_add_to_cart_form' ); ?>
-	
-	<form class="cart" action="<?php echo esc_url( get_permalink() ); ?>" method="post" enctype='multipart/form-data'>
+
+    <form class="cart" action="<?php echo esc_url( apply_filters( 'woocommerce_add_to_cart_form_action', $product->get_permalink() ) ); ?>" method="post" enctype='multipart/form-data'>
 		<?php
 		/**
 		 * @since 2.1.0.
@@ -53,12 +51,12 @@ if ( $product->is_in_stock() ) : ?>
 		 * @since 3.0.0.
 		 */
 		do_action( 'woocommerce_before_add_to_cart_quantity' );
-		
-		woocommerce_quantity_input( array(
-			'min_value'   => apply_filters( 'woocommerce_quantity_input_min', $product->get_min_purchase_quantity(), $product ),
-			'max_value'   => apply_filters( 'woocommerce_quantity_input_max', $product->get_max_purchase_quantity(), $product ),
-			'input_value' => isset( $_POST['quantity'] ) ? wc_stock_amount( $_POST['quantity'] ) : $product->get_min_purchase_quantity(),
-		) );
+
+        woocommerce_quantity_input( array(
+            'min_value'   => apply_filters( 'woocommerce_quantity_input_min', $product->get_min_purchase_quantity(), $product ),
+            'max_value'   => apply_filters( 'woocommerce_quantity_input_max', $product->get_max_purchase_quantity(), $product ),
+            'input_value' => isset( $_POST['quantity'] ) ? wc_stock_amount( wp_unslash( $_POST['quantity'] ) ) : $product->get_min_purchase_quantity(), // WPCS: CSRF ok, input var ok.
+        ) );
 		
 		/**
 		 * @since 3.0.0.

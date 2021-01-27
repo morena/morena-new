@@ -9,7 +9,7 @@
 						<div class="search_close_holder">
 							<div class="side_menu_button">
 								<a class="fullscreen_search_close" href="javascript:void(0)">
-									<?php qode_icon_collections()->getSearchClose(qode_options()->getOptionValue('search_icon_pack')); ?>
+									<?php bridge_qode_icon_collections()->getSearchClose(bridge_qode_options()->getOptionValue('search_icon_pack')); ?>
 								</a>
 							</div>
 						</div>
@@ -22,15 +22,15 @@
 		<div class="fullscreen_search_table">
 			<div class="fullscreen_search_cell">
 				<div class="fullscreen_search_inner">
-					<form role="search" action="<?php echo esc_url(home_url('/')); ?>" class="fullscreen_search_form" method="get">
+					<form role="search" action="<?php echo esc_url(home_url( '/' )); ?>" class="fullscreen_search_form" method="get">
 						<div class="form_holder">
-							<span class="search_label"><?php _e('Search:', 'qode'); ?></span>
+							<span class="search_label"><?php esc_html_e('Search:', 'bridge'); ?></span>
 							<div class="field_holder">
 								<input type="text"  name="s" class="search_field" autocomplete="off" />
 								<div class="line"></div>
 							</div>
 							<a class="qode_search_submit search_submit" href="javascript:void(0)">
-								<?php qode_icon_collections()->getSearchIcon(qode_options()->getOptionValue('search_icon_pack')); ?>
+								<?php bridge_qode_icon_collections()->getSearchIcon(bridge_qode_options()->getOptionValue('search_icon_pack')); ?>
 							</a>
 						</div>
 					</form>

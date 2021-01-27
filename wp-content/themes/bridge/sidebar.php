@@ -1,45 +1,44 @@
 <?php 
-global $qode_options_proya;
-global $qode_page_id;
-$sidebar_id =  $qode_page_id;
+$bridge_qode_options = bridge_qode_return_global_options();
+$bridge_qode_sidebar_id = bridge_qode_get_page_id();
 ?>
 	<div class="column_inner">
 		<aside class="sidebar">
 			<?php	
-			$sidebar = "";
+			$bridge_qode_sidebar = "";
 
-            $is_woocommerce=false;
+            $bridge_qode_is_woocommerce=false;
             if(function_exists("is_woocommerce")) {
-                $is_woocommerce = is_woocommerce();
-                if($is_woocommerce){
-					$sidebar_id = get_option('woocommerce_shop_page_id');
+                $bridge_qode_is_woocommerce = is_woocommerce();
+                if($bridge_qode_is_woocommerce){
+					$bridge_qode_sidebar_id = get_option('woocommerce_shop_page_id');
                 }
             }
 		
-			if(get_post_meta($sidebar_id, 'qode_choose-sidebar', true) != ""){
-				$sidebar = get_post_meta($sidebar_id, 'qode_choose-sidebar', true);
+			if(get_post_meta($bridge_qode_sidebar_id, 'qode_choose-sidebar', true) != ""){
+				$bridge_qode_sidebar = get_post_meta($bridge_qode_sidebar_id, 'qode_choose-sidebar', true);
 			}else{
 				if (is_singular("post")) {
-					if($qode_options_proya['blog_single_sidebar_custom_display'] != ""){
-						$sidebar = $qode_options_proya['blog_single_sidebar_custom_display'];
+					if($bridge_qode_options['blog_single_sidebar_custom_display'] != ""){
+						$bridge_qode_sidebar = $bridge_qode_options['blog_single_sidebar_custom_display'];
 					}else{
-						$sidebar = "Sidebar";
+						$bridge_qode_sidebar = "Sidebar";
 					}
-				} elseif(is_singular("portfolio_page") && $qode_options_proya['portfolio_single_sidebar_custom_display'] != ""){
-					$sidebar = $qode_options_proya['portfolio_single_sidebar_custom_display'];
-				}elseif(is_singular("events") && qode_timetable_schedule_installed()){
-					if($qode_options_proya['event_single_sidebar_custom_display'] != ""){
-						$sidebar = $qode_options_proya['event_single_sidebar_custom_display'];
+				} elseif(is_singular("portfolio_page") && $bridge_qode_options['portfolio_single_sidebar_custom_display'] != ""){
+					$bridge_qode_sidebar = $bridge_qode_options['portfolio_single_sidebar_custom_display'];
+				}elseif(is_singular("events") && bridge_qode_timetable_schedule_installed()){
+					if($bridge_qode_options['event_single_sidebar_custom_display'] != ""){
+						$bridge_qode_sidebar = $bridge_qode_options['event_single_sidebar_custom_display'];
 					}else{
-						$sidebar = 'sidebar-event';
+						$bridge_qode_sidebar = 'sidebar-event';
 					}
 				}else {
-					$sidebar = "Sidebar Page";
+					$bridge_qode_sidebar = "Sidebar Page";
 				}
 			}
 			?>
 				
-			<?php if(function_exists('dynamic_sidebar') && dynamic_sidebar($sidebar)) : 
+			<?php if(function_exists('dynamic_sidebar') && dynamic_sidebar($bridge_qode_sidebar)) : 
 			endif;  ?>
 		</aside>
 	</div>

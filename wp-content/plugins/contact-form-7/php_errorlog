@@ -1,0 +1,8 @@
+[27-Dec-2019 09:40:43 CST6CDT] PHP Fatal error:  Uncaught Error: Call to undefined function plugin_basename() in /home/kodes968/public_html/morenafiore.com/wp-content/plugins/contact-form-7/wp-contact-form-7.php:19
+Stack trace:
+#0 {main}
+  thrown in /home/kodes968/public_html/morenafiore.com/wp-content/plugins/contact-form-7/wp-contact-form-7.php on line 19
+[15-Mar-2020 19:16:23 CST6CDT] PHP Fatal error:  Uncaught Error: Call to undefined function plugin_basename() in /home/kodes968/public_html/morenafiore.com/wp-content/plugins/contact-form-7/wp-contact-form-7.php:19
+Stack trace:
+#0 {main}
+  thrown in /home/kodes968/public_html/morenafiore.com/wp-content/plugins/contact-form-7/wp-contact-form-7.php on line 19

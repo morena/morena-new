@@ -1,6 +1,16 @@
 <?php
 
-class QodeIconsFontDripicons implements iIconCollection
+if( ! function_exists('bridge_qode_include_dripicons_icon_pack') ){
+    function bridge_qode_include_dripicons_icon_pack( $icon_packs ){
+        $icon_packs['dripicons'] = esc_html__('Dripicons', 'bridge');
+
+        return $icon_packs;
+    }
+
+    add_filter('bridge_qode_filter_icon_packs', 'bridge_qode_include_dripicons_icon_pack');
+}
+
+class BridgeQodeIconsFontDripicons implements iIconCollection
 {
 
     public $icons;

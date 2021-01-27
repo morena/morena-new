@@ -63,8 +63,9 @@
             var spinner        = $(this).parents('li.menu-item').first().find('.spinner');
 
             var data = {
-                action: 'update_admin_nav_icon_options',
-                icon_pack: chosenIconPack
+                action: 'bridge_qode_update_admin_nav_icon_options',
+                icon_pack: chosenIconPack,
+	            update_nav_menu_nonce: $('#update-nav-menu').find('#update-nav-menu-nonce').val()
             }
 
             spinner.css('visibility', 'visible');

@@ -27,8 +27,8 @@ function smoothScrollListener(event){
 if (!$j('html').hasClass('touch') && !mobile_ie) {
 
     if (window.addEventListener) {
-        window.addEventListener('mousewheel', smoothScrollListener, false);
-        window.addEventListener('DOMMouseScroll', smoothScrollListener, false);
+        window.addEventListener('mousewheel', smoothScrollListener, {passive: false});
+        window.addEventListener('DOMMouseScroll', smoothScrollListener, {passive: false});
     }
 
 }

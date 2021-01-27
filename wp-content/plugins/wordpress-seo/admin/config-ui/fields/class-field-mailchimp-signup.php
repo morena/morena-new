@@ -6,7 +6,7 @@
  */
 
 /**
- * Class WPSEO_Config_Field_Mailchimp_Signup
+ * Class WPSEO_Config_Field_Mailchimp_Signup.
  */
 class WPSEO_Config_Field_Mailchimp_Signup extends WPSEO_Config_Field {
 
@@ -28,7 +28,7 @@ class WPSEO_Config_Field_Mailchimp_Signup extends WPSEO_Config_Field {
 
 		$gdpr_notice = sprintf(
 			/* translators: %1$s expands Yoast, %2$s expands to an opening anchor tag, %3$s expands to a closing anchor tag. */
-			__( '%1$s respects the GDPR. Read our %2$sprivacy policy%3$s on what happens with your personal information.', 'wordpress-seo' ),
+			__( '%1$s respects your privacy. Read our %2$sprivacy policy%3$s on how we handle your personal information.', 'wordpress-seo' ),
 			'Yoast',
 			'<a target="_blank" rel="noopener noreferrer" href="' . WPSEO_Shortlinker::get( 'https://yoa.st/gdpr-config-wizard' ) . '">',
 			'</a>'
@@ -43,19 +43,18 @@ class WPSEO_Config_Field_Mailchimp_Signup extends WPSEO_Config_Field {
 	}
 
 	/**
-	 * Get the data
+	 * Get the data.
 	 *
 	 * @return array
 	 */
 	public function get_data() {
-		return array(
+		return [
 			'hasSignup' => $this->has_mailchimp_signup(),
-		);
-
+		];
 	}
 
 	/**
-	 * Checks if the user has entered his email for mailchimp already.
+	 * Checks if the user has entered their email for mailchimp already.
 	 *
 	 * @return bool
 	 */

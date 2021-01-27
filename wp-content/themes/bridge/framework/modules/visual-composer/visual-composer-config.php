@@ -7,13 +7,13 @@ if(function_exists('vc_set_as_theme')) vc_set_as_theme(true);
 // Initialising Shortcodes
 if (class_exists('WPBakeryVisualComposerAbstract')) {
 
-	function qode_require_vc_extend(){
+	function bridge_qode_require_vc_extend(){
 
-		require_once locate_template('/extendvc/extend-vc.php');
+		require_once QODE_ROOT_DIR . '/extendvc/extend-vc.php';
 
-		do_action('qode_vc_map');
+		do_action('bridge_qode_action_vc_map');
 	}
-	add_action('init', 'qode_require_vc_extend', 11);
+	add_action('init', 'bridge_qode_require_vc_extend', 11);
 }
 
 if(class_exists('WPBakeryShortCodesContainer')) {

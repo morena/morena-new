@@ -23,8 +23,8 @@ class WPSEO_Admin_Media_Purge_Notification implements WPSEO_WordPress_Integratio
 	 * @return void
 	 */
 	public function register_hooks() {
-		add_action( 'admin_init', array( $this, 'manage_notification' ) );
-		add_filter( 'wpseo_option_tab-metas_media', array( $this, 'output_hidden_setting' ) );
+		add_action( 'admin_init', [ $this, 'manage_notification' ] );
+		add_filter( 'wpseo_option_tab-metas_media', [ $this, 'output_hidden_setting' ] );
 
 		// Dismissing is just setting the relevancy to false, which cancels out any functionality.
 		if ( WPSEO_Utils::is_yoast_seo_page() && filter_input( INPUT_GET, 'dismiss' ) === $this->notification_id ) {
@@ -38,7 +38,9 @@ class WPSEO_Admin_Media_Purge_Notification implements WPSEO_WordPress_Integratio
 	 * To make sure the setting is not reverted to the default when -anything-
 	 * is saved on the entire page (not just the media tab).
 	 *
-	 * @return void
+	 * @param string|null $input Current filter value.
+	 *
+	 * @return string|null
 	 */
 	public function output_hidden_setting( $input ) {
 		$form = Yoast_Form::get_instance();
@@ -53,27 +55,7 @@ class WPSEO_Admin_Media_Purge_Notification implements WPSEO_WordPress_Integratio
 	 * @return void
 	 */
 	public function manage_notification() {
-		if ( ! WPSEO_Options::get( 'is-media-purge-relevant' ) ) {
-			$this->remove_notification();
-
-			return;
-		}
-
-		// This is the desired behaviour, remove any notifications and carry on.
-		if ( WPSEO_Options::get( 'disable-attachment' ) === true ) {
-			$this->remove_notification();
-
-			return;
-		}
-
-		// When the attachments are no-indexed, this is acceptable.
-		if ( WPSEO_Options::get( 'noindex-attachment' ) === true ) {
-			$this->remove_notification();
-
-			return;
-		}
-
-		$this->add_notification();
+		$this->remove_notification();
 	}
 
 	/**
@@ -83,27 +65,28 @@ class WPSEO_Admin_Media_Purge_Notification implements WPSEO_WordPress_Integratio
 	 */
 	private function get_notification() {
 		$content = sprintf(
-		/* translators: %1$s expands to the link to the article, %2$s closes the link tag. */
+			/* translators: %1$s expands to the link to the article, %2$s closes the link tag. */
 			__( 'Your site\'s settings currently allow attachment URLs on your site to exist. Please read %1$sthis post about a potential issue%2$s with attachment URLs and check whether you have the correct setting for your site.', 'wordpress-seo' ),
-			'<a href="' . esc_url( WPSEO_Shortlinker::get( 'https://yoa.st/2r8' ) ) . '" rel="nofollow noreferer" target="_blank">',
+			'<a href="' . esc_url( WPSEO_Shortlinker::get( 'https://yoa.st/2r8' ) ) . '" rel="noopener noreferrer" target="_blank">',
 			'</a>'
 		);
 
 		$content .= '<br><br>';
 		$content .= sprintf(
+			/* translators: %1$s dismiss link open tag, %2$s closes the link tag. */
 			__( 'If you know what this means and you do not want to see this message anymore, you can %1$sdismiss this message%2$s.', 'wordpress-seo' ),
-			'<a href="' . admin_url( 'admin.php?page=wpseo_dashboard&dismiss=' . $this->notification_id ) . '">',
+			'<a href="' . esc_url( admin_url( 'admin.php?page=wpseo_dashboard&dismiss=' . $this->notification_id ) ) . '">',
 			'</a>'
 		);
 
 		return new Yoast_Notification(
 			$content,
-			array(
+			[
 				'type'         => Yoast_Notification::ERROR,
 				'id'           => $this->notification_id,
 				'capabilities' => 'wpseo_manage_options',
 				'priority'     => 1,
-			)
+			]
 		);
 	}
 

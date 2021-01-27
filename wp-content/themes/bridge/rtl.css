@@ -411,3 +411,33 @@ body.page-template-blog-masonry-full-width-php.vertical_menu_enabled .content .f
 .five_columns>.column5>.column_inner{
 	margin: 0;
 }
+
+
+/* Elliptical Slider RTL Compatibility */
+.qode-elliptical-slider .qode-elliptical-slide .qode-elliptical-slide-content-holder{
+    background: transparent;
+}
+
+.qode-elliptical-slider .qode-elliptical-slide .qode-elliptical-slide-content-wrapper .qode-elliptical-slide-wrapper-inner{
+    background: #292929;
+}
+
+.qode-elliptical-slider .qode-elliptical-slide .qode-elliptical-slide-svg-holder{
+    left: 0;
+    right: auto;
+    transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+}
+
+.qode-elliptical-slider .qode-elliptical-slide .qode-elliptical-slide-content-wrapper .qode-elliptical-slide-elements-holder{
+    text-align: right;
+}
+
+.qode-elliptical-slider .flex-control-nav.flex-control-paging li a{
+    text-indent: 9999px;
+}
+
+.qode-elliptical-slider .flex-control-nav.flex-control-paging{
+    left: auto;
+    right: 40px;
+}
